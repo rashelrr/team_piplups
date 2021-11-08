@@ -11,12 +11,12 @@ public class Driver {
         System.out.println("Welcome to our service! This service allows you to " +
         "leave restaurant reviews for your friends to read! \n");
 
-        System.out.print("Type 'Log in' to log into your account or 'Sign up' to create a new account.");
+        System.out.println("Type 'Log in' to log into your account or 'Sign up' to create a new account: ");
         String input = scanner.nextLine();
         String loginOrSignup = input.toLowerCase();
     
         while ( !loginOrSignup.equals("log in") && !loginOrSignup.equals("sign up") ) {
-            System.out.print("Error. Please enter 'Log in' to log into your account or 'Sign up' to create a new account.");
+            System.out.println("Error. Please enter 'Log in' to log into your account or 'Sign up' to create a new account.");
             input = scanner.nextLine();
             loginOrSignup = input.toLowerCase();
         }
@@ -29,7 +29,7 @@ public class Driver {
     }
 
     public static void logIn(Scanner scanner) {
-        System.out.print("Please enter your username: ");
+        System.out.print("Enter your username: ");
         String username = scanner.nextLine();
 
         Console cnsl = System.console();
@@ -39,7 +39,7 @@ public class Driver {
             return;
         }
 
-        char[] password = cnsl.readPassword("Please enter your password: ");
+        char[] password = cnsl.readPassword("Enter your password: ");
         String pwd = String.valueOf(password);
         System.out.println("le password >>> " + pwd);
 
@@ -52,18 +52,18 @@ public class Driver {
 
     public static void signUp(Scanner scanner) {
         
-        System.out.print("To create your account, please enter a username. Valid characters include letters and digits only: ");
+        System.out.print("To create your account, enter a username: ");
         String username = scanner.nextLine();
         int userLen = username.length();
 
-        // check if username is already in hashmap
+        // check if username is valid
         boolean valid = false;
         while ( !valid ) {
 
             boolean invalidCharsLen = !checkChars(username) || (userLen < 6 || userLen > 30);
             if ( invalidCharsLen ) {
-                System.out.print("Username contains invalid characters and/or invalid length. " + 
-                "Valid characters include letters and digits only. Username should be any length " +
+                System.out.println("Username contains invalid characters and/or invalid length. " + 
+                "Username should contain letters and at least one digit. Username should be any length " +
                 " between 6 and 30 characters, inclusive. Please try again: ");
                 username = scanner.nextLine();
                 userLen = username.length();
@@ -71,7 +71,7 @@ public class Driver {
     
             boolean userExists = credentials.containsKey(username);
             if ( userExists ) {
-                System.out.print("This username is already taken. Please enter another username: ");
+                System.out.println("This username is already taken. Please enter another username: ");
                 username = scanner.nextLine();
             }
 
@@ -79,13 +79,51 @@ public class Driver {
                 valid = true; 
         }
 
-        System.out.println("valid username! >>> " + username);
+        System.out.print("Please enter a password: ");
+        /*String password = scanner.nextLine();
+        userLen = username.length();
+
+        // check if username is valid
+        valid = false;
+        while ( !valid ) {
+
+            boolean invalidCharsLen = !checkChars(username) || (userLen < 8 || userLen > 30);
+            if ( invalidCharsLen ) {
+                System.out.println("Username contains invalid characters and/or invalid length. " + 
+                "Username should contain letters and at least one digit. Username should be any length " +
+                " between 6 and 30 characters, inclusive. Please try again: ");
+                username = scanner.nextLine();
+                userLen = username.length();
+            }
+    
+            boolean userExists = credentials.containsKey(username);
+            if ( userExists ) {
+                System.out.println("This username is already taken. Please enter another username: ");
+                username = scanner.nextLine();
+            }
+
+            if ( !invalidCharsLen && !userExists )
+                valid = true; 
+        }*/
+
 
         scanner.close();
     }
 
     public static boolean checkChars(String username) {
-        return username.matches("[a-zA-Z0-9]*");        
+
+        if (username.length() == 0)
+            return false;
+
+        // first char is letter
+        // at least one digit
+        String firstChar = String.valueOf(username.charAt(0));
+
+        boolean isValidChars = username.matches("[a-zA-Z0-9]*");
+        boolean isFirstLetter = firstChar.matches("[A-Za-z]"); 
+        boolean containsDigit = username.matches(".*\\d+.*");
+        
+        return isValidChars && isFirstLetter && containsDigit;       
     }
     
 }
