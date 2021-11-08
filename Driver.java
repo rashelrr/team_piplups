@@ -62,9 +62,9 @@ public class Driver {
 
             boolean invalidCharsLen = !checkChars(username) || (userLen < 6 || userLen > 30);
             if ( invalidCharsLen ) {
-                System.out.println("Username contains invalid characters and/or invalid length. " + 
-                "Username should contain letters and at least one digit. Username should be any length " +
-                " between 6 and 30 characters, inclusive. Please try again: ");
+                System.out.println("Username is not valid. Username should meet the following requirements:\n" +
+                " - First character must be a letter\n - Must contain at least one digit\n - Must be between " +
+                "6 and 30 characters, inclusive\n - Contains only letters and digits\nPlease try again: ");
                 username = scanner.nextLine();
                 userLen = username.length();
             }
@@ -111,12 +111,14 @@ public class Driver {
     }
 
     public static boolean checkChars(String username) {
-
+        /* Checks the following about username:
+         * first char is a letter
+         * contains at least one digit
+         * contains only letters and digits
+        */
         if (username.length() == 0)
             return false;
 
-        // first char is letter
-        // at least one digit
         String firstChar = String.valueOf(username.charAt(0));
 
         boolean isValidChars = username.matches("[a-zA-Z0-9]*");
