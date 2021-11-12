@@ -2,9 +2,8 @@ import sqlite3
 from sqlite3 import Error
 import csv
 
-
+# creates tables REVIEWS and UNI
 def init_db():
-    # creates Table
     conn = None
     try:
         conn = sqlite3.connect('Lion_Eats')
@@ -36,7 +35,7 @@ def init_db():
         if conn:
             conn.close()
 
-
+# find all review by a certain restaurant name 
 def get_review_by_name(resName):
     # will return review or None if db fails
     # 1. specific restaurant
@@ -59,7 +58,7 @@ def get_review_by_name(resName):
         if conn:
             conn.close()
 
-
+# given a rating, return all reviews above that rating 
 def get_all_reviews_above_rating(rating):
     conn = None
     try:
@@ -74,7 +73,7 @@ def get_all_reviews_above_rating(rating):
         if conn:
             conn.close()
 
-
+# given a rating, compute and average rating for each restaurant and return restaurant_name + star for the restaurants above that rating 
 def get_restaurants_above_ratings(rating):
     conn = None
     try:
@@ -91,7 +90,7 @@ def get_restaurants_above_ratings(rating):
         if conn:
             conn.close()
 
-
+# given UNI and restaurant name, update the table with a new star and a new review for that row 
 def edit_review(UNI, rest_name, new_star, new_review):
     conn = None
     try:
@@ -107,7 +106,7 @@ def edit_review(UNI, rest_name, new_star, new_review):
         if conn:
             conn.close()
 
-
+# add review takes in a tuple (restaurant_name, star, review, UNI) and add it to the database 
 def add_review(row):
     conn = None
     try:
@@ -123,7 +122,7 @@ def add_review(row):
         if conn:
             conn.close()
 
-
+# clears both tables 
 def clear():
     conn = None
     try:
