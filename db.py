@@ -23,12 +23,12 @@ def init_db():
             dr = csv.DictReader(fin)
             to_db = [(i['restaurant_name'], i['star'],
                       i['review'], i['UNI']) for i in dr]
-        cur.executemany("INSERT INTO REVIEWS VALUES (?, ?, ?, ?), to_db")
+        cur.executemany("INSERT INTO REVIEWS VALUES (?, ?, ?, ?)", to_db)
 
         with open('uni.csv', 'r') as fin:
             dr = csv.DictReader(fin)
             to_db = [(i['UNI']) for i in dr]
-        cur.executemany("INSERT INTO UNI VALUES (?), to_db")
+        cur.executemany("INSERT INTO UNI VALUES (?)", to_db)
 
         print('Database Online')
 
