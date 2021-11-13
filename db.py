@@ -74,8 +74,24 @@ def get_all_reviews_above_rating(rating):
         return None
 
     finally:
-        if conn:
+        if conn:    
             conn.close()
+        
+
+def get_all_above_rating_res(rating, resName):
+    conn = None
+    try:
+        conn = sqlite3.connect('Lion_Eats')
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM REVIEWS where star >=? AND restaurant_name=?", rating, resName)
+        rows = cur.fetchall()
+        conn.commit()
+        print('Database Online, get all reviews above a rating')
+        return rows
+    except Error as e:
+        print(e)
+        return None
+
 
 # given a rating, compute and average rating for each restaurant and return restaurant_name + star for the restaurants above that rating 
 def get_restaurants_above_ratings(rating):
