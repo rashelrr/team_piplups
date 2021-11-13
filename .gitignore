@@ -1,2 +1,8 @@
 #Compiled class files
 *.class
+
+#sqlite_db
+Lion_Eats
+
+#Ignore pycache 
+__pycache__/
