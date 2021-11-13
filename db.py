@@ -15,6 +15,8 @@ def init_db():
         conn.execute(
             """CREATE TABLE IF NOT EXISTS UNI(UNI varchar(7) NOT NULL, PRIMARY KEY(UNI))""")
 
+        cur = conn.cursor()
+
         with open('review.csv', 'r') as fin:
             dr = csv.DictReader(fin)
             to_db = [(i['restaurant_name'], i['star'],
@@ -23,7 +25,7 @@ def init_db():
 
         with open('uni.csv', 'r') as fin:
             dr = csv.DictReader(fin)
-            to_db = [i['UNI'], for i in dr]
+            to_db = [(i['UNI']) for i in dr]
         cur.executemany("INSERT INTO UNI VALUES (?), to_db")
 
         print('Database Online')
