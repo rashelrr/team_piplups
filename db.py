@@ -128,6 +128,29 @@ def get_restaurants_above_ratings(rating):
             conn.close()
 
 
+'''   
+    res_name, uni: string
+    row: an entire review
+    Returns review that matches the res_name and uni
+'''
+def get_review(res_name, uni):
+    conn = None
+    try:
+        conn = sqlite3.connect('Lion_Eats')
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM REVIEWS where restaurant_name=? AND UNI >=?", (res_name, uni,))
+        row = cur.fetchone()
+        conn.commit()
+        print('Database Online, get review')
+        return row
+    except Error as e:
+        print(e)
+
+    finally:
+        if conn:
+            conn.close()
+
+
 '''
 UNI, res_name, new_review:  string
 new_star:                   int
@@ -168,6 +191,7 @@ def add_review(row):
     finally:
         if conn:
             conn.close()
+
 
 def clear():
     # clears both tables 
