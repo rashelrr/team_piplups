@@ -2,10 +2,8 @@ import sqlite3
 from sqlite3 import Error
 import csv
 
-# creates tables REVIEWS and UNI
-
 def init_db():
-    # creates Table
+    # creates tables REVIEWS and UNI
     conn = None
     try:
         conn = sqlite3.connect('Lion_Eats')
@@ -27,7 +25,7 @@ def init_db():
         #cur.executemany("INSERT INTO REVIEWS VALUES (?)", rows)
 
         conn.commit()
-        print('Database Online, table created')
+        print('Database Online, tables created')
     except Error as e:
         print(e)
 
@@ -36,18 +34,20 @@ def init_db():
             conn.close()
 
 
-# find all review by a certain restaurant name 
-def get_review_by_name(resName):
-    # will return review or None if db fails
-    # 1. specific restaurant
+''' 
+res_name: string
+rows:     list of tuples: [ (entire review 1), (entire review 2), ... ]
+Returns   all reviews for a specific restaurant
+'''
+def get_all_reviews_for_restaurant(res_name):
     conn = None
     try:
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
-        cur.execute("SELECT * FROM REVIEWS WHERE restaurant_name=?", (resName,))
+        cur.execute("SELECT * FROM REVIEWS WHERE restaurant_name=?", (res_name,))
         rows = cur.fetchall()
         conn.commit()
-        print('Database Online, get all reviews of a restaurant')
+        print('Database Online, get reviews for a restaurant')
         return rows
 
     except Error as e:
@@ -58,8 +58,12 @@ def get_review_by_name(resName):
         if conn:
             conn.close()
 
-# given a rating, return all reviews above that rating 
-def get_all_reviews_above_rating(rating):
+''' 
+rating: int
+rows:   list of tuples: [ (entire review 1), (entire review 2), ... ]
+Returns all reviews at/above a star rating
+'''
+def get_all_reviews_given_rating(rating):
     conn = None
     try:
         conn = sqlite3.connect('Lion_Eats')
@@ -67,7 +71,7 @@ def get_all_reviews_above_rating(rating):
         cur.execute("SELECT * FROM REVIEWS where star >= ?", (rating,))
         rows = cur.fetchall()
         conn.commit()
-        print('Database Online, get all reviews above a rating')
+        print('Database Online, get reviews at/above a rating')
         return rows
     except Error as e:
         print(e)
@@ -77,22 +81,31 @@ def get_all_reviews_above_rating(rating):
         if conn:    
             conn.close()
         
-
-def get_all_above_rating_res(rating, resName):
+''' 
+res_name: string
+rating:   int
+rows:     list of tuples: [ (entire review 1), (entire review 2), ... ]
+Returns all reviews for a restaurant at/above a star rating 
+'''
+def get_all_reviews_for_restaurant_given_rating(res_name, rating):
     conn = None
     try:
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
-        cur.execute("SELECT * FROM REVIEWS where star >=? AND restaurant_name=?", rating, resName)
+        cur.execute("SELECT * FROM REVIEWS where restaurant_name=? AND star >=?", (res_name, rating,))
         rows = cur.fetchall()
         conn.commit()
-        print('Database Online, get all reviews above a rating')
+        print('Database Online, get reviews for a restaurant at/above a rating')
         return rows
     except Error as e:
         print(e)
         return None
 
+    finally:
+        if conn:    
+            conn.close()
 
+### currently unused!
 # given a rating, compute and average rating for each restaurant and return restaurant_name + star for the restaurants above that rating 
 def get_restaurants_above_ratings(rating):
     conn = None
@@ -104,7 +117,7 @@ def get_restaurants_above_ratings(rating):
                 select * from avg_table where avg_star_rating >= ?", (rating,))
         rows = cur.fetchall()
         conn.commit()
-        print('Database Online, get all reviews above restaurant\'s average rating rating')
+        print('Database Online, get reviews above restaurant\'s average rating rating')
         return rows
     except Error as e:
         print(e)
@@ -114,16 +127,21 @@ def get_restaurants_above_ratings(rating):
         if conn:
             conn.close()
 
-# given UNI and restaurant name, update the table with a new star and a new review for that row 
-def edit_review(UNI, rest_name, new_star, new_review):
+
+'''
+UNI, res_name, new_review:  string
+new_star:                   int
+Updates a single review in database
+'''
+def edit_review(UNI, res_name, new_star, new_review):
     conn = None
     try:
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
         cur.execute("update REVIEWS set star = ?, review = ? where UNI = ? and restaurant_name = ?",
-                    new_star, new_review, UNI, rest_name)
+                    new_star, new_review, UNI, res_name)
         conn.commit()
-        print('Database Online, edit review')
+        print('Database Online, review edited')
     except Error as e:
         print(e)
 
@@ -131,7 +149,10 @@ def edit_review(UNI, rest_name, new_star, new_review):
         if conn:
             conn.close()
 
-# add review takes in a tuple (restaurant_name, star, review, UNI) and add it to the database 
+'''
+row: tuple (restaurant_name, star, review, UNI)
+Adds new review to database
+'''
 def add_review(row):
     conn = None
     try:
@@ -140,7 +161,7 @@ def add_review(row):
         cur.execute(
             "INSERT INTO REVIEWS (restaurant_name, star, review, UNI) VALUES (?, ?, ?, ?)", row)
         conn.commit()
-        print('Database Online, add a review')
+        print('Database Online, review added')
     except Error as e:
         print(e)
 
@@ -148,8 +169,8 @@ def add_review(row):
         if conn:
             conn.close()
 
-# clears both tables 
 def clear():
+    # clears both tables 
     conn = None
     try:
         conn = sqlite3.connect('Lion_Eats')
