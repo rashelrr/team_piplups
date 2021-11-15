@@ -178,9 +178,15 @@ def edit_review(UNI, res_name, new_rating, new_review):
     try:
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
+        if type(new_rating) != int or type(UNI) != str or type(res_name) != str or type(new_review) != str:
+            return Error
+        if new_rating > 5:
+            return Error
+        lower_UNI = UNI.lower()
+        lower_res_name = res_name.lower()
         cur.execute("update REVIEWS set star = ?, review = ? where UNI = ? and\
             restaurant_name = ?",
-                    (new_rating, new_review, UNI, res_name,))
+                    (new_rating, new_review, lower_UNI, lower_res_name))
         conn.commit()
         print('Database Online, review edited')
     except Error as e:
@@ -204,8 +210,10 @@ def add_review(row):
         cur = conn.cursor()
         if len(row) != 4 or int(row[1]) > 5:
             return Error
-        
+
         new_row = (row[0].lower(), row[1], row[2], row[3].lower())
+        if type(new_row[0]) != str or type(new_row[1]) != int or type(new_row[2]) != str or type(new_row[3]) != str:
+            return Error
         cur.execute(
             "INSERT INTO REVIEWS (restaurant_name, star, review, UNI) VALUES\
                 (?, ?, ?, ?)", new_row)
@@ -228,9 +236,11 @@ def delete_review(UNI, res_name):
     try:
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
+        new_UNI = UNI.lower()
+        new_res_name = res_name.lower()
         cur.execute(
-            "DELETE FROM REVIEWS where UNI = ? and restaurant_name = ?", UNI,
-            res_name)
+            """DELETE FROM REVIEWS where UNI = ? and restaurant_name = ?""",
+            (new_UNI, new_res_name))
         conn.commit()
         print('Database Online, review deleted')
     except Error as e:
