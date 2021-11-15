@@ -15,7 +15,7 @@ class Test_TestDB(unittest.TestCase):
         self.conn = sqlite3.connect("Lion_Eats")
         cur = self.conn.cursor()
         cur.execute("""SELECT * from REVIEWS WHERE restaurant_name = 
-                    "Junzi";""")
+                    "junzi";""")
         rows = cur.fetchall()
         self.assertTrue(rows)
 
@@ -23,10 +23,27 @@ class Test_TestDB(unittest.TestCase):
                        "yy3131"))
         self.conn = sqlite3.connect("Lion_Eats")
         cur = self.conn.cursor()
-        cur.execute("""SELECT count(*) from REVIEWS WHERE restaurant_name = 
-                    "Junzi";""")
-        count = cur.fetchall()
-        self.assertEqual(count[0][0], 1)
+        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name = 
+                    "junzi" and star = "4";""")
+        row = cur.fetchall()
+        self.assertFalse(row)
+
+        db.add_review(("Magic Tea", "9", "expensive price",
+                       "dl3410"))
+        self.conn = sqlite3.connect("Lion_Eats")
+        cur = self.conn.cursor()
+        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name = 
+                    "magic tea";""")
+        row = cur.fetchall()
+        self.assertFalse(row)
+
+        db.add_review(("Fumo", "5"))
+        self.conn = sqlite3.connect("Lion_Eats")
+        cur = self.conn.cursor()
+        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name = 
+                    "fumo";""")
+        row = cur.fetchall()
+        self.assertFalse(row)
 
         db.clear()
         db.init_db()

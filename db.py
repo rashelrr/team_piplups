@@ -202,9 +202,13 @@ def add_review(row):
     try:
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
+        if len(row) != 4 or int(row[1]) > 5:
+            return Error
+        
+        new_row = (row[0].lower(), row[1], row[2], row[3].lower())
         cur.execute(
             "INSERT INTO REVIEWS (restaurant_name, star, review, UNI) VALUES\
-                (?, ?, ?, ?)", row)
+                (?, ?, ?, ?)", new_row)
         conn.commit()
         print('Database Online, review added')
     except Error as e:
