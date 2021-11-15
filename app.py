@@ -48,7 +48,7 @@ def read_reviews():
 '''
 Endpoint:  /addreview?restaurant=___&stars=___&review=___&uni=___
 UI:        User fills out a form and presses 'Submit Review' button
-Returns:   jsonify
+Adds review to database
 '''
 @app.route('/addreview', methods=['GET','POST'])
 def add_review():
@@ -57,7 +57,7 @@ def add_review():
     review = request.args.get('review')
     uni = request.args.get('uni')
 
-    # TODO: make sure that none of the strings are empty!
+    # make sure no empty fields
     parameters = [res_name, rating, review, uni]
     for e in parameters:
         if e is None:
@@ -70,6 +70,31 @@ def add_review():
     row = (res_name, rating, review, uni)
     db.add_review(row)
     return jsonify(error="Successfully added review.")
+
+
+'''
+Endpoint:  /editreview?restaurant=___&stars=___&review=___&uni=___
+UI:        User is already at page pre-populated with their original review's data. 
+User cannot change restaurant or uni value.
+They click 'Finish Edit'
+Updates review
+'''
+@app.route('/editreview', methods=['GET','POST'])
+def edit_review():
+    new_res_name = request.args.get('restaurant')
+    new_rating = request.args.get('stars')
+    new_review = request.args.get('review')
+    uni = request.args.get('uni')
+
+    # make sure no empty fields
+    parameters = [new_res_name, new_rating, new_review, uni]
+    for e in parameters:
+        if e is None:
+            return jsonify(error="Invalid edit. Please enter all fields.")
+
+    # update entry in db
+    db.edit_review(uni, new_res_name, new_rating, new_review)
+    return jsonify(error="Successfully edited review.")
 
 
 if __name__ == '__main__':

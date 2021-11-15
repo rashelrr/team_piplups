@@ -133,13 +133,13 @@ UNI, res_name, new_review:  string
 new_star:                   int
 Updates a single review in database
 '''
-def edit_review(UNI, res_name, new_star, new_review):
+def edit_review(UNI, res_name, new_rating, new_review):
     conn = None
     try:
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
         cur.execute("update REVIEWS set star = ?, review = ? where UNI = ? and restaurant_name = ?",
-                    new_star, new_review, UNI, res_name)
+                    (new_rating, new_review, UNI, res_name,))
         conn.commit()
         print('Database Online, review edited')
     except Error as e:
