@@ -5,3 +5,11 @@ Team Members
 - Daisy Ye - yy3131
 - Dayne Lee - dl3410
 - Sana Ahmed - sa3892
+
+
+How to Build/Run Service:
+Enter into the terminal - 'python3 app.py'
+
+How to Test Service:
+
+API Documentation:
