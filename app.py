@@ -21,11 +21,11 @@ def index():
 
 '''
 Endpoint:  /readreviews?restaurant=___&stars=___
-UI:        User fills out a form with their query 
-Returns:   reviews that match that query
+UI:        User fills out a form with their query and presses 'Search' button
+Return:    reviews that match that query
 '''
 @app.route('/readreviews', methods=['GET'])
-def read_reviews_restaurant():
+def read_reviews():
     res_name = request.args.get('restaurant')
     rating = request.args.get('stars')
 
@@ -43,7 +43,34 @@ def read_reviews_restaurant():
         return jsonify(restaurant=res_name, reviews=reviews)
     # error: empty parameters
     else: 
-        return jsonify(error="No parameters for query were entered.")
+        return jsonify(error="Invalid query. Please enter at least one field.")
  
+'''
+Endpoint:  /addreview?restaurant=___&stars=___&review=___&uni=___
+UI:        User fills out a form and presses 'Submit Review' button
+Returns:   jsonify
+'''
+@app.route('/addreview', methods=['GET','POST'])
+def add_review():
+    res_name = request.args.get('restaurant')
+    rating = request.args.get('stars')
+    review = request.args.get('review')
+    uni = request.args.get('uni')
+
+    # TODO: make sure that none of the strings are empty!
+    parameters = [res_name, rating, review, uni]
+    for e in parameters:
+        if e is None:
+            return jsonify(error="Invalid submission. Please enter all fields.")
+
+    # TODO (for db team): check that res_name+uni is not already in database
+        # if in db, print error message here
+        # otherwise, put in db (code below)
+
+    row = (res_name, rating, review, uni)
+    db.add_review(row)
+    return jsonify(error="Successfully added review.")
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1')
