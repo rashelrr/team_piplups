@@ -43,7 +43,7 @@ def read_reviews():
         return jsonify(restaurant=res_name, reviews=reviews)
     # error: empty parameters
     else: 
-        return jsonify(error="Invalid query. Please enter at least one field.")
+        return jsonify(valid=False, reason="Error. Invalid query. Please enter at least one field.")
  
 '''
 Endpoint:  /addreview?restaurant=___&stars=___&review=___&uni=___
@@ -61,15 +61,17 @@ def add_review():
     parameters = [res_name, rating, review, uni]
     for e in parameters:
         if e is None:
-            return jsonify(error="Invalid submission. Please enter all fields.")
+            return jsonify(valid=False, reason="Error. Invalid submission. Please enter all fields.")
 
-    # TODO (for db team): check that res_name+uni is not already in database
-        # if in db, print error message here
-        # otherwise, put in db (code below)
-
-    row = (res_name, rating, review, uni)
-    db.add_review(row)
-    return jsonify(error="Successfully added review.")
+    # Add review if not already in db
+    rev = db.get_review(res_name, uni) # review or none
+    if rev is None:
+        row = (res_name, rating, review, uni)
+        db.add_review(row)
+        return jsonify(valid=True, reason="Successfully added review.")
+    else:
+        return jsonify(valid=False, reason="Error. You have already reviewed this restaurant.")        
+    
 
 
 '''
@@ -90,11 +92,11 @@ def edit_review():
     parameters = [new_res_name, new_rating, new_review, uni]
     for e in parameters:
         if e is None:
-            return jsonify(error="Invalid edit. Please enter all fields.")
+            return jsonify(valid=False, reason="Error. Invalid edit. Please enter all fields.")
 
     # update entry in db
     db.edit_review(uni, new_res_name, new_rating, new_review)
-    return jsonify(error="Successfully edited review.")
+    return jsonify(valid=True, reason="Successfully edited review.")
 
 
 if __name__ == '__main__':
