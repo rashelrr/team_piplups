@@ -1,17 +1,20 @@
-from flask import Flask, render_template, request, redirect, jsonify, make_response
+from flask import Flask, render_template, request, redirect, jsonify
+from flask import make_response
 from json import dumps
 import db
+import logging
 
 
 app = Flask(__name__)
 
-import logging
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
 '''
 Homepage
 '''
+
+
 @app.route('/', methods=['GET'])
 def index():
     db.clear()
@@ -24,6 +27,8 @@ Endpoint:  /readreviews?restaurant=___&stars=___
 UI:        User fills out a form with their query and presses 'Search' button
 Return:    reviews that match that query
 '''
+
+
 @app.route('/readreviews', methods=['GET'])
 def read_reviews():
     res_name = request.args.get('restaurant')
@@ -41,7 +46,8 @@ def read_reviews():
             return jsonify(reviews=reviews)
         return jsonify(valid=False, reason="Error. Rating must be an integer.")
     # query: all reviews for a specific restaurant at/above a specific rating
-    elif res_name is not None and rating is not None and len(res_name) > 0 and len(rating) > 0:
+    elif (res_name is not None and rating is not None and len(res_name) > 0
+          and len(rating) > 0):
         if rating.isnumeric():
             res_name = res_name.lower()
             reviews = db.get_all_reviews_for_restaurant_given_rating(res_name, int(rating))
@@ -49,7 +55,9 @@ def read_reviews():
         return jsonify(valid=False, reason="Error. Rating must be an integer.")
     # error: empty parameters
     else:
-        return jsonify(valid=False, reason="Error. Invalid query. Please enter at least one field.")
+        return jsonify(valid=False,
+                       reason="Error. Invalid query. Please enter at least" +
+                       "one field.")
 
 
 '''
@@ -70,7 +78,9 @@ def add_review():
     parameters = [res_name, rating, review, uni]
     for e in parameters:
         if e is None or len(e) == 0:
-            return jsonify(valid=False, reason="Error. Invalid submission. Please enter all fields.")
+            return jsonify(valid=False,
+                           reason="Error. Invalid submission. " +
+                           "Please enter all fields.")
 
     # Add review if not already in db
     rev = db.get_review(res_name, uni)  # review or none
@@ -78,20 +88,25 @@ def add_review():
         row = (res_name, rating, review, uni)
         if db.add_review(row) is not None:
             return jsonify(valid=True, reason="Successfully added review.")
-        return jsonify(valid=False, reason="Error. Invalid types entered for parameters.")        
+        return jsonify(valid=False,
+                       reason="Error. Invalid types entered for parameters.")
     else:
-        return jsonify(valid=False, reason="Error. You have already reviewed this restaurant.")        
-
+        return jsonify(valid=False,
+                       reason="Error. You have already reviewed this" +
+                       "restaurant.")
 
 
 '''
 Endpoint:  /editreview?restaurant=___&stars=___&review=___&uni=___
-UI:        User is already at page pre-populated with their original review's data. 
+UI:         User is already at page pre-populated
+            with their original review's data.
 User cannot change restaurant or uni value.
 They click 'Finish Edit'
 Updates review
 '''
-@app.route('/editreview', methods=['GET','POST'])
+
+
+@app.route('/editreview', methods=['GET', 'POST'])
 def edit_review():
     new_res_name = request.args.get('restaurant')
     new_rating = request.args.get('stars')
@@ -102,11 +117,13 @@ def edit_review():
     parameters = [new_res_name, new_rating, new_review, uni]
     for e in parameters:
         if e is None or len(e) == 0:
-            return jsonify(valid=False, reason="Error. Please enter all fields.")
+            return jsonify(valid=False,
+                           reason="Error. Please enter all fields.")
 
     # update entry in db
     db.edit_review(uni, new_res_name, new_rating, new_review)
     return jsonify(valid=True, reason="Successfully edited review.")
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1')
