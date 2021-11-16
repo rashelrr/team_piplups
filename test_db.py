@@ -134,3 +134,39 @@ class Test_TestDB(unittest.TestCase):
                     "magic tea";""")
         row = cur.fetchall()
         self.assertFalse(row)
+
+    def test_get_review(self):
+        db.clear()
+        db.init_db()
+
+        self.conn = sqlite3.connect("Lion_Eats")
+        cur = self.conn.cursor()
+        
+        db.add_review(("Koronets", 3, "good food and great service",
+                     "dl3410"))
+
+        #review that doesn't exist
+        row = db.get_review("aaaa", "eeee")
+        self.assertFalse(row)
+
+        #review that does exist
+        row2 = db.get_review("Koronets", "dl3410")
+        self.assertTrue(row2)
+
+    def test_get_restaurants_above_ratings(self):
+        db.clear()
+        db.init_db()
+        db.add_review(("Shake Shack", 3, "good food and great service",
+                    "yy3131"))
+        db.add_review(("Shake Shack", 3, "good food and great service",
+                    "dl3410"))
+        db.add_review(("Ferris", 3, "good food and great service",
+                    "yy3131"))
+      
+        rows = db.get_restaurants_above_ratings("5")
+        self.assertFalse(rows)
+
+        db.add_review(("Shake Shack", 5, "amazing!",
+                    "mg4145"))
+        rows = db.get_restaurants_above_ratings("2")
+        self.assertTrue(rows)
