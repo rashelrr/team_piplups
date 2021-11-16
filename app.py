@@ -72,7 +72,7 @@ def add_review():
     # Add review if not already in db
     rev = db.get_review(res_name, uni)  # review or none
     if rev is None:
-        row = (res_name, int(rating), review, uni)
+        row = (res_name, rating, review, uni)
         db.add_review(row)
         return jsonify(valid=True, reason="Successfully added review.")
     else:
