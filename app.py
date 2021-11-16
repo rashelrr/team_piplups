@@ -69,7 +69,6 @@ def add_review():
         if e is None:
             return jsonify(valid=False, reason="Error. Invalid submission. Please enter all fields.")
 
-    res_name
     # Add review if not already in db
     rev = db.get_review(res_name, uni)  # review or none
     if rev is None:
