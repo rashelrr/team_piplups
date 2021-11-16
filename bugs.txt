@@ -1,18 +1,1 @@
-./test_db.py:143:9: F841 local variable 'cur' is assigned to but never used
-./test_db.py:153:9: F841 local variable 'row2' is assigned to but never used
-./test_db.py:178:9: F841 local variable 'cur' is assigned to but never used
-./test_db.py:198:9: F841 local variable 'cur' is assigned to but never used
-./test_db.py:224:9: F841 local variable 'cur' is assigned to but never used
-./app.py:1:1: F401 'flask.render_template' imported but unused
-./app.py:1:1: F401 'flask.redirect' imported but unused
-./app.py:2:1: F401 'flask.make_response' imported but unused
-./app.py:3:1: F401 'json.dumps' imported but unused
-./app.py:53:80: E501 line too long (91 > 79 characters)
-./db.py:112:80: E501 line too long (102 > 79 characters)
-./db.py:115:80: E501 line too long (80 > 79 characters)
-./db.py:126:80: E501 line too long (136 > 79 characters)
-./db.py:134:80: E501 line too long (157 > 79 characters)
-./db.py:141:80: E501 line too long (80 > 79 characters)
-./db.py:164:80: E501 line too long (111 > 79 characters)
-./db.py:192:80: E501 line too long (115 > 79 characters)
-./db.py:228:80: E501 line too long (124 > 79 characters)
+
