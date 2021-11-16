@@ -1,6 +1,58 @@
+<<<<<<< HEAD
+./test_db.py:129:43: W291 trailing whitespace
+./test_db.py:203:80: E501 line too long (98 > 79 characters)
+./test_db.py:216:5: E303 too many blank lines (2)
+./test_db.py:220:9: F841 local variable 'cur' is assigned to but never used
+./app.py:1:1: F401 'flask.render_template' imported but unused
+./app.py:1:1: F401 'flask.redirect' imported but unused
+./app.py:1:1: F401 'flask.make_response' imported but unused
+./app.py:1:80: E501 line too long (83 > 79 characters)
+./app.py:2:1: F401 'json.dumps' imported but unused
+./app.py:8:1: E402 module level import not at top of file
+./app.py:15:1: E302 expected 2 blank lines, found 0
+./app.py:27:1: E302 expected 2 blank lines, found 0
+./app.py:44:80: E501 line too long (95 > 79 characters)
+./app.py:47:80: E501 line too long (91 > 79 characters)
+./app.py:52:80: E501 line too long (100 > 79 characters)
+./app.py:73:80: E501 line too long (101 > 79 characters)
+./app.py:81:80: E501 line too long (90 > 79 characters)
+./app.py:81:91: W291 trailing whitespace
+./app.py:83:80: E501 line too long (95 > 79 characters)
+./app.py:83:96: W291 trailing whitespace
+./app.py:87:1: E303 too many blank lines (3)
+./app.py:89:80: E501 line too long (83 > 79 characters)
+./app.py:89:84: W291 trailing whitespace
+./app.py:94:1: E302 expected 2 blank lines, found 0
+./app.py:94:41: E231 missing whitespace after ','
+./app.py:105:80: E501 line too long (81 > 79 characters)
+./app.py:111:1: E305 expected 2 blank lines after class or function definition, found 1
+=======
+./test_db.py:160:21: E128 continuation line under-indented for visual indent
+./test_db.py:162:21: E128 continuation line under-indented for visual indent
+./test_db.py:164:21: E128 continuation line under-indented for visual indent
+./test_db.py:170:21: E128 continuation line under-indented for visual indent
+./test_db.py:175:12: E999 IndentationError: unexpected indent
+./test_db.py:175:13: E303 too many blank lines (2)
+./test_db.py:175:13: E113 unexpected indentation
+./test_db.py:176:9: E112 expected an indented block
+./test_db.py:196:5: E303 too many blank lines (2)
+./test_db.py:203:29: E127 continuation line over-indented for visual indent
+./test_db.py:209:80: E501 line too long (98 > 79 characters)
+./test_db.py:222:5: E303 too many blank lines (2)
+./test_db.py:229:29: E127 continuation line over-indented for visual indent
+./test_db.py:243:80: E501 line too long (107 > 79 characters)
+./test_db.py:246:1: W391 blank line at end of file
 ./app.py:1:1: F401 'flask.render_template' imported but unused
 ./app.py:1:1: F401 'flask.redirect' imported but unused
 ./app.py:2:1: F401 'flask.make_response' imported but unused
 ./app.py:3:1: F401 'json.dumps' imported but unused
-./db.py:30:13: F841 local variable 'to_db' is assigned to but never used
-./db.py:129:80: E501 line too long (104 > 79 characters)
+./app.py:53:80: E501 line too long (91 > 79 characters)
+./db.py:112:80: E501 line too long (102 > 79 characters)
+./db.py:115:80: E501 line too long (80 > 79 characters)
+./db.py:126:80: E501 line too long (136 > 79 characters)
+./db.py:134:80: E501 line too long (157 > 79 characters)
+./db.py:141:80: E501 line too long (80 > 79 characters)
+./db.py:164:80: E501 line too long (111 > 79 characters)
+./db.py:192:80: E501 line too long (115 > 79 characters)
+./db.py:228:80: E501 line too long (124 > 79 characters)
+>>>>>>> aa05f93fa641d3c429f7687036bc6cbad19f6a68
