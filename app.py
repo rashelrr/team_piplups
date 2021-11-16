@@ -1,3 +1,4 @@
+import sqlite3
 from flask import Flask, jsonify, request
 import db
 import logging
@@ -54,7 +55,7 @@ def read_reviews():
     # error: empty parameters
     else:
         return jsonify(valid=False,
-                       reason="Error. Invalid query. Please enter at least" +
+                       reason="Error. Invalid query. Please enter at least " +
                        "one field.")
 
 
@@ -84,13 +85,15 @@ def add_review():
     rev = db.get_review(res_name, uni)  # review or none
     if rev is None:
         row = (res_name, rating, review, uni)
-        if db.add_review(row) is not None:
+        if row[1].isnumeric() is False or int(row[1]) > 5:
+            return jsonify(valid=False,
+                           reason="Error. Invalid types entered for parameters.")
+        else:
+            db.add_review(row)
             return jsonify(valid=True, reason="Successfully added review.")
-        return jsonify(valid=False,
-                       reason="Error. Invalid types entered for parameters.")
     else:
         return jsonify(valid=False,
-                       reason="Error. You have already reviewed this" +
+                       reason="Error. You have already reviewed this " +
                        "restaurant.")
 
 
@@ -119,8 +122,12 @@ def edit_review():
                            reason="Error. Please enter all fields.")
 
     # update entry in db
-    db.edit_review(uni, new_res_name, new_rating, new_review)
-    return jsonify(valid=True, reason="Successfully edited review.")
+    if new_rating.isnumeric() is False or int(new_rating) > 5:
+        return jsonify(valid=False,
+                       reason="Error. Invalid types entered for parameters.")
+    else:
+        db.edit_review(uni, new_res_name, new_rating, new_review)
+        return jsonify(valid=True, reason="Successfully edited review.")
 
 
 if __name__ == '__main__':

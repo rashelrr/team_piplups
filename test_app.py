@@ -118,7 +118,7 @@ class Test_TestApp(unittest.TestCase):
         response_body = response.json()
 
         assert response_body["valid"] is False
-        assert response_body["reason"] == "Error. Invalid query. Please enter at leastone field."
+        assert response_body["reason"] == "Error. Invalid query. Please enter at least one field."
 
     # checks edit review endpoint given valid parameters
     def test_edit_review_happy(self):
@@ -134,7 +134,7 @@ class Test_TestApp(unittest.TestCase):
     # checks edit review endpoint given invalid parameters
     # aka some parameters empty
     def test_edit_review_invalid(self):
-        url = "http://127.0.0.1:5000/editreview?restaurant=&stars=3&review=meh&uni=rdr2139"
+        url = "http://127.0.0.1:5000/editreview?restaurant=fumo&stars=&review=meh&uni=rdr2139"
         response = requests.get(url)
 
         assert response.status_code == 200
@@ -165,4 +165,4 @@ class Test_TestApp(unittest.TestCase):
         response_body = response.json()
 
         assert response_body["valid"] is False
-        assert response_body["reason"] == "Error. You have already reviewed thisrestaurant."
+        assert response_body["reason"] == "Error. You have already reviewed this restaurant."

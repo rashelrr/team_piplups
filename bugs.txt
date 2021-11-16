@@ -1,1 +1,14 @@
-
+./app.py:1:1: F401 'sqlite3' imported but unused
+./app.py:52:80: E501 line too long (91 > 79 characters)
+./app.py:90:80: E501 line too long (81 > 79 characters)
+./temp_db.py:200:1: W293 blank line contains whitespace
+./temp_db.py:223:1: W293 blank line contains whitespace
+./test_app.py:2:1: F401 'app' imported but unused
+./test_app.py:113:5: F811 redefinition of unused 'test_read_reviews_invalid_rest_and_rating' from line 102
+./test_app.py:121:80: E501 line too long (98 > 79 characters)
+./test_app.py:125:80: E501 line too long (100 > 79 characters)
+./test_app.py:137:80: E501 line too long (94 > 79 characters)
+./test_app.py:148:80: E501 line too long (101 > 79 characters)
+./test_app.py:158:59: W291 trailing whitespace
+./test_app.py:161:80: E501 line too long (99 > 79 characters)
+./test_app.py:168:80: E501 line too long (93 > 79 characters)

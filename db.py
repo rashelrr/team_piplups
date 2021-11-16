@@ -25,7 +25,7 @@ def init_db():
         #  rows = csv.reader(uni_file)
         #  cur.executemany("INSERT INTO REVIEWS VALUES (?)", rows)
         conn.commit()
-        print('Database Onlcine, tables created')
+        print('Database Online, tables created')
     except Error as e:
         print(e)
 
@@ -170,6 +170,7 @@ def get_review(res_name, uni):
         return row
     except Error as e:
         print(e)
+        return None
 
     finally:
         if conn:
@@ -189,12 +190,6 @@ def edit_review(UNI, res_name, new_rating, new_review):
     try:
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
-        if type(new_rating) != int\
-            or type(UNI) != str or type(res_name) != str or\
-                type(new_review) != str:
-            return Error
-        if new_rating > 5:
-            return Error
         lower_UNI = UNI.lower()
         lower_res_name = res_name.lower()
         cur.execute("update REVIEWS set star = ?, review = ? where UNI = ? and\
@@ -222,13 +217,7 @@ def add_review(row):
     try:
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
-        if len(row) != 4 or int(row[1]) > 5:
-            return Error
-
         new_row = (row[0].lower(), row[1], row[2], row[3].lower())
-        if type(new_row[0]) != str or type(new_row[1]) != int or\
-           type(new_row[2]) != str or type(new_row[3]) != str:
-            return Error
         cur.execute(
             "INSERT INTO REVIEWS (restaurant_name, star, review, UNI) VALUES\
                 (?, ?, ?, ?)", new_row)
