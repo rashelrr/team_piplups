@@ -22,9 +22,9 @@ def init_db():
         rows = csv.reader(reviews_file)
         cur.executemany("INSERT INTO REVIEWS VALUES (?, ?, ?, ?)", rows)
 
-        #uni_file = open("uni.csv")
-        #rows = csv.reader(uni_file)
-        #cur.executemany("INSERT INTO REVIEWS VALUES (?)", rows)
+        # uni_file = open("uni.csv")
+        # rows = csv.reader(uni_file)
+        # cur.executemany("INSERT INTO REVIEWS VALUES (?)", rows)
         conn.commit()
         print('Database Online, tables created')
     except Error as e:
@@ -100,7 +100,7 @@ def get_all_reviews_given_rating(rating):
 res_name: string
 rating:   int
 rows:     list of tuples: [ (entire review 1), (entire review 2), ... ]
-Returns all reviews for a restaurant at/above a star rating 
+Returns all reviews for a restaurant at/above a star rating
 '''
 
 
@@ -123,7 +123,7 @@ def get_all_reviews_for_restaurant_given_rating(res_name, rating):
             conn.close()
 
 # currently unused!
-# given a rating, compute and average rating for each restaurant and return restaurant_name + star for the restaurants above that rating 
+# given a rating, compute and average rating for each restaurant and return restaurant_name + star for the restaurants above that rating
 
 
 def get_restaurants_above_ratings(rating):
@@ -134,7 +134,7 @@ def get_restaurants_above_ratings(rating):
         cur.execute("with avg_table as (select restaurant_name, avg(star) as avg_star_rating from REVIEWS group by restaurant_name) select * from avg_table")
         rows = cur.fetchall()
         result = []
-        for r in rows: 
+        for r in rows:
             if r[-1] >= int(rating):
                 result.append(r)
         conn.commit()
@@ -191,7 +191,7 @@ def edit_review(UNI, res_name, new_rating, new_review):
         cur = conn.cursor()
         if new_rating.isnumeric() is False or type(UNI) != str or type(res_name) != str or type(new_review) != str:
             return None
-        if int(new_rating) > 5:  
+        if int(new_rating) > 5:
             return None
         lower_UNI = UNI.lower()
         lower_res_name = res_name.lower()
@@ -244,6 +244,7 @@ def add_review(row):
 '''
 Given UNI and restaurant name, delete review from database
 '''
+
 
 def delete_review(UNI, res_name):
     conn = None
