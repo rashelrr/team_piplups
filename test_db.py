@@ -15,7 +15,7 @@ class Test_TestDB(unittest.TestCase):
                        "yy3131"))
         self.conn = sqlite3.connect("Lion_Eats")
         cur = self.conn.cursor()
-        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name = 
+        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name =
                     "junzi";""")
         rows = cur.fetchall()
         self.assertTrue(rows)
@@ -25,7 +25,7 @@ class Test_TestDB(unittest.TestCase):
                        "yy3131"))
         self.conn = sqlite3.connect("Lion_Eats")
         cur = self.conn.cursor()
-        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name = 
+        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name =
                     "junzi" and star = "4";""")
         row = cur.fetchall()
         self.assertFalse(row)
@@ -35,21 +35,21 @@ class Test_TestDB(unittest.TestCase):
                        "dl3410"))
         self.conn = sqlite3.connect("Lion_Eats")
         cur = self.conn.cursor()
-        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name = 
+        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name =
                     "magic tea";""")
         row = cur.fetchall()
         self.assertFalse(row)
 
-        # add a review with incomplete information 
+        # add a review with incomplete information
         db.add_review(("Fumo", 5))
         self.conn = sqlite3.connect("Lion_Eats")
         cur = self.conn.cursor()
-        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name = 
+        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name =
                     "fumo";""")
         row = cur.fetchall()
         self.assertFalse(row)
 
-        # add a blank review 
+        # add a blank review
         db.clear()
         db.init_db()
         db.add_review("")
@@ -67,14 +67,14 @@ class Test_TestDB(unittest.TestCase):
                        "YY3131"))
         self.conn = sqlite3.connect("Lion_Eats")
         cur = self.conn.cursor()
-        cur.execute("""SELECT star from REVIEWS WHERE restaurant_name = 
+        cur.execute("""SELECT star from REVIEWS WHERE restaurant_name =
                     "junzi";""")
         star = cur.fetchall()
         self.assertEqual(star[0][0], 4)
         db.edit_review("yy3131", "Junzi", 5, "I love Junzi")
         self.conn = sqlite3.connect("Lion_Eats")
         cur = self.conn.cursor()
-        cur.execute("""SELECT star from REVIEWS WHERE restaurant_name = 
+        cur.execute("""SELECT star from REVIEWS WHERE restaurant_name =
                     "junzi";""")
         star = cur.fetchall()
         self.assertEqual(star[0][0], 5)
@@ -83,7 +83,7 @@ class Test_TestDB(unittest.TestCase):
         db.edit_review("yy3131", "fumo", 3, "fumo is my fav italian place")
         self.conn = sqlite3.connect("Lion_Eats")
         cur = self.conn.cursor()
-        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name = 
+        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name =
                     "fumo";""")
         row = cur.fetchall()
         self.assertFalse(row)
@@ -92,7 +92,7 @@ class Test_TestDB(unittest.TestCase):
         db.edit_review("yy3131", "Junzi", "I hate junzi", 1)
         self.conn = sqlite3.connect("Lion_Eats")
         cur = self.conn.cursor()
-        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name = 
+        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name =
                     "junzi" and star = 1;""")
         row = cur.fetchall()
         self.assertFalse(row)
@@ -101,7 +101,7 @@ class Test_TestDB(unittest.TestCase):
         db.edit_review("yy3131", "Junzi", 10, "Junzi the best")
         self.conn = sqlite3.connect("Lion_Eats")
         cur = self.conn.cursor()
-        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name = 
+        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name =
                     "junzi" and star = 1;""")
         row = cur.fetchall()
         self.assertFalse(row)
@@ -114,23 +114,23 @@ class Test_TestDB(unittest.TestCase):
                        "yy3131"))
         self.conn = sqlite3.connect("Lion_Eats")
         cur = self.conn.cursor()
-        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name = 
+        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name =
                     "junzi";""")
         row = cur.fetchall()
         self.assertTrue(row)
         db.delete_review("YY3131", "JUNZI")
         self.conn = sqlite3.connect("Lion_Eats")
         cur = self.conn.cursor()
-        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name = 
+        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name =
                     "junzi";""")
         row = cur.fetchall()
         self.assertFalse(row)
-        
-        # delete a row that does not exist 
+
+        # delete a row that does not exist
         db.delete_review("YY3131", "MAGIC TEA")
         self.conn = sqlite3.connect("Lion_Eats")
         cur = self.conn.cursor()
-        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name = 
+        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name =
                     "magic tea";""")
         row = cur.fetchall()
         self.assertFalse(row)
@@ -141,17 +141,17 @@ class Test_TestDB(unittest.TestCase):
 
         self.conn = sqlite3.connect("Lion_Eats")
         cur = self.conn.cursor()
-        
-        db.add_review(("Koronets", 3, "good food and great service",
-                     "dl3410"))
 
-        #review that doesn't exist
+        db.add_review(("Koronets", 3, "good food and great service",
+                       "dl3410"))
+
+        # review that doesn't exist
         row = db.get_review("aaaa", "eeee")
         self.assertFalse(row)
 
-        #review that does exist
+        # review that does exist
         row2 = db.get_review("koronets", "dl3410")
-        #self.assertTrue(row2)
+        # self.assertTrue(row2)
 
     def test_get_restaurants_above_ratings(self):
         db.clear()
@@ -162,7 +162,7 @@ class Test_TestDB(unittest.TestCase):
                     "dl3410"))
         db.add_review(("Ferris", 3, "good food and great service",
                     "yy3131"))
-      
+
         rows = db.get_restaurants_above_ratings("5")
         self.assertFalse(rows)
 
@@ -171,7 +171,7 @@ class Test_TestDB(unittest.TestCase):
         rows = db.get_restaurants_above_ratings(2)
         self.assertTrue(rows)
 
-        
+
             def test_get_all_reviews_for_restaurant(self):
         db.clear()
         db.init_db()
@@ -227,7 +227,7 @@ class Test_TestDB(unittest.TestCase):
 
         db.add_review(("junzi", 3, "good food and great service",
                             "yy3131"))
-        
+
         # normal get
         rows = db.get_all_reviews_for_restaurant_given_rating("junzi", "3")
         self.assertTrue(rows)
