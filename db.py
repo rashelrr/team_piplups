@@ -1,5 +1,6 @@
 import sqlite3
 from sqlite3 import Error
+import csv
 
 
 def init_db():
@@ -15,9 +16,11 @@ def init_db():
                     PRIMARY KEY(restaurant_name, UNI));""")
         conn.execute("""CREATE TABLE IF NOT EXISTS UNI(UNI varchar(7) NOT NULL,\
             PRIMARY KEY(UNI))""")
-        #  reviews_file = open("review.csv")
-        #  rows = csv.reader(reviews_file)
-        #  cur.executemany("INSERT INTO REVIEWS VALUES (?, ?, ?, ?)", rows)
+
+        cur = conn.cursor()
+        reviews_file = open("review.csv")
+        rows = csv.reader(reviews_file)
+        cur.executemany("INSERT INTO REVIEWS VALUES (?, ?, ?, ?)", rows)
         #  uni_file = open("uni.csv")
         #  rows = csv.reader(uni_file)
         #  cur.executemany("INSERT INTO REVIEWS VALUES (?)", rows)
