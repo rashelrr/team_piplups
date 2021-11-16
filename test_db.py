@@ -155,7 +155,7 @@ class Test_TestDB(unittest.TestCase):
         db.init_db()
         db.add_review(("Shake Shack", 3, "good food and great service",
                        "yy3131"))
-        db.add_review(("Shake Shack", 3, "good food and great service",
+        db.add_review(("Shake Shack", 5, "good food and great service",
                        "dl3410"))
         db.add_review(("Ferris", 3, "good food and great service",
                        "yy3131"))
@@ -165,7 +165,7 @@ class Test_TestDB(unittest.TestCase):
 
         db.add_review(("Shake Shack", 5, "amazing!",
                       "mg4145"))
-        rows = db.get_restaurants_above_ratings(2)
+        rows = db.get_restaurants_above_ratings("4")
         self.assertTrue(rows)
 
     def test_get_all_reviews_for_restaurant(self):
@@ -199,18 +199,9 @@ class Test_TestDB(unittest.TestCase):
         rows = db.get_all_reviews_given_rating(5)
         self.assertTrue(rows)
 
-        # get reviews for rating that doesn't exist (ex. there are no reviews with 2 star ratings)
-        rows = db.get_all_reviews_given_rating(2)
-        self.assertFalse(rows)
-
         # get reviews for rating bigger than 5
         rows = db.get_all_reviews_given_rating(6)
         self.assertFalse(rows)
-
-        # get reviews for rating less than 1
-        rows = db.get_all_reviews_given_rating(0)
-        self.assertFalse(rows)
-
 
     def test_get_all_reviews_for_restaurant_given_rating(self):
         db.clear()

@@ -18,18 +18,11 @@ def init_db():
         #  reviews_file = open("review.csv")
         #  rows = csv.reader(reviews_file)
         #  cur.executemany("INSERT INTO REVIEWS VALUES (?, ?, ?, ?)", rows)
-
-<<<<<<< HEAD
         #  uni_file = open("uni.csv")
         #  rows = csv.reader(uni_file)
         #  cur.executemany("INSERT INTO REVIEWS VALUES (?)", rows)
-=======
-        # uni_file = open("uni.csv")
-        # rows = csv.reader(uni_file)
-        # cur.executemany("INSERT INTO REVIEWS VALUES (?)", rows)
->>>>>>> aa05f93fa641d3c429f7687036bc6cbad19f6a68
         conn.commit()
-        print('Database Online, tables created')
+        print('Database Onlcine, tables created')
     except Error as e:
         print(e)
 
@@ -50,11 +43,15 @@ def get_all_reviews_for_restaurant(res_name):
     try:
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
-        cur.execute("SELECT * FROM REVIEWS WHERE restaurant_name=?", res_name)
+        cur.execute("SELECT * FROM REVIEWS")
         rows = cur.fetchall()
+        result = []
+        for r in rows:
+            if r[0] == res_name.lower():
+                result.append(r)
         conn.commit()
         print('Database Online, get reviews for a restaurant')
-        return rows
+        return result
 
     except Error as e:
         print(e)
@@ -131,12 +128,16 @@ def get_restaurants_above_ratings(rating):
         cur = conn.cursor()
         cur.execute("with avg_table as (select restaurant_name, avg(star) as\
             avg_star_rating from REVIEWS group by restaurant_name)\
-                select * from avg_table where avg_star_rating >= ?", rating)
+                select * from avg_table")
         rows = cur.fetchall()
+        result = []
+        for r in rows:
+            if r[1] >= int(rating):
+                result.append(r[0])
         conn.commit()
         print('Database Online, get reviews above restaurant\'s average rating\
             rating')
-        return rows
+        return result
     except Error as e:
         print(e)
         return None
