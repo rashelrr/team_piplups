@@ -47,7 +47,7 @@ def get_all_reviews_for_restaurant(res_name):
     try:
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
-        cur.execute("SELECT * FROM REVIEWS WHERE restaurant_name=?", res_name)
+        cur.execute("SELECT * FROM REVIEWS WHERE restaurant_name=?", (res_name,))
         rows = cur.fetchall()
         conn.commit()
         print('Database Online, get reviews for a restaurant')
