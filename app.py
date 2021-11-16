@@ -61,15 +61,15 @@ Adds review to database
 
 @app.route('/addreview', methods=['GET', 'POST'])
 def add_review():
-    res_name = request.args.get('restaurant').lower()
-    rating = request.args.get('stars').lower()
+    res_name = request.args.get('restaurant')
+    rating = request.args.get('stars')
     review = request.args.get('review')
     uni = request.args.get('uni')
 
     # make sure no empty fields
     parameters = [res_name, rating, review, uni]
     for e in parameters:
-        if e is None:
+        if e is None or len(e) == 0:
             return jsonify(valid=False, reason="Error. Invalid submission. Please enter all fields.")
 
     # Add review if not already in db
@@ -78,7 +78,7 @@ def add_review():
         row = (res_name, rating, review, uni)
         if db.add_review(row) is not None:
             return jsonify(valid=True, reason="Successfully added review.")
-        return jsonify(valid=False, reason="Error.")        
+        return jsonify(valid=False, reason="Error. Invalid types entered for parameters.")        
     else:
         return jsonify(valid=False, reason="Error. You have already reviewed this restaurant.")        
 
@@ -101,13 +101,12 @@ def edit_review():
     # make sure no empty fields
     parameters = [new_res_name, new_rating, new_review, uni]
     for e in parameters:
-        if e is None:
-            return jsonify(valid=False, reason="Error. Invalid edit. Please enter all fields.")
+        if e is None or len(e) == 0:
+            return jsonify(valid=False, reason="Error. Please enter all fields.")
 
     # update entry in db
     db.edit_review(uni, new_res_name, new_rating, new_review)
     return jsonify(valid=True, reason="Successfully edited review.")
-
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1')

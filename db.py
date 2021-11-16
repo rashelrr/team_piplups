@@ -169,6 +169,7 @@ def get_review(res_name, uni):
         return row
     except Error as e:
         print(e)
+        return None
 
     finally:
         if conn:
@@ -189,9 +190,9 @@ def edit_review(UNI, res_name, new_rating, new_review):
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
         if new_rating.isnumeric() is False or type(UNI) != str or type(res_name) != str or type(new_review) != str:
-            return Error
-        if int(new_rating) > 5:  # temporary fix for type checking
-            return Error
+            return None
+        if int(new_rating) > 5:  
+            return None
         lower_UNI = UNI.lower()
         lower_res_name = res_name.lower()
         cur.execute("update REVIEWS set star = ?, review = ? where UNI = ? and\
@@ -201,6 +202,7 @@ def edit_review(UNI, res_name, new_rating, new_review):
         print('Database Online, review edited')
     except Error as e:
         print(e)
+        return None
 
     finally:
         if conn:
@@ -232,6 +234,7 @@ def add_review(row):
         print('Database Online, review added')
     except Error as e:
         print(e)
+        return None
 
     finally:
         if conn:
