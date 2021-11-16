@@ -29,8 +29,6 @@ def read_reviews():
     res_name = request.args.get('restaurant').lower()
     rating = request.args.get('stars')
 
-    print("res_name:\t{}".format(res_name))
-
     # query: all reviews for a specific restaurant
     if res_name is not None and rating is None:     
         reviews = db.get_all_reviews_for_restaurant(res_name)
@@ -61,9 +59,6 @@ def add_review():
     rating = request.args.get('stars').lower()
     review = request.args.get('review')
     uni = request.args.get('uni')
-
-    # res_name.lower()
-    # uni.lower()
 
     # make sure no empty fields
     parameters = [res_name, rating, review, uni]
