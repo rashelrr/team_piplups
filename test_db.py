@@ -150,23 +150,28 @@ class Test_TestDB(unittest.TestCase):
         self.assertFalse(row)
 
         #review that does exist
-        row2 = db.get_review("Koronets", "dl3410")
+        row2 = db.get_review("koronets", "dl3410")
         self.assertTrue(row2)
 
     def test_get_restaurants_above_ratings(self):
         db.clear()
         db.init_db()
-        db.add_review(("Shake Shack", 3, "good food and great service",
+        db.add_review(("Shake Shack", 3, "good burger",
                     "yy3131"))
         db.add_review(("Shake Shack", 3, "good food and great service",
                     "dl3410"))
-        db.add_review(("Ferris", 3, "good food and great service",
-                    "yy3131"))
-      
+
+        self.conn = sqlite3.connect("Lion_Eats")
+        cur = self.conn.cursor()
+        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name = 
+                    "shake shack";""")
+        row = cur.fetchall()
+        print(row)
+
         rows = db.get_restaurants_above_ratings("5")
         self.assertFalse(rows)
 
         db.add_review(("Shake Shack", 5, "amazing!",
                     "mg4145"))
-        rows = db.get_restaurants_above_ratings("2")
+        rows = db.get_restaurants_above_ratings("1")
         self.assertTrue(rows)
