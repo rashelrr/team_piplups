@@ -47,11 +47,15 @@ def get_all_reviews_for_restaurant(res_name):
     try:
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
-        cur.execute("SELECT * FROM REVIEWS WHERE restaurant_name=?", res_name)
+        cur.execute("""SELECT * FROM REVIEWS""")
         rows = cur.fetchall()
+        result = []
+        for i in rows:
+            if i[0] == res_name:
+                result.append(i)
         conn.commit()
         print('Database Online, get reviews for a restaurant')
-        return rows
+        return result
 
     except Error as e:
         print(e)
@@ -74,11 +78,15 @@ def get_all_reviews_given_rating(rating):
     try:
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
-        cur.execute("SELECT * FROM REVIEWS where star >= ?", (rating,))
+        cur.execute("SELECT * FROM REVIEWS")
         rows = cur.fetchall()
+        result = []
+        for i in rows:
+            if i[1] == rating:
+                result.append(i)
         conn.commit()
         print('Database Online, get reviews at/above a rating')
-        return rows
+        return result
     except Error as e:
         print(e)
         return None
