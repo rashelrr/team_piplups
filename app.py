@@ -44,18 +44,24 @@ def read_reviews():
     # error: empty parameters
     else: 
         return jsonify(valid=False, reason="Error. Invalid query. Please enter at least one field.")
- 
+
+
 '''
 Endpoint:  /addreview?restaurant=___&stars=___&review=___&uni=___
 UI:        User fills out a form and presses 'Submit Review' button
 Adds review to database
 '''
-@app.route('/addreview', methods=['GET','POST'])
+
+
+@app.route('/addreview', methods=['GET', 'POST'])
 def add_review():
     res_name = request.args.get('restaurant')
     rating = request.args.get('stars')
     review = request.args.get('review')
     uni = request.args.get('uni')
+
+    res_name.lower()
+    uni.lower()
 
     # make sure no empty fields
     parameters = [res_name, rating, review, uni]
@@ -63,15 +69,16 @@ def add_review():
         if e is None:
             return jsonify(valid=False, reason="Error. Invalid submission. Please enter all fields.")
 
+    res_name
     # Add review if not already in db
-    rev = db.get_review(res_name, uni) # review or none
+    rev = db.get_review(res_name, uni)  # review or none
     if rev is None:
-        row = (res_name, rating, review, uni)
+        row = (res_name, int(rating), review, uni)
         db.add_review(row)
         return jsonify(valid=True, reason="Successfully added review.")
     else:
         return jsonify(valid=False, reason="Error. You have already reviewed this restaurant.")        
-    
+
 
 
 '''

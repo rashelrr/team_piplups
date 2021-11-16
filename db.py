@@ -18,9 +18,9 @@ def init_db():
             PRIMARY KEY(UNI))""")
         cur = conn.cursor()
 
-        # reviews_file = open("review.csv")
-        # rows = csv.reader(reviews_file)
-        # cur.executemany("INSERT INTO REVIEWS VALUES (?, ?, ?, ?)", rows)
+        reviews_file = open("review.csv")
+        rows = csv.reader(reviews_file)
+        cur.executemany("INSERT INTO REVIEWS VALUES (?, ?, ?, ?)", rows)
 
         #uni_file = open("uni.csv")
         #rows = csv.reader(uni_file)
@@ -153,7 +153,7 @@ def get_review(res_name, uni):
     try:
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
-        cur.execute("SELECT * FROM REVIEWS where restaurant_name=? AND UNI >=?", (res_name, uni,))
+        cur.execute("SELECT * FROM REVIEWS where restaurant_name=? AND UNI=?", (res_name.lower(), uni.lower()))
         row = cur.fetchone()
         conn.commit()
         print('Database Online, get review')
