@@ -82,7 +82,7 @@ def get_all_reviews_given_rating(rating):
         rows = cur.fetchall()
         result = []
         for i in rows:
-            if i[1] == rating:
+            if i[1] >= rating:
                 result.append(i)
         conn.commit()
         print('Database Online, get reviews at/above a rating')
@@ -190,7 +190,7 @@ def edit_review(UNI, res_name, new_rating, new_review):
         cur = conn.cursor()
         if new_rating.isnumeric() is False or type(UNI) != str or type(res_name) != str or type(new_review) != str:
             return Error
-        if new_rating > 5:
+        if int(new_rating) > 5:  # temporary fix for type checking
             return Error
         lower_UNI = UNI.lower()
         lower_res_name = res_name.lower()

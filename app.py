@@ -26,23 +26,29 @@ Return:    reviews that match that query
 '''
 @app.route('/readreviews', methods=['GET'])
 def read_reviews():
-    res_name = request.args.get('restaurant').lower()
+    res_name = request.args.get('restaurant')
     rating = request.args.get('stars')
 
     # query: all reviews for a specific restaurant
-    if res_name is not None and rating is None:     
+    if res_name is not None and rating is None and len(res_name) > 0:
+        res_name = res_name.lower()
         reviews = db.get_all_reviews_for_restaurant(res_name)
         return jsonify(restaurant=res_name, reviews=reviews)
     # query: all reviews at/above a specific rating
-    elif res_name is None and rating is not None:   
-        reviews = db.get_all_reviews_given_rating(rating)
-        return jsonify(reviews=reviews)
+    elif res_name is None and rating is not None and len(rating) > 0:
+        if rating.isnumeric():
+            reviews = db.get_all_reviews_given_rating(int(rating))
+            return jsonify(reviews=reviews)
+        return jsonify(valid=False, reason="Error. Rating must be an integer.")
     # query: all reviews for a specific restaurant at/above a specific rating
-    elif res_name is not None and rating is not None:   
-        reviews = db.get_all_reviews_for_restaurant_given_rating(res_name, rating) 
-        return jsonify(restaurant=res_name, reviews=reviews)
+    elif res_name is not None and rating is not None and len(res_name) > 0 and len(rating) > 0:
+        if rating.isnumeric():
+            res_name = res_name.lower()
+            reviews = db.get_all_reviews_for_restaurant_given_rating(res_name, int(rating))
+            return jsonify(restaurant=res_name, reviews=reviews)
+        return jsonify(valid=False, reason="Error. Rating must be an integer.")
     # error: empty parameters
-    else: 
+    else:
         return jsonify(valid=False, reason="Error. Invalid query. Please enter at least one field.")
 
 
@@ -70,8 +76,9 @@ def add_review():
     rev = db.get_review(res_name, uni)  # review or none
     if rev is None:
         row = (res_name, rating, review, uni)
-        db.add_review(row)
-        return jsonify(valid=True, reason="Successfully added review.")
+        if db.add_review(row) is not None:
+            return jsonify(valid=True, reason="Successfully added review.")
+        return jsonify(valid=False, reason="Error.")        
     else:
         return jsonify(valid=False, reason="Error. You have already reviewed this restaurant.")        
 
