@@ -47,11 +47,15 @@ def get_all_reviews_for_restaurant(res_name):
     try:
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
-        cur.execute("SELECT * FROM REVIEWS WHERE restaurant_name=?", (res_name,))
+        cur.execute("""SELECT * FROM REVIEWS""")
         rows = cur.fetchall()
+        result = []
+        for i in rows:
+            if i[0] == res_name:
+                result.append(i)
         conn.commit()
         print('Database Online, get reviews for a restaurant')
-        return rows
+        return result
 
     except Error as e:
         print(e)
@@ -74,11 +78,15 @@ def get_all_reviews_given_rating(rating):
     try:
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
-        cur.execute("SELECT * FROM REVIEWS where star >= ?", (rating,))
+        cur.execute("SELECT * FROM REVIEWS")
         rows = cur.fetchall()
+        result = []
+        for i in rows:
+            if i[1] == rating:
+                result.append(i)
         conn.commit()
         print('Database Online, get reviews at/above a rating')
-        return rows
+        return result
     except Error as e:
         print(e)
         return None
@@ -123,11 +131,15 @@ def get_restaurants_above_ratings(rating):
     try:
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
-        cur.execute("with avg_table as (select restaurant_name, avg(star) as avg_star_rating from REVIEWS group by restaurant_name) select * from avg_table where avg_star_rating >= ?", rating)
+        cur.execute("with avg_table as (select restaurant_name, avg(star) as avg_star_rating from REVIEWS group by restaurant_name) select * from avg_table")
         rows = cur.fetchall()
+        result = []
+        for r in rows: 
+            if r[-1] >= int(rating):
+                result.append(r)
         conn.commit()
-        print('Database Online, get reviews above restaurant\'s average rating rating')
-        return rows
+        print('Database Online, get reviews above restaurant\'s average rating')
+        return result
     except Error as e:
         print(e)
         return None
@@ -151,6 +163,7 @@ def get_review(res_name, uni):
         cur = conn.cursor()
         cur.execute("SELECT * FROM REVIEWS where restaurant_name=? AND UNI=?", (res_name.lower(), uni.lower()))
         row = cur.fetchone()
+        print(row)
         conn.commit()
         print('Database Online, get review')
         return row

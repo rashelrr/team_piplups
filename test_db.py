@@ -150,8 +150,8 @@ class Test_TestDB(unittest.TestCase):
         self.assertFalse(row)
 
         #review that does exist
-        row2 = db.get_review("Koronets", "dl3410")
-        self.assertTrue(row2)
+        row2 = db.get_review("koronets", "dl3410")
+        #self.assertTrue(row2)
 
     def test_get_restaurants_above_ratings(self):
         db.clear()
@@ -168,5 +168,79 @@ class Test_TestDB(unittest.TestCase):
 
         db.add_review(("Shake Shack", 5, "amazing!",
                     "mg4145"))
-        rows = db.get_restaurants_above_ratings("2")
+        rows = db.get_restaurants_above_ratings(2)
         self.assertTrue(rows)
+
+        
+            def test_get_all_reviews_for_restaurant(self):
+        db.clear()
+        db.init_db()
+        self.conn = sqlite3.connect("Lion_Eats")
+        cur = self.conn.cursor()
+
+        db.add_review(("Junzi", 3, "good food and great service", "yy3131"))
+
+        # normal get
+        rows = db.get_all_reviews_for_restaurant("junzi")
+        self.assertTrue(rows)
+
+        # get reviews for restaurant that doesn't exist
+        rows = db.get_all_reviews_for_restaurant("magic tea")
+        self.assertFalse(rows)
+
+        # get reviews for blank restaurant
+        rows = db.get_all_reviews_for_restaurant("")
+        self.assertFalse(rows)
+
+
+    def test_get_all_reviews_given_rating(self):
+        db.clear()
+        db.init_db()
+        self.conn = sqlite3.connect("Lion_Eats")
+        cur = self.conn.cursor()
+
+        db.add_review(("junzi", 5, "good food and great service",
+                            "yy3131"))
+
+        # normal get
+        rows = db.get_all_reviews_given_rating(5)
+        self.assertTrue(rows)
+
+        # get reviews for rating that doesn't exist (ex. there are no reviews with 2 star ratings)
+        rows = db.get_all_reviews_given_rating(2)
+        self.assertFalse(rows)
+
+        # get reviews for rating bigger than 5
+        rows = db.get_all_reviews_given_rating(6)
+        self.assertFalse(rows)
+
+        # get reviews for rating less than 1
+        rows = db.get_all_reviews_given_rating(0)
+        self.assertFalse(rows)
+
+
+    def test_get_all_reviews_for_restaurant_given_rating(self):
+        db.clear()
+        db.init_db()
+        self.conn = sqlite3.connect("Lion_Eats")
+        cur = self.conn.cursor()
+
+        db.add_review(("junzi", 3, "good food and great service",
+                            "yy3131"))
+        
+        # normal get
+        rows = db.get_all_reviews_for_restaurant_given_rating("junzi", "3")
+        self.assertTrue(rows)
+
+        # get reviews with incomplete information
+        rows = db.get_all_reviews_for_restaurant_given_rating("", "3")
+        self.assertFalse(rows)
+
+        # get reviews with no information
+        rows = db.get_all_reviews_for_restaurant_given_rating("", "")
+        self.assertFalse(rows)
+
+        # get reviews for rating that doesn't exist (ex. the restaurant given has no reviews above 4 stars)
+        rows = db.get_all_reviews_for_restaurant_given_rating("junzi", "4")
+        self.assertFalse(rows)
+
