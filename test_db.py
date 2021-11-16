@@ -194,11 +194,10 @@ class Test_TestDB(unittest.TestCase):
 
         db.add_review(("junzi", 5, "good food and great service",
                       "yy3131"))
-
         # normal get
         rows = db.get_all_reviews_given_rating(5)
         self.assertTrue(rows)
-
+        
         # get reviews for rating bigger than 5
         rows = db.get_all_reviews_given_rating(6)
         self.assertFalse(rows)
@@ -221,7 +220,7 @@ class Test_TestDB(unittest.TestCase):
         # get reviews with no information
         rows = db.get_all_reviews_for_restaurant_given_rating("", "")
         self.assertFalse(rows)
-
+        
         # get reviews for rating that doesn't exist (ex. the restaurant given
         # has no reviews above 4 stars)
         rows = db.get_all_reviews_for_restaurant_given_rating("junzi", "4")
