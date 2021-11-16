@@ -48,8 +48,7 @@ def read_reviews():
           and len(rating) > 0):
         if rating.isnumeric():
             res_name = res_name.lower()
-            reviews = db.get_all_reviews_for_restaurant_given_rating
-            (res_name, int(rating))
+            reviews = db.get_all_reviews_for_restaurant_given_rating(res_name, int(rating))
             return jsonify(restaurant=res_name, reviews=reviews)
         return jsonify(valid=False, reason="Error. Rating must be an integer.")
     # error: empty parameters
