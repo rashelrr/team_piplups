@@ -18,9 +18,9 @@ def init_db():
             PRIMARY KEY(UNI))""")
         cur = conn.cursor()
 
-        # reviews_file = open("review.csv")
-        # rows = csv.reader(reviews_file)
-        # cur.executemany("INSERT INTO REVIEWS VALUES (?, ?, ?, ?)", rows)
+        reviews_file = open("review.csv")
+        rows = csv.reader(reviews_file)
+        cur.executemany("INSERT INTO REVIEWS VALUES (?, ?, ?, ?)", rows)
 
         #uni_file = open("uni.csv")
         #rows = csv.reader(uni_file)
@@ -188,7 +188,7 @@ def edit_review(UNI, res_name, new_rating, new_review):
     try:
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
-        if type(new_rating) != int or type(UNI) != str or type(res_name) != str or type(new_review) != str:
+        if new_rating.isnumeric() is False or type(UNI) != str or type(res_name) != str or type(new_review) != str:
             return Error
         if new_rating > 5:
             return Error
@@ -223,7 +223,7 @@ def add_review(row):
             return Error
 
         new_row = (row[0].lower(), row[1], row[2], row[3].lower())
-        if type(new_row[0]) != str or type(new_row[1]) != int or type(new_row[2]) != str or type(new_row[3]) != str:
+        if type(new_row[0]) != str or new_row[1].isnumeric() is False or type(new_row[2]) != str or type(new_row[3]) != str:
             return Error
         cur.execute(
             "INSERT INTO REVIEWS (restaurant_name, star, review, UNI) VALUES\
