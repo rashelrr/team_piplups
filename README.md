@@ -24,7 +24,8 @@ Enter into the terminal `python3 app.py` or run `make run` from provided Makefil
   - http://127.0.0.1:5000/readreviews?restaurant=Fumo
   - http://127.0.0.1:5000/readreviews?stars=1
   - http://127.0.0.1:5000/addreview?restaurant=koronet&stars4=&review=delicious&uni=mg4145
-
+ 
+**To run the coverage test for `test_db.py` , uncomment lines `21 - 23` in `db.py`**
 
 ## API Documentation
 
