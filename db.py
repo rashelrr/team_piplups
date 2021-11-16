@@ -165,6 +165,7 @@ def get_review(res_name, uni):
 '''
 UNI, res_name, new_review:  string
 new_star:                   int
+uni and res_name are lowercased before adding update
 Updates a single review in database
 '''
 
@@ -195,6 +196,7 @@ def edit_review(UNI, res_name, new_rating, new_review):
 
 '''
 row: tuple (restaurant_name, star, review, UNI)
+uni and restaurant name are lowercased before inserting
 Adds new review to database
 '''
 
