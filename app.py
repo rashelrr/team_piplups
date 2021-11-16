@@ -26,8 +26,10 @@ Return:    reviews that match that query
 '''
 @app.route('/readreviews', methods=['GET'])
 def read_reviews():
-    res_name = request.args.get('restaurant')
+    res_name = request.args.get('restaurant').lower()
     rating = request.args.get('stars')
+
+    print("res_name:\t{}".format(res_name))
 
     # query: all reviews for a specific restaurant
     if res_name is not None and rating is None:     
@@ -55,13 +57,13 @@ Adds review to database
 
 @app.route('/addreview', methods=['GET', 'POST'])
 def add_review():
-    res_name = request.args.get('restaurant')
-    rating = request.args.get('stars')
+    res_name = request.args.get('restaurant').lower()
+    rating = request.args.get('stars').lower()
     review = request.args.get('review')
     uni = request.args.get('uni')
 
-    res_name.lower()
-    uni.lower()
+    # res_name.lower()
+    # uni.lower()
 
     # make sure no empty fields
     parameters = [res_name, rating, review, uni]
