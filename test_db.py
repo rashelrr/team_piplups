@@ -140,7 +140,6 @@ class Test_TestDB(unittest.TestCase):
         db.init_db()
 
         self.conn = sqlite3.connect("Lion_Eats")
-
         db.add_review(("Koronets", 3, "good food and great service", "dl3410"))
 
         # review that doesn't exist
@@ -217,8 +216,6 @@ class Test_TestDB(unittest.TestCase):
         db.clear()
         db.init_db()
         self.conn = sqlite3.connect("Lion_Eats")
-        cur = self.conn.cursor()
-
         db.add_review(("junzi", 3, "good food and great service",
                       "yy3131"))
 

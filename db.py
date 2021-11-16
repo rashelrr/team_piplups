@@ -19,9 +19,15 @@ def init_db():
         #  rows = csv.reader(reviews_file)
         #  cur.executemany("INSERT INTO REVIEWS VALUES (?, ?, ?, ?)", rows)
 
+<<<<<<< HEAD
         #  uni_file = open("uni.csv")
         #  rows = csv.reader(uni_file)
         #  cur.executemany("INSERT INTO REVIEWS VALUES (?)", rows)
+=======
+        # uni_file = open("uni.csv")
+        # rows = csv.reader(uni_file)
+        # cur.executemany("INSERT INTO REVIEWS VALUES (?)", rows)
+>>>>>>> aa05f93fa641d3c429f7687036bc6cbad19f6a68
         conn.commit()
         print('Database Online, tables created')
     except Error as e:
