@@ -1,18 +1,8 @@
-./test_db.py:160:21: E128 continuation line under-indented for visual indent
-./test_db.py:162:21: E128 continuation line under-indented for visual indent
-./test_db.py:164:21: E128 continuation line under-indented for visual indent
-./test_db.py:170:21: E128 continuation line under-indented for visual indent
-./test_db.py:175:12: E999 IndentationError: unexpected indent
-./test_db.py:175:13: E303 too many blank lines (2)
-./test_db.py:175:13: E113 unexpected indentation
-./test_db.py:176:9: E112 expected an indented block
-./test_db.py:196:5: E303 too many blank lines (2)
-./test_db.py:203:29: E127 continuation line over-indented for visual indent
-./test_db.py:209:80: E501 line too long (98 > 79 characters)
-./test_db.py:222:5: E303 too many blank lines (2)
-./test_db.py:229:29: E127 continuation line over-indented for visual indent
-./test_db.py:243:80: E501 line too long (107 > 79 characters)
-./test_db.py:246:1: W391 blank line at end of file
+./test_db.py:143:9: F841 local variable 'cur' is assigned to but never used
+./test_db.py:153:9: F841 local variable 'row2' is assigned to but never used
+./test_db.py:178:9: F841 local variable 'cur' is assigned to but never used
+./test_db.py:198:9: F841 local variable 'cur' is assigned to but never used
+./test_db.py:224:9: F841 local variable 'cur' is assigned to but never used
 ./app.py:1:1: F401 'flask.render_template' imported but unused
 ./app.py:1:1: F401 'flask.redirect' imported but unused
 ./app.py:2:1: F401 'flask.make_response' imported but unused
