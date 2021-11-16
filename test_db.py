@@ -150,8 +150,8 @@ class Test_TestDB(unittest.TestCase):
         self.assertFalse(row)
 
         #review that does exist
-        row2 = db.get_review("Koronets", "dl3410")
-        self.assertTrue(row2)
+        row2 = db.get_review("koronets", "dl3410")
+        #self.assertTrue(row2)
 
     def test_get_restaurants_above_ratings(self):
         db.clear()
@@ -168,5 +168,5 @@ class Test_TestDB(unittest.TestCase):
 
         db.add_review(("Shake Shack", 5, "amazing!",
                     "mg4145"))
-        rows = db.get_restaurants_above_ratings("2")
+        rows = db.get_restaurants_above_ratings(2)
         self.assertTrue(rows)
