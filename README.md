@@ -10,7 +10,6 @@
 ## How to Build/Run Service:
 Enter into the terminal `python3 app.py` or run `make run` from provided Makefile. 
 
-
 ## How to Test Service:
 - Postman was used for testing GET and POST requests. 
   - See the Collections in Postman and run.
@@ -25,7 +24,8 @@ Enter into the terminal `python3 app.py` or run `make run` from provided Makefil
   - http://127.0.0.1:5000/readreviews?stars=1
   - http://127.0.0.1:5000/addreview?restaurant=koronet&stars4=&review=delicious&uni=mg4145
  
-**To run the coverage test for `test_db.py` , uncomment lines `21 - 23` in `db.py`**
+**To run `test_db.py` , uncomment lines `21 - 23` in `db.py` and make sure that the service is running locally
+aka make sure this is running: http://127.0.0.1:5000/**
 
 ## API Documentation
 
