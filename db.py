@@ -123,14 +123,10 @@ def get_restaurants_above_ratings(rating):
     try:
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
-        cur.execute("with avg_table as \
-            (select restaurant_name, avg(star) as avg_star_rating from REVIEWS\
-                group by restaurant_name) \
-                select * from avg_table where avg_star_rating >= ?", (rating,))
+        cur.execute("with avg_table as (select restaurant_name, avg(star) as avg_star_rating from REVIEWS group by restaurant_name) select * from avg_table where avg_star_rating >= ?", rating)
         rows = cur.fetchall()
         conn.commit()
-        print('Database Online, get reviews above restaurant\'s average rating\
-            rating')
+        print('Database Online, get reviews above restaurant\'s average rating rating')
         return rows
     except Error as e:
         print(e)
@@ -153,7 +149,7 @@ def get_review(res_name, uni):
     try:
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
-        cur.execute("SELECT * FROM REVIEWS where restaurant_name=? AND UNI >=?", (res_name, uni,))
+        cur.execute("SELECT * FROM REVIEWS where restaurant_name=? AND UNI=?", (res_name, uni))
         row = cur.fetchone()
         conn.commit()
         print('Database Online, get review')
