@@ -17,7 +17,7 @@ def init_db():
         conn.execute("""CREATE TABLE IF NOT EXISTS UNI(UNI varchar(7) NOT NULL,\
             PRIMARY KEY(UNI))""")
 
-        cur = conn.cursor()
+        #cur = conn.cursor()
         #reviews_file = open("review.csv")
         #rows = csv.reader(reviews_file)
         #cur.executemany("INSERT INTO REVIEWS VALUES (?, ?, ?, ?)", rows)
