@@ -14,7 +14,7 @@ Enter into the terminal `python3 app.py` or `make run`.
 - Postman was used for testing GET and POST requests. 
   - See the Collections in Postman for system tests and run.
 
-- Additionally, you can test the service by using the provided URLs in our API
+- Additionally, you can test the service by using the provided URLs in our API\
   documentation.
   - To do this, run the service and go to the base URL ('http://127.0.0.1:5000/')
     to create the necessary database tables.
