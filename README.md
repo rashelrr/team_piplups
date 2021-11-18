@@ -23,7 +23,7 @@ Enter into the terminal `python3 app.py` or `make run`.
     - Reload sqlitebrowser (Ctrl+R) after running addreview and editreview\
       endpoints to view the new changes
 
-- To run unit tests using VS Code, enter "Python: Configure Tests" and select\ 
+- To run unit tests using VS Code, enter "Python: Configure Tests" and select\
   unittest. You will then be prompted to select the directory of where the tests are\
   located and finally choose "test_*.py".
   - Then enter 'coverage run -m unittest discover' to view cases that passed.\
