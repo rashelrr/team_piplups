@@ -30,35 +30,6 @@ class Test_TestDB(unittest.TestCase):
         row = cur.fetchall()
         self.assertFalse(row)
 
-        # add a review with star rating bigger than 5
-        db.add_review(("Magic Tea", 9, "expensive price",
-                       "dl3410"))
-        self.conn = sqlite3.connect("Lion_Eats")
-        cur = self.conn.cursor()
-        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name =
-                    "magic tea";""")
-        row = cur.fetchall()
-        self.assertFalse(row)
-
-        # add a review with incomplete information
-        db.add_review(("Fumo", 5))
-        self.conn = sqlite3.connect("Lion_Eats")
-        cur = self.conn.cursor()
-        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name =
-                    "fumo";""")
-        row = cur.fetchall()
-        self.assertFalse(row)
-
-        # add a blank review
-        db.clear()
-        db.init_db()
-        db.add_review("")
-        self.conn = sqlite3.connect("Lion_Eats")
-        cur = self.conn.cursor()
-        cur.execute("""SELECT * from REVIEWS;""")
-        rows = cur.fetchall()
-        self.assertFalse(rows)
-
     def test_edit_review(self):
         # normal edit review
         db.clear()
@@ -90,15 +61,6 @@ class Test_TestDB(unittest.TestCase):
 
         # editing a review with incorrect order of information as parameter
         db.edit_review("yy3131", "Junzi", "I hate junzi", 1)
-        self.conn = sqlite3.connect("Lion_Eats")
-        cur = self.conn.cursor()
-        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name =
-                    "junzi" and star = 1;""")
-        row = cur.fetchall()
-        self.assertFalse(row)
-
-        # editing a review with a star rating bigger than 5
-        db.edit_review("yy3131", "Junzi", 10, "Junzi the best")
         self.conn = sqlite3.connect("Lion_Eats")
         cur = self.conn.cursor()
         cur.execute("""SELECT * from REVIEWS WHERE restaurant_name =
@@ -197,10 +159,6 @@ class Test_TestDB(unittest.TestCase):
         # normal get
         rows = db.get_all_reviews_given_rating(5)
         self.assertTrue(rows)
-
-        # get reviews for rating bigger than 5
-        rows = db.get_all_reviews_given_rating(6)
-        self.assertFalse(rows)
 
     def test_get_all_reviews_for_restaurant_given_rating(self):
         db.clear()
