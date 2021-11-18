@@ -158,8 +158,8 @@ def get_restaurants_above_ratings(rating):
             if r[1] >= int(rating):
                 result.append(r[0])
         conn.commit()
-        print('Database Online, get reviews above restaurant\'s average rating\
-            rating')
+        print('Database Online, get reviews above restaurant\'s average '
+              + 'rating')
         return result
     except Error as e:
         print(e)
