@@ -6,6 +6,9 @@
 - Dayna Lee - dl3410
 - Sana Ahmed - sa3892
 
+## About FoodEats
+Our service allows users to read and leave reviews for restaurants near campus
+and around NYC.
 
 ## How to Build/Run Service:
 Enter into the terminal `python3 app.py` or `make run`. 
