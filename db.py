@@ -17,15 +17,35 @@ def init_db():
         conn.execute("""CREATE TABLE IF NOT EXISTS UNI(UNI varchar(7) NOT NULL,\
             PRIMARY KEY(UNI))""")
 
-        #cur = conn.cursor()
-        #reviews_file = open("review.csv")
-        #rows = csv.reader(reviews_file)
-        #cur.executemany("INSERT INTO REVIEWS VALUES (?, ?, ?, ?)", rows)
+        # cur = conn.cursor()
+        # reviews_file = open("review.csv")
+        # rows = csv.reader(reviews_file)
+        # cur.executemany("INSERT INTO REVIEWS VALUES (?, ?, ?, ?)", rows)
         #  uni_file = open("uni.csv")
         #  rows = csv.reader(uni_file)
         #  cur.executemany("INSERT INTO REVIEWS VALUES (?)", rows)
         conn.commit()
         print('Database Online, tables created')
+    except Error as e:
+        print(e)
+
+    finally:
+        if conn:
+            conn.close()
+
+
+# inserts dummy data for testing
+def insert_dummy_data():
+    conn = None
+    try:
+        conn = sqlite3.connect('Lion_Eats')
+        cur = conn.cursor()
+        reviews_file = open("review.csv")
+        rows = csv.reader(reviews_file)
+        cur.executemany("INSERT INTO REVIEWS VALUES (?, ?, ?, ?)", rows)
+        reviews_file.close()
+        conn.commit()
+        print('Database Online, dummy data added')
     except Error as e:
         print(e)
 
@@ -99,13 +119,13 @@ Returns all reviews for a restaurant at/above a star rating
 '''
 
 
-def get_all_reviews_for_restaurant_given_rating(res_name, rating):
+def get_all_reviews_for_rest_given_rating(res_name, rating):
     conn = None
     try:
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
         cur.execute("SELECT * FROM REVIEWS where restaurant_name=?\
-            AND star >=?", (res_name, rating,))
+            AND star >=?", (res_name.lower(), rating,))
         rows = cur.fetchall()
         conn.commit()
         print('Database Online, get reviews for a restaurant at\
@@ -163,7 +183,7 @@ def get_review(res_name, uni):
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
         cur.execute("SELECT * FROM REVIEWS where restaurant_name=? AND UNI=?",
-                    (res_name, uni))
+                    (res_name.lower(), uni))
         row = cur.fetchone()
         conn.commit()
         print('Database Online, get review')

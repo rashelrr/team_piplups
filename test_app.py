@@ -1,48 +1,53 @@
 import unittest
-import app
 import requests
+import db
 
 
 class Test_TestApp(unittest.TestCase):
     def setUp(self):
         print('setUp')
+        db.init_db()
+        db.insert_dummy_data()
 
     def tearDown(self):
-        print('tearDown\n')
+        print('tearDown')
+        db.clear()
+        print('\n')
 
-    '''Tests / endpoint, checks status code is 200'''
-    def test_index_check_status_code_equals_200(self):
+    # Tests / endpoint, checks status code is 200
+    def test_index_check_status_code(self):
         url = "http://127.0.0.1:5000/"
         response = requests.get(url)
         assert response.status_code == 200
 
-    # Checks readreviews function if given a valid restaurant name
+    # Checks readreviews endpoint if given a valid restaurant name
     def test_read_reviews_happy_given_restaurant(self):
         url = "http://127.0.0.1:5000/readreviews?restaurant=fumo"
         response = requests.get(url)
 
         assert response.status_code == 200
-        response_body = response.json()
-        assert response_body["restaurant"] == "fumo"
 
+        response_body = response.json()
         exp_reviews = [['fumo', 5, 'Great pasta', 'mg4145'],
                        ['fumo', 3, 'mediocre sandwich', 'rdr2139'],
                        ['fumo', 2, 'good pizza', 'yy3131']]
+        assert response_body["valid"] is True
         assert response_body["reviews"] == exp_reviews
 
-    # Checks readreviews function if given an invalid restaurant name
-    # aka name does not exist in db
+    # Checks readreviews endpoint if given an invalid restaurant name
+    # aka restaurant does not exist in db
     def test_read_reviews_invalid_restaurant(self):
         url = "http://127.0.0.1:5000/readreviews?restaurant=dunkin"
         response = requests.get(url)
 
         assert response.status_code == 200
+
         response_body = response.json()
-        assert response_body["restaurant"] == "dunkin"
+        assert response_body["valid"] is False
+        reason = "There are no reviews for that restaurant."
+        assert response_body["reason"] == reason
 
-        assert response_body["reviews"] == []
-
-    # Checks readreviews function if given a valid rating
+    # Checks readreviews endpoint if given a valid rating
     def test_read_reviews_happy_given_rating(self):
         url = "http://127.0.0.1:5000/readreviews?stars=4"
         response = requests.get(url)
@@ -59,31 +64,23 @@ class Test_TestApp(unittest.TestCase):
                        ['panda express', 4, 'good but expensive', 'dl3410'],
                        ['panda express', 5, 'good service', 'mg4145'],
                        ['panda express', 5, 'great noodles', 'sa3892']]
+        assert response_body["valid"] is True
         assert response_body["reviews"] == exp_reviews
 
-    # Checks readreviews function if given an invalid rating
-    # aka invalid int for stars rating (range allowed is 1-5)
+    # Checks readreviews endpoint if given an invalid rating
+    # aka no reviews in db so no reviews match the query
     def test_read_reviews_invalid_rating(self):
-        url = "http://127.0.0.1:5000/readreviews?stars=6"
-        response = requests.get(url)
-
-        assert response.status_code == 200
-        response_body = response.json()
-
-        exp_reviews = []
-        assert response_body["reviews"] == exp_reviews
-
-    # Checks readreviews function if given an invalid type for rating
-    # as it should be an int
-    def test_read_reviews_invalid_type_rating(self):
-        url = "http://127.0.0.1:5000/readreviews?stars=hello"
+        db.clear()
+        db.init_db()
+        url = "http://127.0.0.1:5000/readreviews?stars=3"
         response = requests.get(url)
 
         assert response.status_code == 200
         response_body = response.json()
 
         assert response_body["valid"] is False
-        assert response_body["reason"] == "Error. Rating must be an integer."
+        reason = "There are no reviews at/above that rating."
+        assert response_body["reason"] == reason
 
     # Checks readreviews function if given a valid rest/rating
     def test_read_reviews_happy_given_rest_and_rating(self):
@@ -95,10 +92,11 @@ class Test_TestApp(unittest.TestCase):
 
         exp_reviews = [['fumo', 5, 'Great pasta', 'mg4145'],
                        ['fumo', 3, 'mediocre sandwich', 'rdr2139']]
+        assert response_body["valid"] is True
         assert response_body["reviews"] == exp_reviews
 
     # Checks readreviews function if given an invalid rest/rating
-    # aka restaurant does not exist in database
+    # aka query does not exist in database
     def test_read_reviews_invalid_rest_and_rating(self):
         url = "http://127.0.0.1:5000/readreviews?restaurant=mcdonalds&stars=3"
         response = requests.get(url)
@@ -106,46 +104,14 @@ class Test_TestApp(unittest.TestCase):
         assert response.status_code == 200
         response_body = response.json()
 
-        assert response_body["reviews"] == []
-
-    # Checks readreviews function if given an invalid rest/rating
-    # aka empty parameters
-    def test_read_reviews_invalid_rest_and_rating(self):
-        url = "http://127.0.0.1:5000/readreviews?restaurant=&stars="
-        response = requests.get(url)
-
-        assert response.status_code == 200
-        response_body = response.json()
-
         assert response_body["valid"] is False
-        assert response_body["reason"] == "Error. Invalid query. Please enter at least one field."
-
-    # checks edit review endpoint given valid parameters
-    def test_edit_review_happy(self):
-        url = "http://127.0.0.1:5000/editreview?restaurant=fumo&stars=5&review=AMAZING!&uni=rdr2139"
-        response = requests.get(url)
-
-        assert response.status_code == 200
-        response_body = response.json()
-
-        assert response_body["valid"] is True
-        assert response_body["reason"] == "Successfully edited review."
-
-    # checks edit review endpoint given invalid parameters
-    # aka some parameters empty
-    def test_edit_review_invalid(self):
-        url = "http://127.0.0.1:5000/editreview?restaurant=fumo&stars=&review=meh&uni=rdr2139"
-        response = requests.get(url)
-
-        assert response.status_code == 200
-        response_body = response.json()
-
-        assert response_body["valid"] is False
-        assert response_body["reason"] == "Error. Please enter all fields."
+        reason = "There are no reviews matching your query."
+        assert response_body["reason"] == reason
 
     # checks add review endpoint given valid parameters
     def test_add_review_happy(self):
-        url = "http://127.0.0.1:5000/addreview?restaurant=dunkin&stars=5&review=AMAZING!&uni=rdr2139"
+        url = ("http://127.0.0.1:5000/addreview?"
+               + "restaurant=dunkin&stars=5&review=AMAZING!&uni=rdr2139")
         response = requests.get(url)
 
         assert response.status_code == 200
@@ -155,14 +121,56 @@ class Test_TestApp(unittest.TestCase):
         assert response_body["reason"] == "Successfully added review."
 
     # checks add review endpoint given invalid parameters
-    # aka user already reviewed restaurant and thus cannot 
+    # aka user already reviewed restaurant and thus cannot
     # add review to db
-    def test_add_review_invalid(self):
-        url = "http://127.0.0.1:5000/addreview?restaurant=fumo&stars=5&review=AMAZING!&uni=rdr2139"
+    def test_add_review_already_reviewed(self):
+        url = ("http://127.0.0.1:5000/addreview?"
+               + "restaurant=fumo&stars=5&review=AMAZING!&uni=rdr2139")
+
+        print(">>>", url)
         response = requests.get(url)
 
         assert response.status_code == 200
         response_body = response.json()
 
         assert response_body["valid"] is False
-        assert response_body["reason"] == "Error. You have already reviewed this restaurant."
+        reason = "You've already reviewed this restaurant."
+        assert response_body["reason"] == reason
+
+    # checks add review endpoint given invalid parameters
+    # aka empty parameters
+    def test_add_review_invalid(self):
+        url = "http://127.0.0.1:5000/addreview"
+        response = requests.get(url)
+
+        assert response.status_code == 200
+        response_body = response.json()
+
+        assert response_body["valid"] is False
+        reason = "To add a review, please enter all required fields."
+        assert response_body["reason"] == reason
+
+    # checks edit review endpoint given valid parameters
+    def test_edit_review_happy(self):
+        url = ("http://127.0.0.1:5000/editreview?"
+               + "restaurant=fumo&stars=5&review=AMAZING!&uni=rdr2139")
+        response = requests.get(url)
+
+        assert response.status_code == 200
+        response_body = response.json()
+
+        assert response_body["valid"] is True
+        assert response_body["reason"] == "Successfully edited review."
+
+    # checks edit review endpoint given invalid parameters
+    # aka updated review has empty parameters
+    def test_edit_review_invalid(self):
+        url = "http://127.0.0.1:5000/editreview"
+        response = requests.get(url)
+
+        assert response.status_code == 200
+        response_body = response.json()
+
+        assert response_body["valid"] is False
+        reason = "To edit a review, please enter all required fields."
+        assert response_body["reason"] == reason
