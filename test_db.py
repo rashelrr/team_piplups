@@ -197,7 +197,7 @@ class Test_TestDB(unittest.TestCase):
         # normal get
         rows = db.get_all_reviews_given_rating(5)
         self.assertTrue(rows)
-        
+
         # get reviews for rating bigger than 5
         rows = db.get_all_reviews_given_rating(6)
         self.assertFalse(rows)
@@ -210,18 +210,18 @@ class Test_TestDB(unittest.TestCase):
                       "yy3131"))
 
         # normal get
-        rows = db.get_all_reviews_for_restaurant_given_rating("junzi", "3")
+        rows = db.get_all_reviews_for_rest_given_rating("junzi", "3")
         self.assertTrue(rows)
 
         # get reviews with incomplete information
-        rows = db.get_all_reviews_for_restaurant_given_rating("", "3")
+        rows = db.get_all_reviews_for_rest_given_rating("", "3")
         self.assertFalse(rows)
 
         # get reviews with no information
-        rows = db.get_all_reviews_for_restaurant_given_rating("", "")
+        rows = db.get_all_reviews_for_rest_given_rating("", "")
         self.assertFalse(rows)
-        
+
         # get reviews for rating that doesn't exist (ex. the restaurant given
         # has no reviews above 4 stars)
-        rows = db.get_all_reviews_for_restaurant_given_rating("junzi", "4")
+        rows = db.get_all_reviews_for_rest_given_rating("junzi", "4")
         self.assertFalse(rows)
