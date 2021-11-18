@@ -65,7 +65,7 @@ Enter into the terminal `python3 app.py` or `make run`.
 - uni=[string]        (case-insensitive)
 
 
-**Note for Second Iteration: Dealing with Invalid Types/Empty Fields**
+## Note for Second Iteration: Dealing with Invalid Types/Empty Fields
 - In our UI for readreviews/add review/edit review, user must select one of
   five checkboxes. This allows us to restrict the user from entering anything
   other than an int and an int in the allowed range (1-5). Thus, there is no
