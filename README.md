@@ -27,8 +27,8 @@ Enter into the terminal `python3 app.py` or `make run`.
       endpoints to view the new changes
 
 - To run unit tests using VS Code, enter "Python: Configure Tests" and select
-  unittest. You will then be prompted to select the directory of where the tests are
-  located and finally choose "test_*.py".
+  unittest. You will then be prompted to select the directory of where the tests 
+  are located and finally choose "test_*.py".
   - Then enter 'coverage run -m unittest discover' to view cases that passed.
   - Important: Before running unit tests, make sure that the service is running
     locally, aka that http://127.0.0.1:5000/ is running. This is because
