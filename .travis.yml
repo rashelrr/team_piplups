@@ -3,8 +3,8 @@ python:
   - "3.6"      # current default Python on Travis CI
 
 script:
-  - coverage run -m unittest discover
-#- python -m unittest discover
+  - python -m unittest discover        # no module named 'requests'
+#  - coverage run -m unittest discover # could not find coverage
 
 # safelist
 #branches:
