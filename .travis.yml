@@ -2,7 +2,8 @@ language: python
 python:
   - "3.6"      # current default Python on Travis CI
 
-script: python test_db.py
+script:
+- unittest
 
 # safelist
 #branches:
