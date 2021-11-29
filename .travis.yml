@@ -1,12 +1,10 @@
 language: python
 python:
   - "3.6"      # current default Python on Travis CI
-
+install:
+  - pip install coverage
 script:
-  - python -m unittest discover        # no module named 'requests'
-#  - coverage run -m unittest discover # could not find coverage
+  - coverage run -m unittest discover
 
-# safelist
-#branches:
-#  only:
-#  - master
+#  - python -m unittest discover        # no module named 'requests'
+#  - coverage run -m unittest discover # could not find coverage
