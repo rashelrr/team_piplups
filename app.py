@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, render_template, jsonify, request
 import db
 import logging
 
@@ -12,13 +12,15 @@ log.setLevel(logging.ERROR)
 Homepage
 '''
 
+uni = 'abc1234'
+
 
 @app.route('/', methods=['GET'])
 def index():
     db.clear()
     db.init_db()
-    # db.insert_dummy_data()
-    return 'Server Works!'
+    db.insert_dummy_data()
+    return render_template('index.html', uni=uni)
 
 
 '''
@@ -79,10 +81,9 @@ def add_review():
     res_name = request.args.get('restaurant')
     rating = request.args.get('stars')
     review = request.args.get('review')
-    uni = request.args.get('uni')
 
     # no parameters
-    if res_name is None or rating is None or review is None or uni is None:
+    if res_name is None or rating is None or review is None:
         return jsonify(valid=False,
                        reason="To add a review, please enter all required "
                        + "fields.")
