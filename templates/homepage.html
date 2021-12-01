@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<!--Some CSS style so it's not ugly-->
+<style>
+    body {
+        font-size: 15pt;
+        font-family: arial;
+    }
+
+    #data, #data_head, #data_data {
+        border: 1px solid black;
+    }
+
+    th, #data_data {
+        text-align: center;
+    }
+</style>
+
+<body>
+    <!--Page title-->
+    <h1>Lion Eats</h1>
+    <h2> Login </h1>
+    <!-- <button onclick="login();">Login</button>-->
+
+    <h3>Search for Restaurants</h3>
+
+        <form id="readreviews" action="">
+            Restaurant name: <input type="text" id="restaurant" name="restaurant"><br>
+            Star rating:<br>
+            <input type="radio" id="1" name="stars" value="1">
+            <label for="1">1</label><br>
+
+            <input type="radio" id="2" name="stars" value="2">
+            <label for="2">2</label><br>
+
+            <input type="radio" id="3" name="stars" value="3">
+            <label for="3">3</label><br>
+
+            <input type="radio" id="4" name="stars" value="4">
+            <label for="4">4</label><br>
+
+            <input type="radio" id="5" name="stars" value="5">
+            <label for="5">5</label><br>
+
+        </form> 
+
+        <button onclick="readReviews();">Submit</button>
+
+        <script src="{{ url_for('static', filename = 'homepage.js') }}"></script>              
+    </body>
+
+</html>
+
+
+<!-- Review: <input type="text" id="review" name="review"><br> -->

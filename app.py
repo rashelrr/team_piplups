@@ -20,7 +20,7 @@ def index():
     db.clear()
     db.init_db()
     db.insert_dummy_data()
-    return render_template('index.html', uni=uni)
+    return render_template('homepage.html', uni=uni)
 
 
 '''
@@ -36,7 +36,7 @@ def read_reviews():
     rating = request.args.get('stars')
 
     # given restaurant
-    if res_name is not None and rating is None:
+    if res_name != ''  and rating == '':
         reviews = db.get_all_reviews_for_restaurant(res_name)
         if len(reviews) > 0:
             return jsonify(restaurant=res_name, reviews=reviews, valid=True,
@@ -45,7 +45,7 @@ def read_reviews():
                        + "restaurant.")
 
     # given rating
-    elif res_name is None and rating is not None:
+    elif res_name == ''  and rating != '':
         reviews = db.get_all_reviews_given_rating(rating)
         if len(reviews) > 0:
             return jsonify(stars=rating, reviews=reviews, valid=True,
@@ -54,7 +54,7 @@ def read_reviews():
                        + "that rating.")
 
     # given restaurant and rating
-    elif res_name is not None and rating is not None:
+    elif res_name != ''  and rating != '':
         reviews = db.get_all_reviews_for_rest_given_rating(res_name, rating)
         if len(reviews) > 0:
             return jsonify(restaurant=res_name, stars=rating, reviews=reviews,
@@ -63,7 +63,7 @@ def read_reviews():
             return jsonify(valid=False, reason="There are no reviews matching "
                            + "your query.")
 
-    # no parameters
+    # parameters are empty strings
     else:
         return jsonify(valid=False,
                        reason="To read reviews, please make a query.")
