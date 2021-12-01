@@ -16,17 +16,16 @@ function readReviews() {
     const finalurl = url;
     window.location.href = finalurl;
 }
-/*
+
 function login() {
     const Http =  new XMLHttpRequest();
-    var restaurant = "fumo";
-    var url = "http://127.0.0.1:5000/readreviews?restaurant=" + restaurant;
-    //url = "http://127.0.0.1:5000/login
+    var  url = "http://127.0.0.1:5000/login"
     
     const finalurl = url;
     window.location.href = finalurl;
 }
 
+/*
 function signup() {
     var url;
     const Http =  new XMLHttpRequest();
