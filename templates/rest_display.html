@@ -1,0 +1,46 @@
+<html>
+    <style>
+        body {
+            font-size: 15pt;
+            font-family: arial;
+        }
+
+        #data, #data_head, #data_data {
+            border: 1px solid black;
+        }
+
+        th, #data_data {
+            text-align: center;
+        }
+    </style>
+
+    <body>
+        <h1>Restaurants</h1>
+
+        <form method="POST" method="GET" action="/rest_info">
+            <h4>Enter restaurant name to see more reviews</h4>
+            <input type="text" name="name">
+            <input type="submit" value="View">
+        </form>
+
+        <table style="width:100%" id="data">
+            <tr>
+                {% for k in keys %}
+                    <th id="data_head">{{k}}</th>
+                {% endfor %}
+            </tr>
+
+            {% for r in range(rows) %}
+                <tr>
+                    {% for k in keys %}
+                        <td id="data_data">{{context[k][r]}}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+        <hr>
+        <form action="back_home">
+            <input type="submit" value="Go Back Home">
+        </form>
+    </body>
+</html>
