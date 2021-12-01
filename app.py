@@ -127,5 +127,19 @@ def edit_review():
     return jsonify(valid=True, reason="Successfully edited review.")
 
 
+'''
+Endpoint:  /allres
+UI:         User clicks "show all restaurants button"
+'''
+
+# Suggested code for this endpoint
+
+'''
+@app.route('/allrest', methods=['GET'])
+def display_all_restaurants():
+    data = db.get_restaurants_above_ratings(1)
+    return jsonify(valid=True, reason="Successfully edited review.")
+'''
+
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1')
