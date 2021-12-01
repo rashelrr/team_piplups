@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<!--Some CSS style so it's not ugly-->
+<style>
+    body {
+        font-size: 15pt;
+        font-family: arial;
+    }
+
+    #data, #data_head, #data_data {
+        border: 1px solid black;
+    }
+
+    th, #data_data {
+        text-align: center;
+    }
+</style>
+
+<body>
+    <!--Page title-->
+    <h1>{{context['Name'][0]}}</h1>
+
+    
+    
+    <form action="/rest_info_star_filter" method="POST" method="GET">
+        <h4>Filter reviews by star rating</h4>
+        <table>
+            <tr>
+                <td><input type="checkbox" name="star" value=1>1</td>
+                <td><input type="checkbox" name="star" value=2>2</td>
+                <td><input type="checkbox" name="star" value=3>3</td>
+                <td><input type="checkbox" name="star" value=4>4</td>
+                <td><input type="checkbox" name="star" value=5>5</td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="Filter"></td>
+            </tr>
+        </table>
+    </form>
+    <form action="back_rest_info">
+        <input type="submit" value="Show All Reviews">
+    </form>
+
+    <table style="width:100%" id="data">
+        <tr>
+            {% for k in keys %}
+                <th id="data_head">{{k}}</th>
+            {% endfor %}
+        </tr>
+
+        {% for r in range(rows) %}
+            <tr>
+                {% for k in keys %}
+                    <td id="data_data">{{context[k][r]}}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+
+    <hr>
+    <form action="back_home">
+        <input type="submit" value="Go Back Home">
+    </form>
+</body>
+</html>
