@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>LionEats</title>
+    </head>
+
+    <body>
+
+        <h3 id = "uni">User: {{uni}}</h3>
+        <h1>Add a Review</h1>
+
+        <form id="addreview" action="">
+            Restaurant name: <input type="text" id="restaurant" name="restaurant"><br>
+            Star rating:<br>
+            <input type="radio" id="1" name="stars" value="1">
+            <label for="1">1</label><br>
+
+            <input type="radio" id="2" name="stars" value="2">
+            <label for="2">2</label><br>
+
+            <input type="radio" id="3" name="stars" value="3">
+            <label for="3">3</label><br>
+
+            <input type="radio" id="4" name="stars" value="4">
+            <label for="4">4</label><br>
+
+            <input type="radio" id="5" name="stars" value="5">
+            <label for="5">5</label><br>
+
+            Review: <input type="text" id="review" name="review"><br>
+        </form> 
+
+        <button onclick="handleAddReview();">Submit</button>
+        <p id = "ignorethis"></p>
+
+        <script src="{{ url_for('static', filename = 'add_review.js') }}"></script>              
+    </body>
+
+</html>

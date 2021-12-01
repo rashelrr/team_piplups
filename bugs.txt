@@ -1,6 +1,0 @@
-./app.py:1:1: F401 'flask.render_template' imported but unused
-./app.py:1:1: F401 'flask.redirect' imported but unused
-./app.py:2:1: F401 'flask.make_response' imported but unused
-./app.py:3:1: F401 'json.dumps' imported but unused
-./db.py:30:13: F841 local variable 'to_db' is assigned to but never used
-./db.py:129:80: E501 line too long (104 > 79 characters)
