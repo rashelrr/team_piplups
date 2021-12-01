@@ -1,9 +1,10 @@
-from flask import Flask, render_template, jsonify, request
+import os
+from flask import Flask, render_template, jsonify, request, redirect
 import db
 import logging
 
-
-app = Flask(__name__)
+tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
+app = Flask(__name__, template_folder=tmpl_dir)
 
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
@@ -140,6 +141,53 @@ def display_all_restaurants():
     data = db.get_restaurants_above_ratings(1)
     return jsonify(valid=True, reason="Successfully edited review.")
 '''
+
+
+# Display all restaurants and average rating
+@app.route('/rest_display_all', methods=['GET', 'POST'])
+def rest_display_all():
+    result = db.get_restaurants_above_ratings(1)
+    for key, value in result.items():
+         rows = len(value)
+    return render_template("rest_display.html", context=result, keys=list(result.keys()), rows=rows)
+
+
+# Display restaurants that users filter by average star rating
+@app.route('/rest_display_star_filter', methods=['GET', 'POST'])
+def rest_display_star_filter():
+    star = request.form.getlist('star')
+    result = dict(Name=[], Average_Rating=[])
+    for s in star:
+        result.update(db.get_restaurants_above_ratings(s))
+    for key, value in result.items():
+         rows = len(value)
+    return render_template("rest_display.html", context=result, keys=list(result.keys()), rows=rows)
+
+
+# Display reveiws for restaurant that users filter by name
+@app.route('/rest_info', methods=['GET', 'POST'])
+def rest_info():
+    name = request.form['name']
+    result = db.get_all_reviews_for_restaurant(name)
+    for key, value in result.items():
+         rows = len(value)
+    return render_template("rest_info.html", context=result, keys=list(result.keys())[1:], rows=rows)
+
+
+# Display reviews for restaurant that users filter by star
+@app.route('/rest_info_star_filter', methods=['GET', 'POST'])
+def rest_info_star_filter():
+    pass
+    #star = request.form['star']
+    #return render_template("rest_info.html", context=context, keys=list(context.keys())[0:6])
+
+@app.route('/back_home')
+def back_home():
+    return redirect('/')
+
+@app.route('/back_rest_info')
+def back_rest_info():
+    return redirect(request.url)
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1')
