@@ -1,4 +1,7 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, redirect, url_for, flash
+from werkzeug.security import generate_password_hash, check_password_hash
+from models import User
+from flask_login import login_user, logout_user, login_required, current_user
 import db
 import logging
 
@@ -23,6 +26,35 @@ def index():
     return render_template('homepage.html', uni=uni)
 
 
+@app.route('/login', methods=['POST'])
+def login():
+    pass
+
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'GET':
+        return render_template('signup.html')
+    else:
+        uni = request.form.get('UNI')
+        password = request.form.get('password')
+        user = User.query.filter_by(UNI = uni).first() # if this 
+                              # returns a user, then the email 
+                              # already exists in database
+        if user: # if a user is found, we want to redirect back to 
+                 # signup page so user can try again
+            flash('UNI already exists')
+            return redirect(url_for('auth.signup'))
+        # create a new user with the form data. Hash the password so 
+        # the plaintext version isn't saved.
+        new_user = User(email=email, name=name, \
+                        password=generate_password_hash(password, \
+                        method='sha256'))#add the new user to the db
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect(url_for('auth.login'))
+
+
 '''
 Endpoint:  /readreviews?restaurant=___&stars=___
 UI:        User fills out a form with their query and presses 'Search' button
@@ -36,7 +68,7 @@ def read_reviews():
     rating = request.args.get('stars')
 
     # given restaurant
-    if res_name != ''  and rating == '':
+    if res_name != '' and rating == '':
         reviews = db.get_all_reviews_for_restaurant(res_name)
         if len(reviews) > 0:
             return jsonify(restaurant=res_name, reviews=reviews, valid=True,
@@ -45,7 +77,7 @@ def read_reviews():
                        + "restaurant.")
 
     # given rating
-    elif res_name == ''  and rating != '':
+    elif res_name == '' and rating != '':
         reviews = db.get_all_reviews_given_rating(rating)
         if len(reviews) > 0:
             return jsonify(stars=rating, reviews=reviews, valid=True,
@@ -54,7 +86,7 @@ def read_reviews():
                        + "that rating.")
 
     # given restaurant and rating
-    elif res_name != ''  and rating != '':
+    elif res_name != '' and rating != '':
         reviews = db.get_all_reviews_for_rest_given_rating(res_name, rating)
         if len(reviews) > 0:
             return jsonify(restaurant=res_name, stars=rating, reviews=reviews,
