@@ -7,6 +7,67 @@ class Test_TestDB(unittest.TestCase):
     def setUp(self) -> None:
         self.conn = sqlite3.connect("Lion_Eats")
 
+    def test_add_uni_passcode(self):
+        # add first account
+        db.clear()
+        db.init_db()
+        db.add_uni_passcode('yy3131', 'Ye010730')
+        self.conn = sqlite3.connect("Lion_Eats")
+        cur = self.conn.cursor()
+        cur.execute("""SELECT * from UNI WHERE UNI =
+                    "yy3131";""")
+        rows = cur.fetchall()
+        self.assertTrue(rows)
+
+        # should not be able to add redundant accounts
+        db.add_uni_passcode('yy3131', '010730')
+        self.conn = sqlite3.connect("Lion_Eats")
+        cur = self.conn.cursor()
+        cur.execute("""SELECT count(*) from UNI WHERE UNI =
+                    "yy3131";""")
+        rows = cur.fetchall()
+        self.assertEqual(rows[0][0], 1)
+
+        # should not be able to add empty UNI (empty account name)
+        db.add_uni_passcode('', '010730')
+        self.conn = sqlite3.connect("Lion_Eats")
+        cur = self.conn.cursor()
+        cur.execute("""SELECT count(*) from UNI WHERE UNI =
+                    "";""")
+        rows = cur.fetchall()
+        self.assertEqual(rows[0][0], 0)
+
+        # should not be able to add empty password (empty account name)
+        db.add_uni_passcode('dl3410', '')
+        self.conn = sqlite3.connect("Lion_Eats")
+        cur = self.conn.cursor()
+        cur.execute("""SELECT count(*) from UNI WHERE UNI =
+                    "dl3410";""")
+        rows = cur.fetchall()
+        self.assertEqual(rows[0][0], 0)
+
+    def test_get_password(self):
+        db.clear()
+        db.init_db()
+        db.add_uni_passcode('dl3410', 'daeun4200')
+        result = db.get_password('dl3410')
+        self.assertEqual(result[0][0], 'daeun4200')
+
+        # getting a password when the UNI does not exist
+        result = db.get_password('yy3131')
+        self.assertFalse(result)
+
+    def test_check_if_uni_exists(self):
+        db.clear()
+        db.init_db()
+        db.add_uni_passcode('dl3410', 'daeun4200')
+        result = db.check_if_uni_exists('dl3410')
+        self.assertEqual(result, True)
+
+        # try to find a user that does not exist
+        result = db.check_if_uni_exists('yy3131')
+        self.assertEqual(result, False)
+
     def test_add_review(self):
         # normal add review
         db.clear()
