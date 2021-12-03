@@ -1,4 +1,5 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, redirect,\
+    url_for, flash, abort
 import db
 import logging
 
@@ -20,6 +21,34 @@ def index():
     db.init_db()
     db.insert_dummy_data()
     return render_template('homepage.html', uni=uni)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        uni = request.args.get('UNI', None)
+        password = request.args.get('passcode', None)
+        if db.check_if_uni_exists(uni) is True and db.get_password(uni) == password:
+            return f'login success: {uni}'
+        else:
+            return abort(401)
+    else:
+        return render_template('login.html')
+
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'GET':
+        return render_template('signup.html')
+    else:
+        uni = request.args.get('UNI')
+        password = request.args.get('passcode')
+        if db.check_if_uni_exists(uni) is True:
+            flash('UNI already exists, please login using your existing account!')
+            return redirect(url_for('/login'))
+        db.add_uni_passcode(uni, password)
+        flash('Signup is successful, please login!')
+        return redirect(url_for('/login'))
 
 
 '''
