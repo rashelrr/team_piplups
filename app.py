@@ -1,7 +1,5 @@
-from flask import Flask, render_template, jsonify, request, redirect, url_for, flash
-from werkzeug.security import generate_password_hash, check_password_hash
-from models import User
-from flask_login import login_user, logout_user, login_required, current_user
+from flask import Flask, render_template, jsonify, request, redirect,\
+    url_for, flash, abort
 import db
 import logging
 
@@ -28,18 +26,14 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form.get('UNI', None)
-        password = request.form.get('password', None)
-        if username in user_check and password == user_check[username]['password']:
-            id = user_check[username]['id']
-            login_user(users.get(id))
-
-            return f'login success: {current_user.username}'
+        uni = request.args.get('UNI', None)
+        password = request.args.get('passcode', None)
+        if db.check_if_uni_exists(uni) is True and db.get_password(uni) == password:
+            return f'login success: {uni}'
         else:
             return abort(401)
     else:
         return render_template('login.html')
-
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -47,23 +41,14 @@ def signup():
     if request.method == 'GET':
         return render_template('signup.html')
     else:
-        uni = request.form.get('UNI')
-        password = request.form.get('password')
-        user = User.query.filter_by(UNI = uni).first() # if this 
-                              # returns a user, then the email 
-                              # already exists in database
-        if user: # if a user is found, we want to redirect back to 
-                 # signup page so user can try again
-            flash('UNI already exists')
-            return redirect(url_for('auth.signup'))
-        # create a new user with the form data. Hash the password so 
-        # the plaintext version isn't saved.
-        new_user = User(email=email, name=name, \
-                        password=generate_password_hash(password, \
-                        method='sha256'))#add the new user to the db
-        db.session.add(new_user)
-        db.session.commit()
-        return redirect(url_for('auth.login'))
+        uni = request.args.get('UNI')
+        password = request.args.get('passcode')
+        if db.check_if_uni_exists(uni) is True:
+            flash('UNI already exists, please login using your existing account!')
+            return redirect(url_for('/login'))
+        db.add_uni_passcode(uni, password)
+        flash('Signup is successful, please login!')
+        return redirect(url_for('/login'))
 
 
 '''
