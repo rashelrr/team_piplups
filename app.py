@@ -167,27 +167,30 @@ def rest_display_star_filter():
 # Display reveiws for restaurant that users filter by name
 @app.route('/rest_info', methods=['GET', 'POST'])
 def rest_info():
-    name = request.form['name']
+    name = request.args.get('name')
     result = db.get_all_reviews_for_restaurant(name)
     for key, value in result.items():
          rows = len(value)
     return render_template("rest_info.html", context=result, keys=list(result.keys())[1:], rows=rows)
 
-
+# the problem is there is no memory so this function has no idea 
+# what the name of the restaurant is
 # Display reviews for restaurant that users filter by star
 @app.route('/rest_info_star_filter', methods=['GET', 'POST'])
 def rest_info_star_filter():
-    pass
-    #star = request.form['star']
-    #return render_template("rest_info.html", context=context, keys=list(context.keys())[0:6])
+    star = request.form.getlist('star')
+    name = request.referrer.split('=')[1]
+    result = dict(Name=[], Star_Rating=[], Review=[], UNI=[])
+    for s in star:
+        result.update(db.get_all_reviews_for_rest_given_rating(name, s))
+    for key, value in result.items():
+         rows = len(value)
+    return render_template("rest_info.html", context=result, keys=list(result.keys())[1:], rows=rows)
+
 
 @app.route('/back_home')
 def back_home():
     return redirect('/')
-
-@app.route('/back_rest_info')
-def back_rest_info():
-    return redirect(request.url)
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1')
