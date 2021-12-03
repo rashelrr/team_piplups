@@ -124,7 +124,7 @@ rows:     list of tuples: [ (entire review 1), (entire review 2), ... ]
 Returns all reviews for a restaurant at/above a star rating
 '''
 
-
+# Changed to return a dictionary instead of an array
 def get_all_reviews_for_rest_given_rating(res_name, rating):
     conn = None
     try:
@@ -133,10 +133,21 @@ def get_all_reviews_for_rest_given_rating(res_name, rating):
         cur.execute("SELECT * FROM REVIEWS where restaurant_name=?\
             AND star >=?", (res_name.lower(), rating,))
         rows = cur.fetchall()
+        name = []
+        star = []
+        review = []
+        uni = []
+        for r in rows:
+            name.append(r[0])
+            star.append(r[1])
+            review.append(r[2])
+            uni.append(r[3])
+        
         conn.commit()
         print('Database Online, get reviews for a restaurant at\
               above a rating')
-        return rows
+        return dict(Name=name, Star_Rating=star, Review=review, UNI=uni)
+
     except Error as e:
         print(e)
         return None
