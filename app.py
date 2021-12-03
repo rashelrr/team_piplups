@@ -26,9 +26,21 @@ def index():
     return render_template('homepage.html', uni=uni)
 
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    pass
+    if request.method == 'POST':
+        username = request.form.get('UNI', None)
+        password = request.form.get('password', None)
+        if username in user_check and password == user_check[username]['password']:
+            id = user_check[username]['id']
+            login_user(users.get(id))
+
+            return f'login success: {current_user.username}'
+        else:
+            return abort(401)
+    else:
+        return render_template('login.html')
+
 
 
 @app.route('/signup', methods=['GET', 'POST'])
