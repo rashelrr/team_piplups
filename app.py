@@ -2,7 +2,6 @@ from flask import Flask, render_template, jsonify, request
 import db
 import logging
 
-
 app = Flask(__name__)
 
 log = logging.getLogger('werkzeug')
@@ -36,7 +35,7 @@ def read_reviews():
     rating = request.args.get('stars')
 
     # given restaurant
-    if res_name != ''  and rating == '':
+    if res_name != '' and rating == '':
         reviews = db.get_all_reviews_for_restaurant(res_name)
         if len(reviews) > 0:
             return jsonify(restaurant=res_name, reviews=reviews, valid=True,
@@ -45,7 +44,7 @@ def read_reviews():
                        + "restaurant.")
 
     # given rating
-    elif res_name == ''  and rating != '':
+    elif res_name == '' and rating != '':
         reviews = db.get_all_reviews_given_rating(rating)
         if len(reviews) > 0:
             return jsonify(stars=rating, reviews=reviews, valid=True,
@@ -54,7 +53,7 @@ def read_reviews():
                        + "that rating.")
 
     # given restaurant and rating
-    elif res_name != ''  and rating != '':
+    elif res_name != '' and rating != '':
         reviews = db.get_all_reviews_for_rest_given_rating(res_name, rating)
         if len(reviews) > 0:
             return jsonify(restaurant=res_name, stars=rating, reviews=reviews,
