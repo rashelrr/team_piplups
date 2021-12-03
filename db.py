@@ -93,6 +93,7 @@ def check_if_uni_exists(uni):
     try:
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
+        uni = str(uni)
         cur.execute("SELECT * FROM UNI where UNI = ?", (uni.lower(),))
         rows = cur.fetchall()
         if rows is None or len(rows) == 0:

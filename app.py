@@ -2,9 +2,12 @@ from flask import Flask, render_template, jsonify, request, redirect,\
     url_for, flash, abort
 import db
 import logging
+import secrets
+
+secret = secrets.token_urlsafe(32)
 
 app = Flask(__name__)
-
+app.secret_key = secret
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
@@ -26,12 +29,17 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        uni = request.args.get('UNI', None)
-        password = request.args.get('passcode', None)
-        if db.check_if_uni_exists(uni) is True and db.get_password(uni) == password:
-            return f'login success: {uni}'
+        uni = request.form.get('UNI', None)
+        password = request.form.get('Passcode', None)
+        if db.check_if_uni_exists(uni) is True:
+            if db.get_password(uni) == password:
+                return redirect("http://127.0.0.1:5000/")
+            else:
+                flash('Error: Password is wrong, try again.')
+                return redirect(url_for('login'))
         else:
-            return abort(401)
+            flash('Error: Account does not exist, please sign up')
+            return redirect(url_for('signup'))
     else:
         return render_template('login.html')
 
@@ -41,14 +49,15 @@ def signup():
     if request.method == 'GET':
         return render_template('signup.html')
     else:
-        uni = request.args.get('UNI')
-        password = request.args.get('passcode')
+        uni = request.form.get('UNI')
+        password = request.form.get('passcode')
         if db.check_if_uni_exists(uni) is True:
-            flash('UNI already exists, please login using your existing account!')
-            return redirect(url_for('/login'))
+            flash('UNI already exists,\
+                please login using your existing account')
+            return redirect(url_for('login'))
         db.add_uni_passcode(uni, password)
         flash('Signup is successful, please login!')
-        return redirect(url_for('/login'))
+        return redirect(url_for('login'))
 
 
 '''
