@@ -4,6 +4,8 @@ import db
 import logging
 
 app = Flask(__name__)
+app.config['SESSION_TYPE'] = 'memcached'
+app.config['SECRET_KEY'] = 'super secret key'
 
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
@@ -26,12 +28,13 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        uni = request.args.get('UNI', None)
-        password = request.args.get('passcode', None)
-        if db.check_if_uni_exists(uni) is True and db.get_password(uni) == password:
+        uni = request.form['username']
+        password = request.form['password']
+
+        if db.check_if_uni_exists(uni) is True and db.get_password(uni)[0][0] == password:
             return f'login success: {uni}'
         else:
-            return abort(401)
+            return render_template('wrongpw.html')
     else:
         return render_template('login.html')
 
@@ -41,14 +44,14 @@ def signup():
     if request.method == 'GET':
         return render_template('signup.html')
     else:
-        uni = request.args.get('UNI')
-        password = request.args.get('passcode')
+        uni = request.form['username']
+        password = request.form['password']
         if db.check_if_uni_exists(uni) is True:
             flash('UNI already exists, please login using your existing account!')
-            return redirect(url_for('/login'))
+            return redirect(url_for('login'))
         db.add_uni_passcode(uni, password)
         flash('Signup is successful, please login!')
-        return redirect(url_for('/login'))
+        return redirect(url_for('login'))
 
 
 '''
