@@ -44,21 +44,20 @@ def login():
         return render_template('login.html')
 
 
+''' Example: http://127.0.0.1:5000/login?UNI=abc4321&passcode=cows '''
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    if request.method == 'GET':
-        return render_template('signup.html')
-    else:
-        uni = request.form.get('UNI')
-        password = request.form.get('passcode')
-        if db.check_if_uni_exists(uni) is True:
-            flash('UNI already exists,\
-                please login using your existing account')
-            return redirect(url_for('login'))
-        db.add_uni_passcode(uni, password)
-        flash('Signup is successful, please login!')
-        return redirect(url_for('login'))
 
+    uni = request.args.get('UNI')
+    password = request.args.get('passcode')
+    if db.check_if_uni_exists(uni) is True:
+        print("uni exists already")
+        #flash('UNI already exists, please login using your existing account!')
+        return redirect(url_for('login'))
+    db.add_uni_passcode(uni, password)
+    print("added uni and passcode as an account to db")
+    #flash('Signup is successful, please login!')
+    return redirect(url_for('login'))
 
 '''
 Endpoint:  /readreviews?restaurant=___&stars=___
