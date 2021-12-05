@@ -35,10 +35,10 @@ def login():
             if db.get_password(uni) == password:
                 return redirect("http://127.0.0.1:5000/")
             else:
-                flash('Error: Password is wrong, try again.')
+                # flash('Error: Password is wrong, try again.')
                 return redirect(url_for('login'))
         else:
-            flash('Error: Account does not exist, please sign up')
+            # flash('Error: Account does not exist, please sign up')
             return redirect(url_for('signup'))
     else:
         return render_template('login.html')
@@ -52,12 +52,13 @@ def signup():
     password = request.args.get('passcode')
     if db.check_if_uni_exists(uni) is True:
         print("uni exists already")
-        #flash('UNI already exists, please login using your existing account!')
+        # flash('UNI already exists, please login using your existing account!')
         return redirect(url_for('login'))
     db.add_uni_passcode(uni, password)
     print("added uni and passcode as an account to db")
-    #flash('Signup is successful, please login!')
+    # flash('Signup is successful, please login!')
     return redirect(url_for('login'))
+
 
 '''
 Endpoint:  /readreviews?restaurant=___&stars=___
