@@ -187,7 +187,12 @@ def pre_edit_review():
     global global_uni
     if global_uni == '':
         return redirect(url_for('login'))
-    return render_template('edit_review.html', uni=global_uni)
+    result = db.get_review_uni(global_uni)
+    for k, v in result.items():
+        rows = len(v)
+    return render_template('edit_review.html', context=result,
+                           keys=list(result.keys()), rows=rows,
+                           uni=global_uni)
 
 
 '''

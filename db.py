@@ -329,9 +329,12 @@ def get_review_uni(uni):
         name = []
         star = []
         review = []
+        uni = []
         for r in rows:
             name.append(r[0])
             star.append(r[1])
+            review.append(r[2])
+            uni.append(r[3])
         print('Database Online, get review given a uni')
         return dict(Name=name, Star_Rating=star, Review=review, UNI=uni)
     except Error as e:
