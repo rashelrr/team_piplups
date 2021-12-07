@@ -128,16 +128,16 @@ def add_review():
         return jsonify(valid=False,
                        reason="To add a review, please enter all required "
                        + "fields.")
-
-    # add review if not already in db
-    result = db.get_review(res_name, uni)
-    if result is None:
-        row = (res_name, rating, review, uni)
-        db.add_review(row)
-        return jsonify(valid=True, reason="Successfully added review.")
     else:
-        return jsonify(valid=False,
-                       reason="You've already reviewed this restaurant.")
+        # add review if not already in db
+        result = db.get_review(res_name, uni)
+        if result is None:
+            row = (res_name, rating, review, uni)
+            db.add_review(row)
+            return jsonify(valid=True, reason="Successfully added review.")
+        else:
+            return jsonify(valid=False,
+                           reason="You've already reviewed this restaurant.")
 
 
 @app.route('/preaddreview', methods=['GET', 'POST'])

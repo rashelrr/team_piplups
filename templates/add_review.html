@@ -28,10 +28,13 @@
             <label for="5">5</label><br>
 
             Review: <input type="text" id="review" name="review"><br>
+            <input type="submit" value="Submit">
         </form> 
 
-        <button onclick="handleAddReview();">Submit</button>
-        <p id = "ignorethis"></p>
+        <button onclick="handleAddReview();">Submit!</button>
+
+        <br><br>
+        <p id = "reason">{{reason}}</p>
 
         <script src="{{ url_for('static', filename = 'add_review.js') }}"></script>              
     </body>
