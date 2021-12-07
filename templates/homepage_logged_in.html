@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<!--Some CSS style so it's not ugly-->
+<style>
+    body {
+        font-size: 15pt;
+        font-family: arial;
+    }
+
+    #data, #data_head, #data_data {
+        border: 1px solid black;
+    }
+
+    th, #data_data {
+        text-align: center;
+    }
+</style>
+
+<body>
+    <!--Page title-->
+    <h1>Lion Eats</h1>
+
+    <h3> Logged in as User: {{uni}} </h3>
+
+    <h3>Search for Restaurants</h3>
+
+        
+        <form method="GET" action="/rest_info">
+            Enter restaurant name to see reviews:
+            <input type="text" name="name">
+            <input type="submit" value="View">
+        </form>
+
+        <form action="/rest_display_star_filter" method="POST" method="GET">
+            <p><input type="radio" name="star" value=1>1</p>
+            <p><input type="radio" name="star" value=2>2</p>
+            <p><input type="radio" name="star" value=3>3</p>
+            <p><input type="radio" name="star" value=4>4</p>
+            <p><input type="radio" name="star" value=5>5</p>
+            <input type="submit" value="Filter">
+        </form>
+
+        <!--
+        <form method="GET" action="/rest_display_star_filter">
+            Star rating:<br>
+            <input type="radio" id="1" name="star" value=1> <label for="1">1</label><br>
+            <input type="radio" id="2" name="star" value=2> <label for="2">2</label><br>
+            <input type="radio" id="3" name="star" value=3> <label for="3">3</label><br>
+            <input type="radio" id="4" name="star" value=4> <label for="4">4</label><br>
+            <input type="radio" id="5" name="star" value=5> <label for="5">5</label><br>
+            <input type="submit" value="Filter">
+        </form>
+    -->
+
+        <form method="GET" method="POST" action="/rest_display_all">
+            <input type="submit" value="See all restaurants">
+        </form>
+    
+        <!--
+        <form id="readreviews" action="/rest_info" method="GET">
+            Restaurant name: <input type="text" id="restaurant" name="name"><br>
+            Star rating:<br>
+            <input type="radio" id="1" name="star" value="1">
+            <label for="1">1</label><br>
+
+            <input type="radio" id="2" name="star" value="2">
+            <label for="2">2</label><br>
+
+            <input type="radio" id="3" name="star" value="3">
+            <label for="3">3</label><br>
+
+            <input type="radio" id="4" name="star" value="4">
+            <label for="4">4</label><br>
+
+            <input type="radio" id="5" name="star" value="5">
+            <label for="5">5</label><br>
+
+        </form> 
+
+        <button onclick="rest_display_star_filter();">Submit</button>
+        or 
+        <button onclick="rest_display_all();">Display All Restaurants</button>
+
+        -->
+
+        <script src="{{ url_for('static', filename = 'homepage.js') }}"></script>              
+    <h4>Add A Review</h4>
+        <button onclick="addReview();">Add Review</button>
+    <h5>Edit Your Review</h5>
+        <button onclick="editReview();">Edit Review</button>
+
+</body>
+
+</html>

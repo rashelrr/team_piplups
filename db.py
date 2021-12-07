@@ -215,10 +215,10 @@ def get_all_reviews_given_rating(rating):
 res_name: string
 rating:   int
 rows:     list of tuples: [ (entire review 1), (entire review 2), ... ]
-Returns all reviews for a restaurant at/above a star rating
+Returns all reviews for a restaurant at/above a star rating in dictionary form
 '''
 
-# Changed to return a dictionary instead of an array
+
 def get_all_reviews_for_rest_given_rating(res_name, rating):
     conn = None
     try:
@@ -254,7 +254,7 @@ def get_all_reviews_for_rest_given_rating(res_name, rating):
 # given a rating, compute and average rating for each restaurant
 # and return restaurant_name + star for the restaurants above that rating
 
-# Changed to return a dictionary instead of an array
+
 def get_restaurants_above_ratings(rating):
     conn = None
     try:
@@ -326,8 +326,14 @@ def get_review_uni(uni):
                     (uni, ))
         rows = cur.fetchall()
         conn.commit()
+        name = []
+        star = []
+        review = []
+        for r in rows:
+            name.append(r[0])
+            star.append(r[1])
         print('Database Online, get review given a uni')
-        return rows
+        return dict(Name=name, Star_Rating=star, Review=review, UNI=uni)
     except Error as e:
         print(e)
         return None

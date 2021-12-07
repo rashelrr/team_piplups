@@ -1,11 +1,11 @@
 import os
 from flask import Flask, render_template, jsonify, request, redirect,\
-    url_for, flash, abort
+    url_for, flash
 import db
 import logging
-import secrets
 
-tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
+tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                        'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
 
 log = logging.getLogger('werkzeug')
@@ -17,15 +17,22 @@ app.config['SECRET_KEY'] = 'super secret key'
 Homepage
 '''
 
-uni = 'abc1234'
+global_uni = ''
 
 
 @app.route('/', methods=['GET'])
 def index():
+    global global_uni
     db.clear()
     db.init_db()
     db.insert_dummy_data()
-    return render_template('homepage.html', uni=uni)
+    return render_template('homepage.html', uni=global_uni)
+
+
+@app.route('/home', methods=['GET'])
+def home():
+    global global_uni
+    return render_template('homepage_logged_in.html', uni=global_uni)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -35,7 +42,9 @@ def login():
         password = request.form['password']
         if db.check_if_uni_exists(uni) is True:
             if db.get_password(uni)[0][0] == password:
-                return redirect("http://127.0.0.1:5000/")
+                global global_uni
+                global_uni = uni
+                return redirect("http://127.0.0.1:5000/home")
             else:
                 flash('Error: Password is wrong, try again.')
                 return redirect(url_for('login'))
@@ -130,9 +139,9 @@ def add_review():
                        + "fields.")
     else:
         # add review if not already in db
-        result = db.get_review(res_name, uni)
+        result = db.get_review(res_name, global_uni)
         if result is None:
-            row = (res_name, rating, review, uni)
+            row = (res_name, rating, review, global_uni)
             db.add_review(row)
             return jsonify(valid=True, reason="Successfully added review.")
         else:
@@ -172,24 +181,29 @@ def edit_review():
     db.edit_review(uni, res_name, rating, review)
     return jsonify(valid=True, reason="Successfully edited review.")
 
+
 @app.route('/preeditreview', methods=['GET', 'POST'])
 def pre_edit_review():
-    
-    return render_template('edit_review.html', uni=uni)
+    global global_uni
+    if global_uni == '':
+        return redirect(url_for('login'))
+    return render_template('edit_review.html', uni=global_uni)
 
 
 '''
 Endpoint:  /rest_display_all
 UI:         User clicks "show all restaurants button"
+Purpose:    Display all restaurants and average rating
 '''
 
-# Display all restaurants and average rating
+
 @app.route('/rest_display_all', methods=['GET', 'POST'])
 def rest_display_all():
     result = db.get_restaurants_above_ratings(1)
     for key, value in result.items():
-         rows = len(value)
-    return render_template("rest_display.html", context=result, keys=list(result.keys()), rows=rows)
+        rows = len(value)
+    return render_template("rest_display.html", context=result,
+                           keys=list(result.keys()), rows=rows)
 
 
 # Display restaurants that users filter by average star rating
@@ -198,8 +212,9 @@ def rest_display_star_filter():
     star = request.form['star']
     result = db.get_restaurants_above_ratings(star)
     for key, value in result.items():
-         rows = len(value)
-    return render_template("rest_display.html", context=result, keys=list(result.keys()), rows=rows)
+        rows = len(value)
+    return render_template("rest_display.html", context=result,
+                           keys=list(result.keys()), rows=rows)
 
 
 # Display reveiws for restaurant that users filter by name
@@ -208,8 +223,10 @@ def rest_info():
     name = request.args.get('name')
     result = db.get_all_reviews_for_restaurant(name)
     for key, value in result.items():
-         rows = len(value)
-    return render_template("rest_info.html", context=result, keys=list(result.keys())[1:], rows=rows)
+        rows = len(value)
+    return render_template("rest_info.html", context=result,
+                           keys=list(result.keys())[1:], rows=rows)
+
 
 # Display reviews for restaurant that users filter by star
 @app.route('/rest_info_star_filter', methods=['GET', 'POST'])
@@ -218,13 +235,15 @@ def rest_info_star_filter():
     name = request.referrer.split('=')[1]
     result = db.get_all_reviews_for_rest_given_rating(name, star)
     for key, value in result.items():
-         rows = len(value)
-    return render_template("rest_info.html", context=result, keys=list(result.keys())[1:], rows=rows)
+        rows = len(value)
+    return render_template("rest_info.html", context=result,
+                           keys=list(result.keys())[1:], rows=rows)
 
 
 @app.route('/back_home')
 def back_home():
     return redirect('/')
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1')
