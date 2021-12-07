@@ -29,10 +29,25 @@ def index():
     return render_template('homepage.html', uni=global_uni)
 
 
+'''
+Endpoint:  /home
+UI:         User clicks "log in" after putting in the right credentials
+Purpose:    Leads the logged-in user to their home page
+'''
+
+
 @app.route('/home', methods=['GET'])
 def home():
     global global_uni
     return render_template('homepage_logged_in.html', uni=global_uni)
+
+
+'''
+Endpoint:  /login
+UI:         User clicks "login" button on homepage
+Purpose:    Allows user to log in 
+            (if not registered, will lead to signup page)
+'''
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -55,7 +70,13 @@ def login():
         return render_template('login.html')
 
 
-''' Example: http://127.0.0.1:5000/login?UNI=abc4321&passcode=cows '''
+'''
+Endpoint:  /signup
+UI:         User clicks "sign up" on homepage
+Purpose:    Allows the user to sign up for a new account
+'''
+
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'GET':
@@ -72,52 +93,6 @@ def signup():
         flash('Signup is successful, please login!')
         return redirect(url_for('login'))
 
-
-'''
-Endpoint:  /readreviews?restaurant=___&stars=___
-UI:        User fills out a form with their query and presses 'Search' button
-Return:    reviews that match that query
-'''
-
-'''
-@app.route('/readreviews', methods=['GET'])
-def read_reviews():
-    res_name = request.args.get('restaurant')
-    rating = request.args.get('stars')
-
-    # given restaurant
-    if res_name != '' and rating == '':
-        reviews = db.get_all_reviews_for_restaurant(res_name)
-        if len(reviews) > 0:
-            return jsonify(restaurant=res_name, reviews=reviews, valid=True,
-                           reason="")
-        return jsonify(valid=False, reason="There are no reviews for that "
-                       + "restaurant.")
-
-    # given rating
-    elif res_name == '' and rating != '':
-        reviews = db.get_all_reviews_given_rating(rating)
-        if len(reviews) > 0:
-            return jsonify(stars=rating, reviews=reviews, valid=True,
-                           reason="")
-        return jsonify(valid=False, reason="There are no reviews at/above "
-                       + "that rating.")
-
-    # given restaurant and rating
-    elif res_name != '' and rating != '':
-        reviews = db.get_all_reviews_for_rest_given_rating(res_name, rating)
-        if len(reviews) > 0:
-            return jsonify(restaurant=res_name, stars=rating, reviews=reviews,
-                           valid=True, reason="")
-        else:
-            return jsonify(valid=False, reason="There are no reviews matching "
-                           + "your query.")
-
-    # parameters are empty strings
-    else:
-        return jsonify(valid=False,
-                       reason="To read reviews, please make a query.")
-'''
 
 '''
 Endpoint:  /addreview?restaurant=___&stars=___&review=___&uni=___
@@ -182,6 +157,14 @@ def edit_review():
     return jsonify(valid=True, reason="Successfully edited review.")
 
 
+'''
+Endpoint:  /preeditreview
+UI:         User clicks "edit review" on homepage
+Purpose:    displays all the reviews made by the logged-in user
+            and allows the user to search for a specific review
+'''
+
+
 @app.route('/preeditreview', methods=['GET', 'POST'])
 def pre_edit_review():
     global global_uni
@@ -193,6 +176,18 @@ def pre_edit_review():
     return render_template('edit_review.html', context=result,
                            keys=list(result.keys()), rows=rows,
                            uni=global_uni)
+
+
+'''
+Endpoint:  /edit_review_search
+UI:         User clicks submit button at edit_review page
+Purpose:    searches for a restaurant review made by the current user
+'''
+
+
+@app.route('/edit_review_search', methods=['GET'])
+def edit_review_search():
+    pass
 
 
 '''
