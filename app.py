@@ -51,8 +51,8 @@ def signup():
         password = request.form['password']
         if db.check_if_uni_exists(uni) is True:
             print("uni exists already")
-            # flash('UNI already exists, please login using your existing account!')
-            return redirect(url_for('login'))
+            flash('UNI already exists, please login using your existing account!')
+            #return redirect(url_for('login'))
         db.add_uni_passcode(uni, password)
         print("added uni and passcode as an account to db")
         # flash('Signup is successful, please login!')
