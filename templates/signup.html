@@ -9,9 +9,9 @@
       <h1>Sign Up</h1>
       <br>
       <form action="/signup" method="POST">
-        <input type="text" placeholder="Username" name="username" value="{{
+        <input type="text" placeholder="Username" name="username" required value="{{
           request.form.username }}">
-         <input type="password" placeholder="Password" name="password" value="{{
+         <input type="password" placeholder="Password" name="password" required value="{{
           request.form.password }}">
         <input class="btn btn-default" type="submit" value="signup">
       </form>

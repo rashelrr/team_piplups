@@ -9,9 +9,9 @@
       <h1>Please Login</h1>
       <br>
       <form action="/login" method="POST">
-        <input type="text" placeholder="Username" name="username" value="{{
+        <input type="text" placeholder="Username" name="username" required value="{{
           request.form.username }}">
-         <input type="password" placeholder="Password" name="password" value="{{
+         <input type="password" placeholder="Password" name="password" required value="{{
           request.form.password }}">
         <input class="btn btn-default" type="submit" value="login">
       </form>
