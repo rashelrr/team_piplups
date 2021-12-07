@@ -2,11 +2,14 @@ from flask import Flask, render_template, jsonify, request, redirect,\
     url_for, flash, abort
 import db
 import logging
+import secrets
 
 app = Flask(__name__)
 app.config['SESSION_TYPE'] = 'memcached'
 app.config['SECRET_KEY'] = 'super secret key'
 
+app = Flask(__name__)
+app.secret_key = secret
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
@@ -30,27 +33,34 @@ def login():
     if request.method == 'POST':
         uni = request.form['username']
         password = request.form['password']
-
-        if db.check_if_uni_exists(uni) is True and db.get_password(uni)[0][0] == password:
-            return f'login success: {uni}'
+        if db.check_if_uni_exists(uni) is True:
+            if db.get_password(uni) == password:
+                return redirect("http://127.0.0.1:5000/")
+            else:
+                # flash('Error: Password is wrong, try again.')
+                return redirect(url_for('login'))
         else:
-            return render_template('wrongpw.html')
+            # flash('Error: Account does not exist, please sign up')
+            return redirect(url_for('signup'))
     else:
         return render_template('login.html')
 
 
+''' Example: http://127.0.0.1:5000/login?UNI=abc4321&passcode=cows '''
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'GET':
         return render_template('signup.html')
     else:
-        uni = request.form['username']
-        password = request.form['password']
+        uni = request.args.get('UNI')
+        password = request.args.get('passcode')
         if db.check_if_uni_exists(uni) is True:
-            flash('UNI already exists, please login using your existing account!')
+            print("uni exists already")
+            # flash('UNI already exists, please login using your existing account!')
             return redirect(url_for('login'))
         db.add_uni_passcode(uni, password)
-        flash('Signup is successful, please login!')
+        print("added uni and passcode as an account to db")
+        # flash('Signup is successful, please login!')
         return redirect(url_for('login'))
 
 
