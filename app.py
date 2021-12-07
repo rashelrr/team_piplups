@@ -30,7 +30,7 @@ UI:        User fills out a form with their query and presses 'Search' button
 Return:    reviews that match that query
 '''
 
-
+'''
 @app.route('/readreviews', methods=['GET'])
 def read_reviews():
     res_name = request.args.get('restaurant')
@@ -68,7 +68,7 @@ def read_reviews():
     else:
         return jsonify(valid=False,
                        reason="To read reviews, please make a query.")
-
+'''
 
 '''
 Endpoint:  /addreview?restaurant=___&stars=___&review=___&uni=___
@@ -129,19 +129,9 @@ def edit_review():
 
 
 '''
-Endpoint:  /allres
+Endpoint:  /rest_display_all
 UI:         User clicks "show all restaurants button"
 '''
-
-# Suggested code for this endpoint
-
-'''
-@app.route('/allrest', methods=['GET'])
-def display_all_restaurants():
-    data = db.get_restaurants_above_ratings(1)
-    return jsonify(valid=True, reason="Successfully edited review.")
-'''
-
 
 # Display all restaurants and average rating
 @app.route('/rest_display_all', methods=['GET', 'POST'])
@@ -165,7 +155,7 @@ def rest_display_star_filter():
 
 
 # Display reveiws for restaurant that users filter by name
-@app.route('/rest_info', methods=['GET', 'POST'])
+@app.route('/rest_info', methods=['GET'])
 def rest_info():
     name = request.args.get('name')
     result = db.get_all_reviews_for_restaurant(name)
@@ -173,8 +163,6 @@ def rest_info():
          rows = len(value)
     return render_template("rest_info.html", context=result, keys=list(result.keys())[1:], rows=rows)
 
-# the problem is there is no memory so this function has no idea 
-# what the name of the restaurant is
 # Display reviews for restaurant that users filter by star
 @app.route('/rest_info_star_filter', methods=['GET', 'POST'])
 def rest_info_star_filter():
