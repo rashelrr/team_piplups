@@ -185,10 +185,8 @@ def rest_display_all():
 # Display restaurants that users filter by average star rating
 @app.route('/rest_display_star_filter', methods=['GET', 'POST'])
 def rest_display_star_filter():
-    star = request.form.getlist('star')
-    result = dict(Name=[], Average_Rating=[])
-    for s in star:
-        result.update(db.get_restaurants_above_ratings(s))
+    star = request.form['star']
+    result = db.get_restaurants_above_ratings(star)
     for key, value in result.items():
          rows = len(value)
     return render_template("rest_display.html", context=result, keys=list(result.keys()), rows=rows)
@@ -206,11 +204,9 @@ def rest_info():
 # Display reviews for restaurant that users filter by star
 @app.route('/rest_info_star_filter', methods=['GET', 'POST'])
 def rest_info_star_filter():
-    star = request.form.getlist('star')
+    star = request.form['star']
     name = request.referrer.split('=')[1]
-    result = dict(Name=[], Star_Rating=[], Review=[], UNI=[])
-    for s in star:
-        result.update(db.get_all_reviews_for_rest_given_rating(name, s))
+    result = db.get_all_reviews_for_rest_given_rating(name, star)
     for key, value in result.items():
          rows = len(value)
     return render_template("rest_info.html", context=result, keys=list(result.keys())[1:], rows=rows)
