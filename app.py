@@ -140,6 +140,11 @@ def add_review():
                        reason="You've already reviewed this restaurant.")
 
 
+@app.route('/preaddreview', methods=['GET', 'POST'])
+def pre_add_review():
+    return render_template("add_review.html")
+
+
 '''
 Endpoint:  /editreview?restaurant=___&stars=___&review=___&uni=___
 UI:         User is already at page pre-populated
