@@ -37,10 +37,10 @@ def login():
             if db.get_password(uni)[0][0] == password:
                 return redirect("http://127.0.0.1:5000/")
             else:
-                # flash('Error: Password is wrong, try again.')
+                flash('Error: Password is wrong, try again.')
                 return redirect(url_for('login'))
         else:
-            # flash('Error: Account does not exist, please sign up')
+            flash('Error: Account does not exist, please sign up')
             return redirect(url_for('signup'))
     else:
         return render_template('login.html')
@@ -56,11 +56,11 @@ def signup():
         password = request.form['password']
         if db.check_if_uni_exists(uni) is True:
             print("uni exists already")
-            # flash('UNI already exists, please login using your existing account!')
+            flash('UNI already exists, please login using your existing account!')
             return redirect(url_for('login'))
         db.add_uni_passcode(uni, password)
         print("added uni and passcode as an account to db")
-        # flash('Signup is successful, please login!')
+        flash('Signup is successful, please login!')
         return redirect(url_for('login'))
 
 
@@ -128,16 +128,16 @@ def add_review():
         return jsonify(valid=False,
                        reason="To add a review, please enter all required "
                        + "fields.")
-
-    # add review if not already in db
-    result = db.get_review(res_name, uni)
-    if result is None:
-        row = (res_name, rating, review, uni)
-        db.add_review(row)
-        return jsonify(valid=True, reason="Successfully added review.")
     else:
-        return jsonify(valid=False,
-                       reason="You've already reviewed this restaurant.")
+        # add review if not already in db
+        result = db.get_review(res_name, uni)
+        if result is None:
+            row = (res_name, rating, review, uni)
+            db.add_review(row)
+            return jsonify(valid=True, reason="Successfully added review.")
+        else:
+            return jsonify(valid=False,
+                           reason="You've already reviewed this restaurant.")
 
 
 @app.route('/preaddreview', methods=['GET', 'POST'])
@@ -195,10 +195,8 @@ def rest_display_all():
 # Display restaurants that users filter by average star rating
 @app.route('/rest_display_star_filter', methods=['GET', 'POST'])
 def rest_display_star_filter():
-    star = request.form.getlist('star')
-    result = dict(Name=[], Average_Rating=[])
-    for s in star:
-        result.update(db.get_restaurants_above_ratings(s))
+    star = request.form['star']
+    result = db.get_restaurants_above_ratings(star)
     for key, value in result.items():
          rows = len(value)
     return render_template("rest_display.html", context=result, keys=list(result.keys()), rows=rows)
@@ -216,11 +214,9 @@ def rest_info():
 # Display reviews for restaurant that users filter by star
 @app.route('/rest_info_star_filter', methods=['GET', 'POST'])
 def rest_info_star_filter():
-    star = request.form.getlist('star')
+    star = request.form['star']
     name = request.referrer.split('=')[1]
-    result = dict(Name=[], Star_Rating=[], Review=[], UNI=[])
-    for s in star:
-        result.update(db.get_all_reviews_for_rest_given_rating(name, s))
+    result = db.get_all_reviews_for_rest_given_rating(name, star)
     for key, value in result.items():
          rows = len(value)
     return render_template("rest_info.html", context=result, keys=list(result.keys())[1:], rows=rows)

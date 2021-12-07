@@ -19,14 +19,26 @@
     <!--Page title-->
     <h1>{{context['Name'][0]}}</h1>
 
-    <form action="/rest_info_star_filter" method="GET">
-        <p><input type="checkbox" name="star" value=1>1</p>
-        <p><input type="checkbox" name="star" value=2>2</p>
-        <p><input type="checkbox" name="star" value=3>3</p>
-        <p><input type="checkbox" name="star" value=4>4</p>
-        <p><input type="checkbox" name="star" value=5>5</p>
+    <form action="/rest_info_star_filter" method="POST" method="GET">
+        <p><input type="radio" name="star" value=1>1</p>
+        <p><input type="radio" name="star" value=2>2</p>
+        <p><input type="radio" name="star" value=3>3</p>
+        <p><input type="radio" name="star" value=4>4</p>
+        <p><input type="radio" name="star" value=5>5</p>
         <input type="submit" value="Filter">
     </form>
+
+    <!--
+    <form action="/rest_info_star_filter" method="GET" method="POST">
+        Star rating:<br>
+        <input type="radio" id="1" name="star" value=1> <label for="1">1</label><br>
+        <input type="radio" id="2" name="star" value=2> <label for="2">2</label><br>
+        <input type="radio" id="3" name="star" value=3> <label for="3">3</label><br>
+        <input type="radio" id="4" name="star" value=4> <label for="4">4</label><br>
+        <input type="radio" id="5" name="star" value=5> <label for="5">5</label><br>
+        <input type="submit" value="Filter">
+    </form>
+-->
 
     <table style="width:100%" id="data">
         <tr>
