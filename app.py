@@ -8,11 +8,6 @@ app = Flask(__name__)
 app.config['SESSION_TYPE'] = 'memcached'
 app.config['SECRET_KEY'] = 'super secret key'
 
-app = Flask(__name__)
-app.secret_key = secret
-log = logging.getLogger('werkzeug')
-log.setLevel(logging.ERROR)
-
 '''
 Homepage
 '''
@@ -34,7 +29,7 @@ def login():
         uni = request.form['username']
         password = request.form['password']
         if db.check_if_uni_exists(uni) is True:
-            if db.get_password(uni) == password:
+            if db.get_password(uni)[0][0] == password:
                 return redirect("http://127.0.0.1:5000/")
             else:
                 # flash('Error: Password is wrong, try again.')
@@ -52,8 +47,8 @@ def signup():
     if request.method == 'GET':
         return render_template('signup.html')
     else:
-        uni = request.args.get('UNI')
-        password = request.args.get('passcode')
+        uni = request.form['username']
+        password = request.form['password']
         if db.check_if_uni_exists(uni) is True:
             print("uni exists already")
             # flash('UNI already exists, please login using your existing account!')
