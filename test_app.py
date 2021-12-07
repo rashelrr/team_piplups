@@ -1,18 +1,26 @@
 import unittest
 import requests
 import db
+import os
 
 
 class Test_TestApp(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        # os.system("nohup python3 app.py &")
+
     def setUp(self):
         print('setUp')
+        # os.system("nohup python3 app.py &")
         db.init_db()
         db.insert_dummy_data()
 
     def tearDown(self):
         print('tearDown')
         db.clear()
-        print('\n')
+        # kill = "kill -9 " + str(os.getpid()) + " &"
+        # os.system(kill)
 
     # Tests / endpoint, checks status code is 200
     def test_index_check_status_code(self):
@@ -20,7 +28,7 @@ class Test_TestApp(unittest.TestCase):
         response = requests.get(url)
         assert response.status_code == 200
 
-    # Checks readreviews endpoint if given a valid restaurant name
+    '''# Checks readreviews endpoint if given a valid restaurant name
     def test_read_reviews_happy_given_restaurant(self):
         url = "http://127.0.0.1:5000/readreviews?restaurant=fumo"
         response = requests.get(url)
@@ -173,4 +181,4 @@ class Test_TestApp(unittest.TestCase):
 
         assert response_body["valid"] is False
         reason = "To edit a review, please enter all required fields."
-        assert response_body["reason"] == reason
+        assert response_body["reason"] == reason'''
