@@ -15,6 +15,7 @@ def init_db():
                     UNI varchar(7) NOT NULL,
                     PRIMARY KEY(restaurant_name, UNI));""")
         conn.execute("""CREATE TABLE IF NOT EXISTS UNI(UNI varchar(7) NOT NULL,\
+            passcode TEXT NOT NULL, \
             PRIMARY KEY(UNI))""")
 
         # cur = conn.cursor()
@@ -48,6 +49,99 @@ def insert_dummy_data():
         print('Database Online, dummy data added')
     except Error as e:
         print(e)
+
+    finally:
+        if conn:
+            conn.close()
+
+
+'''
+uni: UNI
+rows:     passcode
+Returns   passcode given a UNI
+'''
+
+
+def get_password(uni):
+    conn = None
+    try:
+        conn = sqlite3.connect('Lion_Eats')
+        cur = conn.cursor()
+        cur.execute("SELECT passcode FROM UNI where UNI = ?", (uni.lower(),))
+        rows = cur.fetchall()
+        conn.commit()
+        print('Database Online, get passcode given a UNI')
+        return rows
+
+    except Error as e:
+        print(e)
+        return None
+
+    finally:
+        if conn:
+            conn.close()
+
+
+'''
+uni: UNI
+Returns   False if user does not exist, True if user exists
+'''
+
+
+def check_if_uni_exists(uni):
+    conn = None
+    try:
+        conn = sqlite3.connect('Lion_Eats')
+        cur = conn.cursor()
+        uni = str(uni)
+        cur.execute("SELECT * FROM UNI where UNI = ?", (uni.lower(),))
+        rows = cur.fetchall()
+        if rows is None or len(rows) == 0:
+            print("UNI not found, signup is allowed.")
+            return False
+        print("UNI found, please log in.")
+        return True
+
+    except Error as e:
+        print(e)
+        return None
+
+    finally:
+        if conn:
+            conn.close()
+
+
+'''
+uni: UNI
+password: password to add
+Returns   the new row added, error if uni exists already
+'''
+
+
+def add_uni_passcode(uni, password):
+    conn = None
+    try:
+        if uni is None or uni == "":
+            print("Error: adding a blank UNI")
+            return Error
+        if password is None or password == "":
+            print("Error: cannot add blank password")
+            return Error
+        conn = sqlite3.connect('Lion_Eats')
+        cur = conn.cursor()
+        if check_if_uni_exists(uni) is True:
+            print("UNI exists, cannot add")
+            return Error
+        cur.execute("INSERT INTO UNI (UNI, passcode) VALUES\
+                (?, ?)", (uni.lower(), password))
+        rows = cur.fetchall()
+        conn.commit()
+        print('Database Online, new account added')
+        return rows
+
+    except Error as e:
+        print(e)
+        return None
 
     finally:
         if conn:

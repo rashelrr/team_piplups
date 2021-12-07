@@ -1,13 +1,17 @@
 import os
-from flask import Flask, render_template, jsonify, request, redirect
+from flask import Flask, render_template, jsonify, request, redirect,\
+    url_for, flash, abort
 import db
 import logging
+import secrets
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
 
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
+app.config['SESSION_TYPE'] = 'memcached'
+app.config['SECRET_KEY'] = 'super secret key'
 
 '''
 Homepage
@@ -24,6 +28,42 @@ def index():
     return render_template('homepage.html', uni=uni)
 
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        uni = request.form['username']
+        password = request.form['password']
+        if db.check_if_uni_exists(uni) is True:
+            if db.get_password(uni)[0][0] == password:
+                return redirect("http://127.0.0.1:5000/")
+            else:
+                # flash('Error: Password is wrong, try again.')
+                return redirect(url_for('login'))
+        else:
+            # flash('Error: Account does not exist, please sign up')
+            return redirect(url_for('signup'))
+    else:
+        return render_template('login.html')
+
+
+''' Example: http://127.0.0.1:5000/login?UNI=abc4321&passcode=cows '''
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'GET':
+        return render_template('signup.html')
+    else:
+        uni = request.form['username']
+        password = request.form['password']
+        if db.check_if_uni_exists(uni) is True:
+            print("uni exists already")
+            # flash('UNI already exists, please login using your existing account!')
+            return redirect(url_for('login'))
+        db.add_uni_passcode(uni, password)
+        print("added uni and passcode as an account to db")
+        # flash('Signup is successful, please login!')
+        return redirect(url_for('login'))
+
+
 '''
 Endpoint:  /readreviews?restaurant=___&stars=___
 UI:        User fills out a form with their query and presses 'Search' button
@@ -37,7 +77,7 @@ def read_reviews():
     rating = request.args.get('stars')
 
     # given restaurant
-    if res_name != ''  and rating == '':
+    if res_name != '' and rating == '':
         reviews = db.get_all_reviews_for_restaurant(res_name)
         if len(reviews) > 0:
             return jsonify(restaurant=res_name, reviews=reviews, valid=True,
@@ -46,7 +86,7 @@ def read_reviews():
                        + "restaurant.")
 
     # given rating
-    elif res_name == ''  and rating != '':
+    elif res_name == '' and rating != '':
         reviews = db.get_all_reviews_given_rating(rating)
         if len(reviews) > 0:
             return jsonify(stars=rating, reviews=reviews, valid=True,
@@ -55,7 +95,7 @@ def read_reviews():
                        + "that rating.")
 
     # given restaurant and rating
-    elif res_name != ''  and rating != '':
+    elif res_name != '' and rating != '':
         reviews = db.get_all_reviews_for_rest_given_rating(res_name, rating)
         if len(reviews) > 0:
             return jsonify(restaurant=res_name, stars=rating, reviews=reviews,
