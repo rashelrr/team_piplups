@@ -290,7 +290,7 @@ def get_restaurants_above_ratings(rating):
 '''
 
 
-def get_review(res_name, uni):
+def get_review_uni_res(res_name, uni):
     conn = None
     try:
         conn = sqlite3.connect('Lion_Eats')
@@ -299,7 +299,7 @@ def get_review(res_name, uni):
                     (res_name.lower(), uni))
         row = cur.fetchone()
         conn.commit()
-        print('Database Online, get review')
+        print('Database Online, get review given a uni and restaurant')
         return row
     except Error as e:
         print(e)
@@ -309,6 +309,32 @@ def get_review(res_name, uni):
         if conn:
             conn.close()
 
+
+'''
+    res_name, uni: string
+    rows: all reviews given a uni
+    Returns all reviews that matches the uni
+'''
+
+
+def get_review_uni(uni):
+    conn = None
+    try:
+        conn = sqlite3.connect('Lion_Eats')
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM REVIEWS where UNI=?",
+                    (uni, ))
+        rows = cur.fetchall()
+        conn.commit()
+        print('Database Online, get review given a uni')
+        return rows
+    except Error as e:
+        print(e)
+        return None
+
+    finally:
+        if conn:
+            conn.close()
 
 '''
 UNI, res_name, new_review:  string

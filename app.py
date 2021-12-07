@@ -172,6 +172,11 @@ def edit_review():
     db.edit_review(uni, res_name, rating, review)
     return jsonify(valid=True, reason="Successfully edited review.")
 
+@app.route('/preeditreview', methods=['GET', 'POST'])
+def pre_edit_review():
+    
+    return render_template('edit_review.html', uni=uni)
+
 
 '''
 Endpoint:  /rest_display_all

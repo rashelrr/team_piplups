@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>LionEats</title>
+    </head>
+
+    <body>
+
+        <h3 id = "uni">User: {{uni}}</h3>
+        <h1>Edit Review</h1>
+
+        <form method="GET" action="/rest_info">
+            <h4>Enter restaurant name to see your review: </h4>
+            <input type="text" name="name">
+            <input type="submit" value="Submit">
+        </form>
+
+        <table style="width:100%" id="data">
+            <tr>
+                {% for k in keys %}
+                    <th id="data_head">{{k}}</th>
+                {% endfor %}
+            </tr>
+
+            {% for r in range(rows) %}
+                <tr>
+                    {% for k in keys %}
+                        <td id="data_data">{{context[k][r]}}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+
+        <p id = "ignorethis"></p>
+
+        <script src="{{ url_for('static', filename = 'edit_review.js') }}"></script>              
+    </body>
+
+</html>
