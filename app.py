@@ -45,7 +45,7 @@ def home():
 '''
 Endpoint:  /login
 UI:         User clicks "login" button on homepage
-Purpose:    Allows user to log in 
+Purpose:    Allows user to log in
             (if not registered, will lead to signup page)
 '''
 
@@ -86,7 +86,7 @@ def signup():
         password = request.form['password']
         if db.check_if_uni_exists(uni) is True:
             print("uni exists already")
-            flash('UNI already exists, please login using your existing account!')
+            flash('Account already exists, please login!')
             return redirect(url_for('login'))
         db.add_uni_passcode(uni, password)
         print("added uni and passcode as an account to db")
@@ -103,23 +103,19 @@ Adds review to database
 
 @app.route('/addreview', methods=['GET', 'POST'])
 def add_review():
-    res_name = request.args.get('restaurant')
-    rating = request.args.get('stars')
-    review = request.args.get('review')
+    if request.method == 'GET':
+        res_name = request.args.get('restaurant')
+        rating = request.args.get('stars')
+        review = request.args.get('review')
 
-    # no parameters
-    if res_name is None or rating is None or review is None:
-        return jsonify(valid=False,
-                       reason="To add a review, please enter all required "
-                       + "fields.")
-    else:
-        # add review if not already in db
         result = db.get_review(res_name, global_uni)
         if result is None:
             row = (res_name, rating, review, global_uni)
             db.add_review(row)
             return jsonify(valid=True, reason="Successfully added review.")
         else:
+            flash("You've already reviewed this restaurant")
+            return redirect(url_for('pre_add_review'))
             return jsonify(valid=False,
                            reason="You've already reviewed this restaurant.")
 

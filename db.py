@@ -154,6 +154,7 @@ rows:     list of tuples: [ (entire review 1), (entire review 2), ... ]
 Returns   all reviews for a specific restaurant
 '''
 
+
 # Changed to return a dictionary instead of an array
 def get_all_reviews_for_restaurant(res_name):
     conn = None
@@ -236,7 +237,7 @@ def get_all_reviews_for_rest_given_rating(res_name, rating):
             star.append(r[1])
             review.append(r[2])
             uni.append(r[3])
-        
+
         conn.commit()
         print('Database Online, get reviews for a restaurant at\
               above a rating')
@@ -353,6 +354,7 @@ def get_review_uni(uni):
     finally:
         if conn:
             conn.close()
+
 
 '''
 UNI, res_name, new_review:  string

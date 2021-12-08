@@ -1,9 +1,6 @@
 #Compiled class files
 *.class
 
-# Unit test / coverage reports
-.coverage
-
 #sqlite_db
 Lion_Eats
 

@@ -18,7 +18,7 @@
 <div id="header">
     <div class="content">
         <h1>Coverage report:
-            <span class="pc_cov">92%</span>
+            <span class="pc_cov">61%</span>
         </h1>
         <img id="keyboard_icon" src="keybd_closed.png" alt="Show keyboard shortcuts" />
         <form id="filter_container">
@@ -35,6 +35,8 @@
         <span class="key">s</span>
         <span class="key">m</span>
         <span class="key">x</span>
+        <span class="key">b</span>
+        <span class="key">p</span>
         <span class="key">c</span> &nbsp; change column sorting
     </p>
     </div>
@@ -47,32 +49,49 @@
                 <th class="shortkey_s">statements</th>
                 <th class="shortkey_m">missing</th>
                 <th class="shortkey_x">excluded</th>
+                <th class="shortkey_b">branches</th>
+                <th class="shortkey_p">partial</th>
                 <th class="right shortkey_c">coverage</th>
             </tr>
         </thead>
         <tfoot>
             <tr class="total">
                 <td class="name left">Total</td>
-                <td>304</td>
-                <td>23</td>
+                <td>416</td>
+                <td>126</td>
                 <td>0</td>
-                <td class="right" data-ratio="281 304">92%</td>
+                <td>129</td>
+                <td>22</td>
+                <td class="right" data-ratio="332 545">61%</td>
             </tr>
         </tfoot>
         <tbody>
             <tr class="file">
                 <td class="name left"><a href="db_py.html">db.py</a></td>
-                <td>156</td>
-                <td>23</td>
+                <td>263</td>
+                <td>126</td>
                 <td>0</td>
-                <td class="right" data-ratio="133 156">85%</td>
+                <td>129</td>
+                <td>22</td>
+                <td class="right" data-ratio="179 392">46%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="test_app_py.html">test_app.py</a></td>
+                <td>33</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="33 33">100%</td>
             </tr>
             <tr class="file">
                 <td class="name left"><a href="test_db_py.html">test_db.py</a></td>
-                <td>148</td>
+                <td>120</td>
                 <td>0</td>
                 <td>0</td>
-                <td class="right" data-ratio="148 148">100%</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="120 120">100%</td>
             </tr>
         </tbody>
     </table>
@@ -84,7 +103,7 @@
     <div class="content">
         <p>
             <a class="nav" href="https://coverage.readthedocs.io">coverage.py v5.5</a>,
-            created at 2021-11-15 22:30 -0500
+            created at 2021-12-08 14:15 -0500
         </p>
     </div>
 </div>
