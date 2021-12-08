@@ -2,6 +2,7 @@ import unittest
 import requests
 import db
 import os
+import time
 
 
 class Test_TestApp(unittest.TestCase):
@@ -9,16 +10,19 @@ class Test_TestApp(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         os.system("nohup python3 app.py &")
+        time.sleep(5)
 
     def setUp(self):
         print('setUp')
         # os.system("nohup python3 app.py &")
         db.init_db()
         db.insert_dummy_data()
+        time.sleep(2)
 
     def tearDown(self):
         print('tearDown')
         db.clear()
+        time.sleep(2)
         # kill = "kill -9 " + str(os.getpid()) + " &"
         # os.system(kill)
 
