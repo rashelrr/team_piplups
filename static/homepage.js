@@ -33,6 +33,15 @@ function addReview() {
     window.location.href = finalurl;
 }
 
+function editReview() {
+    var url;
+    const Http =  new XMLHttpRequest();
+    url = "http://127.0.0.1:5000/preeditreview"
+    
+    const finalurl = url;
+    window.location.href = finalurl;
+}
+
 function signup() {
     var url;
     const Http =  new XMLHttpRequest();

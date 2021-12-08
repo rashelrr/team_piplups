@@ -215,10 +215,10 @@ def get_all_reviews_given_rating(rating):
 res_name: string
 rating:   int
 rows:     list of tuples: [ (entire review 1), (entire review 2), ... ]
-Returns all reviews for a restaurant at/above a star rating
+Returns all reviews for a restaurant at/above a star rating in dictionary form
 '''
 
-# Changed to return a dictionary instead of an array
+
 def get_all_reviews_for_rest_given_rating(res_name, rating):
     conn = None
     try:
@@ -254,7 +254,7 @@ def get_all_reviews_for_rest_given_rating(res_name, rating):
 # given a rating, compute and average rating for each restaurant
 # and return restaurant_name + star for the restaurants above that rating
 
-# Changed to return a dictionary instead of an array
+
 def get_restaurants_above_ratings(rating):
     conn = None
     try:
@@ -290,7 +290,7 @@ def get_restaurants_above_ratings(rating):
 '''
 
 
-def get_review(res_name, uni):
+def get_review_uni_res(res_name, uni):
     conn = None
     try:
         conn = sqlite3.connect('Lion_Eats')
@@ -299,7 +299,7 @@ def get_review(res_name, uni):
                     (res_name.lower(), uni))
         row = cur.fetchone()
         conn.commit()
-        print('Database Online, get review')
+        print('Database Online, get review given a uni and restaurant')
         return row
     except Error as e:
         print(e)
@@ -309,6 +309,41 @@ def get_review(res_name, uni):
         if conn:
             conn.close()
 
+
+'''
+    res_name, uni: string
+    rows: all reviews given a uni
+    Returns all reviews that matches the uni
+'''
+
+
+def get_review_uni(uni):
+    conn = None
+    try:
+        conn = sqlite3.connect('Lion_Eats')
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM REVIEWS where UNI=?",
+                    (uni, ))
+        rows = cur.fetchall()
+        conn.commit()
+        name = []
+        star = []
+        review = []
+        uni = []
+        for r in rows:
+            name.append(r[0])
+            star.append(r[1])
+            review.append(r[2])
+            uni.append(r[3])
+        print('Database Online, get review given a uni')
+        return dict(Name=name, Star_Rating=star, Review=review, UNI=uni)
+    except Error as e:
+        print(e)
+        return None
+
+    finally:
+        if conn:
+            conn.close()
 
 '''
 UNI, res_name, new_review:  string
