@@ -6,6 +6,8 @@ install:
   - pip install requests
   - pip install coverage
   - pip install flake8
+  - pip install pytest-flake8==1.0.5
+
 script:
   # - python3 app.py
   - pytest --flake8
