@@ -45,7 +45,7 @@ def home():
 '''
 Endpoint:  /login
 UI:         User clicks "login" button on homepage
-Purpose:    Allows user to log in 
+Purpose:    Allows user to log in
             (if not registered, will lead to signup page)
 '''
 
@@ -86,7 +86,7 @@ def signup():
         password = request.form['password']
         if db.check_if_uni_exists(uni) is True:
             print("uni exists already")
-            flash('UNI already exists, please login using your existing account!')
+            flash('Account already exists, please login!')
             return redirect(url_for('login'))
         db.add_uni_passcode(uni, password)
         print("added uni and passcode as an account to db")
@@ -108,7 +108,7 @@ def add_review():
         rating = request.args.get('stars')
         review = request.args.get('review')
 
-        result = db.get_review(res_name, uni)
+        result = db.get_review(res_name, global_uni)
         if result is None:
             row = (res_name, rating, review, global_uni)
             db.add_review(row)
