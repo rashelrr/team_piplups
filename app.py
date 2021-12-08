@@ -187,7 +187,14 @@ Purpose:    searches for a restaurant review made by the current user
 
 @app.route('/edit_review_search', methods=['GET'])
 def edit_review_search():
-    pass
+    global global_uni
+    name = request.args.get('name')
+    result = db.get_review_uni_res(name, global_uni)
+    for key, value in result.items():
+        rows = len(value)
+    return render_template("edit_review_search.html", context=result,
+                           keys=list(result.keys())[1:], rows=rows,
+                           uni=global_uni)
 
 
 '''

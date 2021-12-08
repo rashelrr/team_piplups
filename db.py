@@ -297,10 +297,19 @@ def get_review_uni_res(res_name, uni):
         cur = conn.cursor()
         cur.execute("SELECT * FROM REVIEWS where restaurant_name=? AND UNI=?",
                     (res_name.lower(), uni))
-        row = cur.fetchone()
+        rows = cur.fetchall()
+        name = []
+        star = []
+        review = []
+        uni = []
+        for r in rows:
+            name.append(r[0])
+            star.append(r[1])
+            review.append(r[2])
+            uni.append(r[3])
         conn.commit()
         print('Database Online, get review given a uni and restaurant')
-        return row
+        return dict(Name=name, Star_Rating=star, Review=review, UNI=uni)
     except Error as e:
         print(e)
         return None

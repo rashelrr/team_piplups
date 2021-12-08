@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<style>
+    body {
+        font-size: 15pt;
+        font-family: arial;
+    }
+
+    #data, #data_head, #data_data {
+        border: 1px solid black;
+    }
+
+    th, #data_data {
+        text-align: center;
+    }
+</style>
+
+<body>
+    <!--Page title-->
+    <h1>Review of {{context['Name'][0]}} from {{uni}}</h1>
+
+    <table style="width:100%" id="data">
+        <tr>
+            {% for k in keys %}
+                <th id="data_head">{{k}}</th>
+            {% endfor %}
+        </tr>
+
+        {% for r in range(rows) %}
+            <tr>
+                {% for k in keys %}
+                    <td id="data_data">{{context[k][r]}}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+
+    <hr>
+    <form action="back_home">
+        <input type="submit" value="Go Back Home">
+    </form>
+</body>
+</html>
