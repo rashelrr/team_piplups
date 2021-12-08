@@ -14,15 +14,12 @@ class Test_TestApp(unittest.TestCase):
 
     def setUp(self):
         print('setUp')
-        # os.system("nohup python3 app.py &")
         db.init_db()
         db.insert_dummy_data()
-        time.sleep(2)
 
     def tearDown(self):
         print('tearDown')
         db.clear()
-        time.sleep(2)
         # kill = "kill -9 " + str(os.getpid()) + " &"
         # os.system(kill)
 
