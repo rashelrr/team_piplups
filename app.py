@@ -17,11 +17,7 @@ app.config['SECRET_KEY'] = 'super secret key'
 Homepage
 '''
 
-<<<<<<< HEAD
-uni = 'rdr2139'
-=======
 global_uni = ''
->>>>>>> 0addf50042c1d035f76befec1baa1de959179437
 
 
 @app.route('/', methods=['GET'])
@@ -122,6 +118,7 @@ def add_review():
             return redirect(url_for('pre_add_review'))
             return jsonify(valid=False,
                            reason="You've already reviewed this restaurant.")
+
 
 @app.route('/preaddreview', methods=['GET', 'POST'])
 def pre_add_review():
