@@ -17,7 +17,7 @@ app.config['SECRET_KEY'] = 'super secret key'
 Homepage
 '''
 
-uni = 'abc1234'
+uni = 'rdr2139'
 
 
 @app.route('/', methods=['GET'])
@@ -119,26 +119,21 @@ Adds review to database
 
 @app.route('/addreview', methods=['GET', 'POST'])
 def add_review():
-    res_name = request.args.get('restaurant')
-    rating = request.args.get('stars')
-    review = request.args.get('review')
+    if request.method == 'GET':
+        res_name = request.args.get('restaurant')
+        rating = request.args.get('stars')
+        review = request.args.get('review')
 
-    # no parameters
-    if res_name is None or rating is None or review is None:
-        return jsonify(valid=False,
-                       reason="To add a review, please enter all required "
-                       + "fields.")
-    else:
-        # add review if not already in db
         result = db.get_review(res_name, uni)
         if result is None:
             row = (res_name, rating, review, uni)
             db.add_review(row)
             return jsonify(valid=True, reason="Successfully added review.")
         else:
+            flash("You've already reviewed this restaurant")
+            return redirect(url_for('pre_add_review'))
             return jsonify(valid=False,
                            reason="You've already reviewed this restaurant.")
-
 
 @app.route('/preaddreview', methods=['GET', 'POST'])
 def pre_add_review():

@@ -9,10 +9,10 @@
         <h3 id = "uni">User: {{uni}}</h3>
         <h1>Add a Review</h1>
 
-        <form id="addreview" action="">
-            Restaurant name: <input type="text" id="restaurant" name="restaurant"><br>
+        <form id="addreview" action="/addreview" method="GET">
+            Restaurant name: <input type="text" id="restaurant" name="restaurant" required><br>
             Star rating:<br>
-            <input type="radio" id="1" name="stars" value="1">
+            <input type="radio" id="1" name="stars" value="1" required>
             <label for="1">1</label><br>
 
             <input type="radio" id="2" name="stars" value="2">
@@ -27,14 +27,25 @@
             <input type="radio" id="5" name="stars" value="5">
             <label for="5">5</label><br>
 
-            Review: <input type="text" id="review" name="review"><br>
+            Review: <input type="text" id="review" name="review" required><br>
             <input type="submit" value="Submit">
         </form> 
 
-        <button onclick="handleAddReview();">Submit!</button>
+        {% block content %}
+        <div class="container">
+            {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ message }}
+            </div>
+            {% endfor %}
 
-        <br><br>
-        <p id = "reason">{{reason}}</p>
+            {% block page_content %}{% endblock %}
+        </div>
+        {% endblock %}
+
+        <!-- <br><br>
+        <p id = "reason">{{reason}}</p> -->
 
         <script src="{{ url_for('static', filename = 'add_review.js') }}"></script>              
     </body>
