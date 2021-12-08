@@ -20,8 +20,6 @@ class Test_TestApp(unittest.TestCase):
     def tearDown(self):
         print('tearDown')
         db.clear()
-        # kill = "kill -9 " + str(os.getpid()) + " &"
-        # os.system(kill)
 
     # Tests / endpoint, checks status code is 200
     def test_index_check_status_code(self):
