@@ -6,21 +6,21 @@ import os
 
 class Test_TestApp(unittest.TestCase):
 
-    '''@classmethod
+    @classmethod
     def setUpClass(cls):
-        # os.system("nohup python3 app.py &")'''
+        os.system("nohup python3 app.py &")
 
     def setUp(self):
         print('setUp')
-        os.system("nohup python3 app.py &")
+        # os.system("nohup python3 app.py &")
         db.init_db()
         db.insert_dummy_data()
 
     def tearDown(self):
         print('tearDown')
         db.clear()
-        kill = "kill -9 " + str(os.getpid()) + " &"
-        os.system(kill)
+        # kill = "kill -9 " + str(os.getpid()) + " &"
+        # os.system(kill)
 
     # Tests / endpoint, checks status code is 200
     def test_index_check_status_code(self):
