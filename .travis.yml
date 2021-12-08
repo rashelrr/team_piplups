@@ -6,9 +6,13 @@ install:
   - pip install requests
   - pip install coverage
   - pip install flake8
-  - pip install pytest-flake8==1.0.5
+  # - pip install pytest-flake8==1.0.5
 
 script:
   # - python3 app.py
-  - pytest --flake8
-  # - coverage run -m unittest discover
+  # - pytest --flake8
+  # coverage run -m --branch unittest discover
+  # - coverage run -m unittest discover # Run the tests and check for test coverage.
+  #- coverage report -m                # Generate test coverage report.
+  #- codecov                           # Upload the report to codecov.
+  - flake8
