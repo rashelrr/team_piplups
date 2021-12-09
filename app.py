@@ -108,8 +108,8 @@ def add_review():
         rating = request.args.get('stars')
         review = request.args.get('review')
 
-        result = db.get_review(res_name, global_uni)
-        if result is None:
+        result = db.get_review_uni_res(res_name, global_uni)
+        if len(result) == 0:
             row = (res_name, rating, review, global_uni)
             db.add_review(row)
             return jsonify(valid=True, reason="Successfully added review.")
