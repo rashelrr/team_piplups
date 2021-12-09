@@ -34,8 +34,19 @@
             </tr>
         {% endfor %}
     </table>
+    <h3>New Star Rating</h3>
+    <form action="/update_star_and_review" method="POST" method="GET">
+        <p><input type="radio" name="star" value=1>1</p>
+        <p><input type="radio" name="star" value=2>2</p>
+        <p><input type="radio" name="star" value=3>3</p>
+        <p><input type="radio" name="star" value=4>4</p>
+        <p><input type="radio" name="star" value=5>5</p>
 
-    <hr>
+        <h3>New Review</h3>
+        <input type="text" id="review" name="review"><br>
+        <input type="submit" value="Submit">
+    </form>
+
     <form action="back_home">
         <input type="submit" value="Go Back Home">
     </form>

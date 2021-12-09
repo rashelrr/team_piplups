@@ -1,6 +1,7 @@
 import os
 from flask import Flask, render_template, jsonify, request, redirect,\
     url_for, flash
+from werkzeug.utils import xhtml
 import db
 import logging
 
@@ -18,15 +19,14 @@ Homepage
 '''
 
 global_uni = ''
-
+global_res = ''
 
 @app.route('/', methods=['GET'])
 def index():
-    global global_uni
     db.clear()
     db.init_db()
     db.insert_dummy_data()
-    return render_template('homepage.html', uni=global_uni)
+    return render_template('homepage.html')
 
 
 '''
@@ -122,47 +122,19 @@ def add_review():
 
 @app.route('/preaddreview', methods=['GET', 'POST'])
 def pre_add_review():
-    return render_template("add_review.html")
+    return render_template("add_review.html", uni=global_uni)
 
 
 '''
 Endpoint:  /editreview?restaurant=___&stars=___&review=___&uni=___
 UI:         User is already at page pre-populated
             with their original review's data.
-User cannot change restaurant or uni value.
-They click 'Finish Edit'
-Updates review
+            Allows user to search for a review and update that
 '''
 
 
 @app.route('/editreview', methods=['GET', 'POST'])
 def edit_review():
-    res_name = request.args.get('restaurant')
-    rating = request.args.get('stars')
-    review = request.args.get('review')
-    uni = request.args.get('uni')
-
-    # no parameters
-    if res_name is None or rating is None or review is None or uni is None:
-        return jsonify(valid=False,
-                       reason="To edit a review, please enter all required "
-                       + "fields.")
-
-    # update entry in db
-    db.edit_review(uni, res_name, rating, review)
-    return jsonify(valid=True, reason="Successfully edited review.")
-
-
-'''
-Endpoint:  /preeditreview
-UI:         User clicks "edit review" on homepage
-Purpose:    displays all the reviews made by the logged-in user
-            and allows the user to search for a specific review
-'''
-
-
-@app.route('/preeditreview', methods=['GET', 'POST'])
-def pre_edit_review():
     global global_uni
     if global_uni == '':
         return redirect(url_for('login'))
@@ -184,12 +156,53 @@ Purpose:    searches for a restaurant review made by the current user
 @app.route('/edit_review_search', methods=['GET'])
 def edit_review_search():
     global global_uni
+    global global_res
     name = request.args.get('name')
-    result = db.get_review_uni_res(name, global_uni)
+    if db.get_review_uni_res(name,
+                            global_uni) == []:
+        flash("Uni and Restaurant pair does not exist, try again")
+        result = db.get_review_uni(global_uni)
+        for k, v in result.items():
+            rows = len(v)
+        return render_template('edit_review.html', context=result,
+                           keys=list(result.keys()), rows=rows,
+                           uni=global_uni)
+    global_res = name
+    rows = db.get_review_uni_res(global_res, global_uni)
+    name = []
+    star = []
+    review = []
+    uni = []
+    for r in rows:
+        name.append(r[0])
+        star.append(r[1])
+        review.append(r[2])
+        uni.append(r[3])
+    result = dict(Name=name, Star_Rating=star, Review=review, UNI=uni)
     for key, value in result.items():
         rows = len(value)
     return render_template("edit_review_search.html", context=result,
                            keys=list(result.keys())[1:], rows=rows,
+                           uni=global_uni)
+
+
+'''
+Endpoint:  /update_star_and_review
+UI:         User clicks submit button on edit_review_search page
+Purpose:    allows the user to update the new star and review
+'''
+
+
+@app.route('/update_star_and_review', methods=['GET', 'POST'])
+def update_star_and_review():
+    star = request.form['star']
+    review = request.form['review']
+    db.edit_review(global_uni, global_res, star, review)
+    result = db.get_review_uni(global_uni)
+    for k, v in result.items():
+        rows = len(v)
+    return render_template('edit_review.html', context=result,
+                           keys=list(result.keys()), rows=rows,
                            uni=global_uni)
 
 
@@ -245,7 +258,7 @@ def rest_info_star_filter():
 
 @app.route('/back_home')
 def back_home():
-    return redirect('/')
+    return redirect('/home')
 
 
 if __name__ == '__main__':

@@ -36,7 +36,7 @@ function addReview() {
 function editReview() {
     var url;
     const Http =  new XMLHttpRequest();
-    url = "http://127.0.0.1:5000/preeditreview"
+    url = "http://127.0.0.1:5000/editreview"
     
     const finalurl = url;
     window.location.href = finalurl;
