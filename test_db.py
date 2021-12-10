@@ -246,31 +246,31 @@ class Test_TestDB(unittest.TestCase):
         rows = db.get_review_uni("dl3410")
         self.assertTrue(rows['Name'])
 
-        def test_get_review_uni_res(self):
-            db.clear()
-            db.init_db()
-            self.conn = sqlite3.connect("Lion_Eats")
+    def test_get_review_uni_res(self):
+        db.clear()
+        db.init_db()
+        self.conn = sqlite3.connect("Lion_Eats")
 
-            db.add_review(("Koronets", 3, "good food and great service", "dl3410"))
+        db.add_review(("Koronets", 3, "good food and great service", "dl3410"))
 
-            # normal get
-            rows = db.get_review_uni_res("Koronets", "dl3410")
-            self.assertTrue(rows)
+        # normal get
+        rows = db.get_review_uni_res("Koronets", "dl3410")
+        self.assertTrue(rows)
 
-            # uni that doesn't exist
-            rows = db.get_review_uni_res("Koronets", "sa3892")
-            self.assertFalse(rows)
+        # uni that doesn't exist
+        rows = db.get_review_uni_res("Koronets", "sa3892")
+        self.assertFalse(rows)
 
-            # restaurant that doesn't exist
-            rows = db.get_review_uni_res("fumo", "dl3410")
-            self.assertFalse(rows)
+        # restaurant that doesn't exist
+        rows = db.get_review_uni_res("fumo", "dl3410")
+        self.assertFalse(rows)
 
-            # uni and restaurant that don't exist
-            rows = db.get_review_uni_res("fumo", "sa3892")
-            self.assertFalse(rows)
+        # uni and restaurant that don't exist
+        rows = db.get_review_uni_res("fumo", "sa3892")
+        self.assertFalse(rows)
 
-            # fields are empty
-            rows = db.get_review_uni_res("", "dl3410")
-            self.assertFalse(rows)
-            rows = db.get_review_uni_res("Koronets", "")
-            self.assertFalse(rows)
+        # fields are empty
+        rows = db.get_review_uni_res("", "dl3410")
+        self.assertFalse(rows)
+        rows = db.get_review_uni_res("Koronets", "")
+        self.assertFalse(rows)
