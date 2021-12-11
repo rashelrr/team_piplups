@@ -27,7 +27,8 @@ def index():
     # db.clear()
     # db.init_db()
     # db.insert_dummy_data()
-    return render_template('homepage.html')
+    global global_uni
+    return render_template('homepage.html', uni=global_uni)
 
 
 '''
@@ -164,14 +165,15 @@ def edit_review_search():
     global global_uni
     global global_res
     name = request.args.get('name')
-    if db.get_review_uni_res(name, global_uni) == []:
+    if db.get_review_uni_res(name,
+                            global_uni) == []:
         flash("Uni and Restaurant pair does not exist, try again")
         result = db.get_review_uni(global_uni)
         for k, v in result.items():
             rows = len(v)
         return render_template('edit_review.html', context=result,
-                               keys=list(result.keys()), rows=rows,
-                               uni=global_uni)
+                           keys=list(result.keys()), rows=rows,
+                           uni=global_uni)
     global_res = name
     rows = db.get_review_uni_res(global_res, global_uni)
     name = []
@@ -200,16 +202,9 @@ Purpose:    allows the user to update the new star and review
 
 @app.route('/update_star_and_review', methods=['GET', 'POST'])
 def update_star_and_review():
-    star = request.form.get('star', None)
-    review = request.form.get('review', None)
-    if star is None and review != "":
-        db.edit_review(global_uni, global_res,
-                       db.get_star_uni_res(global_uni, global_res), review)
-    elif review == "" and star is not None:
-        db.edit_review(global_uni, global_res, star,
-                       db.get_only_review_uni_res(global_res, global_uni))
-    elif review != "" and star is not None:
-        db.edit_review(global_uni, global_res, star, review)
+    star = request.form['star']
+    review = request.form['review']
+    db.edit_review(global_uni, global_res, star, review)
     result = db.get_review_uni(global_uni)
     for k, v in result.items():
         rows = len(v)
