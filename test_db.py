@@ -231,11 +231,32 @@ class Test_TestDB(unittest.TestCase):
         rows = db.get_all_reviews_for_rest_given_rating("junzi", "4")
         self.assertFalse(rows['Name'])
 
+    def test_get_only_review_uni_res(self):
+        db.clear()
+        db.init_db()
+        db.add_review(("Koronets", 3, "good food and great service", "dl3410"))
+        result = db.get_only_review_uni_res("Koronets", "dl3410")
+        self.assertEqual(result, "good food and great service")
+
+        # case does not matter
+        result = db.get_only_review_uni_res("koronets", "dl3410")
+        self.assertEqual(result, "good food and great service")
+
+    def test_get_star_uni_res(self):
+        db.clear()
+        db.init_db()
+        db.add_review(("Koronets", 3, "good food and great service", "dl3410"))
+        result = db.get_star_uni_res("dl3410", "Koronets")
+        self.assertEqual(result, 3)
+
+        # case does not matter
+        result = db.get_star_uni_res("dl3410", "Koronets")
+        self.assertEqual(result, 3)
+
     def test_get_review_uni(self):
         db.clear()
         db.init_db()
         self.conn = sqlite3.connect("Lion_Eats")
-        
         db.add_review(("Koronets", 3, "good food and great service", "dl3410"))
 
         # uni that doesn't exist
