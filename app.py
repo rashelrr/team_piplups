@@ -122,8 +122,12 @@ def add_review():
                   " Review' button.")
             return redirect(url_for('pre_add_review'))
 
+
 @app.route('/preaddreview', methods=['GET', 'POST'])
 def pre_add_review():
+    global global_uni
+    if global_uni == '':
+        return redirect(url_for('login'))
     return render_template("add_review.html", uni=global_uni)
 
 
