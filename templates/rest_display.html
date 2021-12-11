@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE>
+<html lang="en">
     <style>
         body {
             font-size: 15pt;
-            font-family: arial;
+            font-family: arial, sans-serif;
         }
 
         #data, #data_head, #data_data {
@@ -14,6 +15,7 @@
         }
     </style>
 
+    <title></title>
     <body>
         <h1>Restaurants</h1>
 
@@ -24,6 +26,7 @@
         </form>
 
         <table style="width:100%" id="data">
+            <caption>Table of restaurant names and average star ratings</caption>
             <tr>
                 {% for k in keys %}
                     <th id="data_head">{{k}}</th>
