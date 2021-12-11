@@ -129,35 +129,6 @@ class Test_TestDB(unittest.TestCase):
         row = cur.fetchall()
         self.assertFalse(row)
 
-    def test_delete_review(self):
-        # normal delete review
-        db.clear()
-        db.init_db()
-        db.add_review(("Junzi", 3, "good food and great service",
-                       "yy3131"))
-        self.conn = sqlite3.connect("Lion_Eats")
-        cur = self.conn.cursor()
-        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name =
-                    "junzi";""")
-        row = cur.fetchall()
-        self.assertTrue(row)
-        db.delete_review("YY3131", "JUNZI")
-        self.conn = sqlite3.connect("Lion_Eats")
-        cur = self.conn.cursor()
-        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name =
-                    "junzi";""")
-        row = cur.fetchall()
-        self.assertFalse(row)
-
-        # delete a row that does not exist
-        db.delete_review("YY3131", "MAGIC TEA")
-        self.conn = sqlite3.connect("Lion_Eats")
-        cur = self.conn.cursor()
-        cur.execute("""SELECT * from REVIEWS WHERE restaurant_name =
-                    "magic tea";""")
-        row = cur.fetchall()
-        self.assertFalse(row)
-
     def test_get_restaurants_above_ratings(self):
         db.clear()
         db.init_db()

@@ -443,31 +443,6 @@ def add_review(row):
             conn.close()
 
 
-'''
-Given UNI and restaurant name, delete review from database
-'''
-
-
-def delete_review(UNI, res_name):
-    conn = None
-    try:
-        conn = sqlite3.connect('Lion_Eats')
-        cur = conn.cursor()
-        new_UNI = UNI.lower()
-        new_res_name = res_name.lower()
-        cur.execute(
-            """DELETE FROM REVIEWS where UNI = ? and restaurant_name = ?""",
-            (new_UNI, new_res_name))
-        conn.commit()
-        print('Database Online, review deleted')
-    except Error as e:
-        print(e)
-
-    finally:
-        if conn:
-            conn.close()
-
-
 def clear():
     # clears both tables
     conn = None
