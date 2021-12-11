@@ -21,14 +21,12 @@ Homepage
 global_uni = ''
 global_res = ''
 
-
 @app.route('/', methods=['GET'])
 def index():
-    # db.clear()
-    # db.init_db()
-    # db.insert_dummy_data()
-    global global_uni
-    return render_template('homepage.html', uni=global_uni)
+    db.clear()
+    db.init_db()
+    db.insert_dummy_data()
+    return render_template('homepage.html')
 
 
 '''
@@ -114,21 +112,16 @@ def add_review():
         if len(result) == 0:
             row = (res_name, rating, review, global_uni)
             db.add_review(row)
-            flash("Successfully added review.")
-            return redirect(url_for('pre_add_review'))
+            return jsonify(valid=True, reason="Successfully added review.")
         else:
-            flash("You've already reviewed this restaurant. You can only " +
-                  "submit one review per restaurant. You can edit your " +
-                  "previous review from the homepage by clicking the 'Edit " +
-                  " Review' button.")
+            flash("You've already reviewed this restaurant")
             return redirect(url_for('pre_add_review'))
+            return jsonify(valid=False,
+                           reason="You've already reviewed this restaurant.")
 
 
 @app.route('/preaddreview', methods=['GET', 'POST'])
 def pre_add_review():
-    global global_uni
-    if global_uni == '':
-        return redirect(url_for('login'))
     return render_template("add_review.html", uni=global_uni)
 
 
@@ -215,7 +208,7 @@ def update_star_and_review():
 
 '''
 Endpoint:  /rest_display_all
-UI:         User clicks "show all restaurants button"
+UI:         User clicks "show all restaurants" button
 Purpose:    Display all restaurants and average rating
 '''
 
@@ -229,7 +222,14 @@ def rest_display_all():
                            keys=list(result.keys()), rows=rows)
 
 
-# Display restaurants that users filter by average star rating
+'''
+Endpoint:  /rest_display_star_filter
+UI:         User checks radio button and clicks "filter" button
+Purpose:    Display restaurants and average rating of restaurants that 
+            are over the checked number
+'''
+
+
 @app.route('/rest_display_star_filter', methods=['GET', 'POST'])
 def rest_display_star_filter():
     star = request.form['star']
@@ -240,27 +240,35 @@ def rest_display_star_filter():
                            keys=list(result.keys()), rows=rows)
 
 
-# Display reveiws for restaurant that users filter by name
+'''
+Endpoint:  /rest_info
+UI:         User enters the name of a restaurant and clicks the "view"
+            button, or user checks radio button and clicks "filter"
+            button, or user clicks "see all reviews" button
+Purpose:    Display reviews for a restaurant; either all reviews or 
+            only reviews over are over checked number
+'''
+
+
 @app.route('/rest_info', methods=['GET'])
 def rest_info():
     name = request.args.get('name')
-    result = db.get_all_reviews_for_restaurant(name)
+    star = request.args.get('star')
+    if star:
+        result = db.get_all_reviews_for_rest_given_rating(name, star)
+    else:
+        result = db.get_all_reviews_for_restaurant(name)
     for key, value in result.items():
         rows = len(value)
     return render_template("rest_info.html", context=result,
                            keys=list(result.keys())[1:], rows=rows)
 
 
-# Display reviews for restaurant that users filter by star
-@app.route('/rest_info_star_filter', methods=['GET', 'POST'])
-def rest_info_star_filter():
-    star = request.form['star']
-    name = request.referrer.split('=')[1]
-    result = db.get_all_reviews_for_rest_given_rating(name, star)
-    for key, value in result.items():
-        rows = len(value)
-    return render_template("rest_info.html", context=result,
-                           keys=list(result.keys())[1:], rows=rows)
+'''
+Endpoint:  /back_home
+UI:         User clicks the "go back home" button
+Purpose:    Redirects the user back to the home page
+'''
 
 
 @app.route('/back_home')
