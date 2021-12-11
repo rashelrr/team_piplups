@@ -86,9 +86,10 @@
         <script src="{{ url_for('static', filename = 'homepage.js') }}"></script>              
     <h4>Add A Review</h4>
         <button onclick="addReview();">Add Review</button>
+    {% if uni != '' %}
     <h5>Edit Your Review</h5>
         <button onclick="editReview();">Edit Review</button>
-
+    {% endif %}
 </body>
 
 </html>
