@@ -24,9 +24,9 @@ global_res = ''
 
 @app.route('/', methods=['GET'])
 def index():
-    db.clear()
-    db.init_db()
-    db.insert_dummy_data()
+    # db.clear()
+    # db.init_db()
+    # db.insert_dummy_data()
     return render_template('homepage.html')
 
 
