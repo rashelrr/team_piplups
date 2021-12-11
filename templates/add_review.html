@@ -30,6 +30,7 @@
             Review: <input type="text" id="review" name="review" required><br>
             <input type="submit" value="Submit">
         </form> 
+        <br><br>
 
         {% block content %}
         <div class="container">
@@ -43,9 +44,6 @@
             {% block page_content %}{% endblock %}
         </div>
         {% endblock %}
-
-        <!-- <br><br>
-        <p id = "reason">{{reason}}</p> -->
 
         <script src="{{ url_for('static', filename = 'add_review.js') }}"></script>              
     </body>

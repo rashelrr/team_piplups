@@ -17,14 +17,6 @@ def init_db():
         conn.execute("""CREATE TABLE IF NOT EXISTS UNI(UNI varchar(7) NOT NULL,\
             passcode TEXT NOT NULL, \
             PRIMARY KEY(UNI))""")
-
-        # cur = conn.cursor()
-        # reviews_file = open("review.csv")
-        # rows = csv.reader(reviews_file)
-        # cur.executemany("INSERT INTO REVIEWS VALUES (?, ?, ?, ?)", rows)
-        #  uni_file = open("uni.csv")
-        #  rows = csv.reader(uni_file)
-        #  cur.executemany("INSERT INTO REVIEWS VALUES (?)", rows)
         conn.commit()
         print('Database Online, tables created')
     except Error as e:

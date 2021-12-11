@@ -21,6 +21,7 @@ Homepage
 global_uni = ''
 global_res = ''
 
+
 @app.route('/', methods=['GET'])
 def index():
     db.clear()
@@ -112,13 +113,14 @@ def add_review():
         if len(result) == 0:
             row = (res_name, rating, review, global_uni)
             db.add_review(row)
-            return jsonify(valid=True, reason="Successfully added review.")
-        else:
-            flash("You've already reviewed this restaurant")
+            flash("Successfully added review.")
             return redirect(url_for('pre_add_review'))
-            return jsonify(valid=False,
-                           reason="You've already reviewed this restaurant.")
-
+        else:
+            flash("You've already reviewed this restaurant. You can only " +
+                  "submit one review per restaurant. You can edit your " +
+                  "previous review from the homepage by clicking the 'Edit " +
+                  " Review' button.")
+            return redirect(url_for('pre_add_review'))
 
 @app.route('/preaddreview', methods=['GET', 'POST'])
 def pre_add_review():
