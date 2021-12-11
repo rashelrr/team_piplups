@@ -4,7 +4,7 @@ import csv
 
 
 def init_db():
-    # creates tables REVIEWS and UNI
+    # creates tables REVIEWS and UNI: which store reviews and user accounts
     conn = None
     try:
         conn = sqlite3.connect('Lion_Eats')
@@ -27,7 +27,7 @@ def init_db():
             conn.close()
 
 
-# inserts dummy data for testing
+# inserts dummy data for testing purposes only
 def insert_dummy_data():
     conn = None
     try:
@@ -62,7 +62,7 @@ def get_password(uni):
         cur.execute("SELECT passcode FROM UNI where UNI = ?", (uni.lower(),))
         rows = cur.fetchall()
         conn.commit()
-        print('Database Online, get passcode given a UNI')
+        print('Database Online, get password given uni')
         return rows
 
     except Error as e:
@@ -89,9 +89,9 @@ def check_if_uni_exists(uni):
         cur.execute("SELECT * FROM UNI where UNI = ?", (uni.lower(),))
         rows = cur.fetchall()
         if rows is None or len(rows) == 0:
-            print("UNI not found, signup is allowed.")
+            print("Uni not found in db, signup is allowed.")
             return False
-        print("UNI found, please log in.")
+        print("Error: Uni found, please log in.")
         return True
 
     except Error as e:
@@ -114,15 +114,15 @@ def add_uni_passcode(uni, password):
     conn = None
     try:
         if uni is None or uni == "":
-            print("Error: adding a blank UNI")
+            print("Error: uni field is empty")
             return Error
         if password is None or password == "":
-            print("Error: cannot add blank password")
+            print("Error: password is empty")
             return Error
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
         if check_if_uni_exists(uni) is True:
-            print("UNI exists, cannot add")
+            print("Uni exists, cannot add account")
             return Error
         cur.execute("INSERT INTO UNI (UNI, passcode) VALUES\
                 (?, ?)", (uni.lower(), password))
@@ -143,11 +143,10 @@ def add_uni_passcode(uni, password):
 '''
 res_name: string
 rows:     list of tuples: [ (entire review 1), (entire review 2), ... ]
-Returns   all reviews for a specific restaurant
+Returns   all reviews for a specific restaurant as a dictionary
 '''
 
 
-# Changed to return a dictionary instead of an array
 def get_all_reviews_for_restaurant(res_name):
     conn = None
     try:
@@ -181,7 +180,7 @@ def get_all_reviews_for_restaurant(res_name):
 '''
 rating: int
 rows:   list of tuples: [ (entire review 1), (entire review 2), ... ]
-Returns all reviews at/above a star rating
+Returns all reviews at and above a star rating
 '''
 
 
@@ -193,7 +192,7 @@ def get_all_reviews_given_rating(rating):
         cur.execute("SELECT * FROM REVIEWS where star >= ?", (rating,))
         rows = cur.fetchall()
         conn.commit()
-        print('Database Online, get reviews at/above a rating')
+        print('Database Online, get reviews at and above a rating')
         return rows
     except Error as e:
         print(e)
@@ -208,7 +207,7 @@ def get_all_reviews_given_rating(rating):
 res_name: string
 rating:   int
 rows:     list of tuples: [ (entire review 1), (entire review 2), ... ]
-Returns all reviews for a restaurant at/above a star rating in dictionary form
+Returns all reviews for a restaurant at and above a star rating in dictionary form
 '''
 
 
@@ -243,9 +242,12 @@ def get_all_reviews_for_rest_given_rating(res_name, rating):
         if conn:
             conn.close()
 
-# currently unused!
-# given a rating, compute and average rating for each restaurant
-# and return restaurant_name + star for the restaurants above that rating
+
+'''
+rating: int
+Given a rating, get average rating for each restaurant
+and return those with an avg rating >= rating as a dictionary
+'''
 
 
 def get_restaurants_above_ratings(rating):
@@ -264,8 +266,8 @@ def get_restaurants_above_ratings(rating):
                 name.append(r[0])
                 star.append(r[1])
         conn.commit()
-        print('Database Online, get reviews above restaurant\'s average '
-              + 'rating')
+        print('Database Online, get restaurants with avg rating at/above '
+              'given rating')
         return dict(Name=name, Average_Rating=star)
     except Error as e:
         print(e)
@@ -277,9 +279,9 @@ def get_restaurants_above_ratings(rating):
 
 
 '''
-    res_name, uni: string
-    row: an entire review
-    Returns review that matches the res_name and uni
+res_name, uni: string
+row: a review
+Returns review that matches the res_name and uni
 '''
 
 
@@ -303,9 +305,9 @@ def get_review_uni_res(res_name, uni):
 
 
 '''
-    res_name, uni: string
-    rows: all reviews given a uni
-    Returns all reviews that matches the uni
+res_name, uni: string
+rows: all reviews given a uni
+Returns all reviews for a specific user
 '''
 
 
@@ -341,7 +343,6 @@ def get_review_uni(uni):
 '''
 UNI, res_name, new_review:  string
 new_star:                   int
-uni and res_name are lowercased before adding update
 Updates a single review in database
 '''
 
@@ -357,7 +358,7 @@ def edit_review(UNI, res_name, new_rating, new_review):
             restaurant_name = ?",
                     (new_rating, new_review, lower_UNI, lower_res_name))
         conn.commit()
-        print('Database Online, review edited')
+        print('Database Online, edited review')
     except Error as e:
         print(e)
 
@@ -383,7 +384,7 @@ def add_review(row):
             "INSERT INTO REVIEWS (restaurant_name, star, review, UNI) VALUES\
                 (?, ?, ?, ?)", new_row)
         conn.commit()
-        print('Database Online, review added')
+        print('Database Online, added review')
     except Error as e:
         print(e)
 

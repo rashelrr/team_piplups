@@ -195,7 +195,6 @@ class Test_TestDB(unittest.TestCase):
         rows = db.get_all_reviews_for_restaurant("")
         self.assertFalse(rows['Name'])
 
-    
     def test_get_all_reviews_given_rating(self):
         db.clear()
         db.init_db()
@@ -235,7 +234,7 @@ class Test_TestDB(unittest.TestCase):
         db.clear()
         db.init_db()
         self.conn = sqlite3.connect("Lion_Eats")
-        
+
         db.add_review(("Koronets", 3, "good food and great service", "dl3410"))
 
         # uni that doesn't exist
