@@ -207,7 +207,7 @@ def get_all_reviews_given_rating(rating):
 res_name: string
 rating:   int
 rows:     list of tuples: [ (entire review 1), (entire review 2), ... ]
-Returns all reviews for a restaurant at and above a star rating in dictionary form
+Returns all reviews for a restaurant at/above a star rating in dictionary form
 '''
 
 
@@ -305,9 +305,60 @@ def get_review_uni_res(res_name, uni):
 
 
 '''
-res_name, uni: string
-rows: all reviews given a uni
-Returns all reviews for a specific user
+    res_name, uni: string
+    row: the review column
+    Returns only the review column that matches the res_name and uni
+'''
+
+
+def get_only_review_uni_res(res_name, uni):
+    conn = None
+    try:
+        conn = sqlite3.connect('Lion_Eats')
+        cur = conn.cursor()
+        cur.execute("SELECT review FROM REVIEWS where restaurant_name=? AND UNI=?",
+                    (res_name.lower(), uni))
+        rows = cur.fetchall()
+        print('Database Online, get review column given a uni and restaurant')
+        return rows[0][0]
+    except Error as e:
+        print(e)
+        return None
+
+    finally:
+        if conn:
+            conn.close()
+
+
+'''
+    res, uni: string
+    ans: star rating given a restaurant and uni
+    Returns the star rating given a restaurant and uni
+'''
+
+
+def get_star_uni_res(uni, res):
+    conn = None
+    try:
+        conn = sqlite3.connect('Lion_Eats')
+        cur = conn.cursor()
+        cur.execute("SELECT star FROM REVIEWS where UNI=? and restaurant_name=?",
+                    (uni, res.lower()))
+        ans = cur.fetchall()
+        return ans[0][0]
+    except Error as e:
+        print(e)
+        return None
+
+    finally:
+        if conn:
+            conn.close()
+
+
+'''
+    res_name, uni: string
+    rows: all reviews given a uni
+    Returns all reviews that matches the uni
 '''
 
 
@@ -385,31 +436,6 @@ def add_review(row):
                 (?, ?, ?, ?)", new_row)
         conn.commit()
         print('Database Online, added review')
-    except Error as e:
-        print(e)
-
-    finally:
-        if conn:
-            conn.close()
-
-
-'''
-Given UNI and restaurant name, delete review from database
-'''
-
-
-def delete_review(UNI, res_name):
-    conn = None
-    try:
-        conn = sqlite3.connect('Lion_Eats')
-        cur = conn.cursor()
-        new_UNI = UNI.lower()
-        new_res_name = res_name.lower()
-        cur.execute(
-            """DELETE FROM REVIEWS where UNI = ? and restaurant_name = ?""",
-            (new_UNI, new_res_name))
-        conn.commit()
-        print('Database Online, review deleted')
     except Error as e:
         print(e)
 
