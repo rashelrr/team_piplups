@@ -50,12 +50,3 @@ function signup() {
     const finalurl = url;
     window.location.href = finalurl;
 }
-
-function displayAllRestaurants() {
-    var url;
-    const Http =  new XMLHttpRequest();
-    url = "http://127.0.0.1:5000/disres"
-    
-    const finalurl = url;
-    window.location.href = finalurl;
-}
