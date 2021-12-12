@@ -44,14 +44,31 @@ Purpose:    Allows user to log in
 
 @app.route('/login', methods=['POST'])
 def login():
-    # try request.form.get('name')
-    data = request.get_json(force=True)
-    data['name'] = "kevin"
-    return jsonify(data)
+    user = request.get_json(force=True)
+    uni = user['username']
+    password = user['password']
+
+    if db.check_if_uni_exists(uni) is True:
+        if db.get_password(uni)[0][0] == password:
+            global global_uni
+            global_uni = uni
+            # successfully logged in
+            return jsonify(username=uni, passcode=password, status="success")
+            # return redirect("http://127.0.0.1:5000/home")
+        else:
+            # wrong password
+            return jsonify(status="wrong password")
+            # flash('Error: Password is wrong, try again.')
+            # return redirect(url_for('login'))
+    else:
+        return jsonify(status="account not exist")
+        # flash('Error: Account does not exist, please sign up')
+        # return redirect(url_for('signup'))'''
+
+
+    return jsonify(user)
 
     '''
-    uni = request.form['username']
-    password = request.form['password']
     if db.check_if_uni_exists(uni) is True:
         if db.get_password(uni)[0][0] == password:
             global global_uni
