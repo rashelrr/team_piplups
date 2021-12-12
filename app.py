@@ -1,17 +1,12 @@
-import os
 from flask import Flask, render_template, jsonify, request, redirect,\
     url_for, flash
 import db
 import logging
 
-tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                        'templates')
-app = Flask(__name__, template_folder=tmpl_dir)
+app = Flask(__name__)
 
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
-app.config['SESSION_TYPE'] = 'memcached'
-app.config['SECRET_KEY'] = 'super secret key'
 
 
 '''
