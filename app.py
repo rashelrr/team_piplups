@@ -113,9 +113,13 @@ def add_review():
         if len(result) == 0:
             row = (res_name, rating, review, global_uni)
             db.add_review(row)
-            return jsonify(valid=True, reason="Successfully added review.")
+            flash("Successfully added review.")
+            return redirect(url_for('pre_add_review'))
         else:
-            flash("You've already reviewed this restaurant")
+            flash("You've already reviewed this restaurant. You can only " +
+                  "submit one review per restaurant. You can edit your " +
+                  "previous review from the homepage by clicking the 'Edit " +
+                  " Review' button.")
             return redirect(url_for('pre_add_review'))
 
 
