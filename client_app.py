@@ -55,7 +55,12 @@ Purpose:    Allows user to log in
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 
-    response = requests.get("https://lioneats.herokuapp.com/login")
+    uni = request.form['username']
+    password = request.form['password']
+
+    r = requests.post("https://lioneats.herokuapp.com/login")
+
+    response = r.text
     print(response)
     return redirect(url_for('login'))
 
