@@ -57,7 +57,7 @@ class test_test_app(unittest.TestCase):
         assert response.status_code == 200
         assert response_body['status'] == "account not exist"
 
-    ######################## TO FIX ########################################
+    ''' ############ BELOW: TO FIX ############ '''
 
     '''
     # checks edit review endpoint given valid parameters
