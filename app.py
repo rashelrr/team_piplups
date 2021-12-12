@@ -51,28 +51,31 @@ Purpose:    Allows user to log in
 '''
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login():
-    if request.method == 'POST':
-        uni = request.form['username']
-        password = request.form['password']
-        if db.check_if_uni_exists(uni) is True:
-            if db.get_password(uni)[0][0] == password:
-                global global_uni
-                global_uni = uni
-                return jsonify(username=uni, passcode=password, method="POST", status="success")
-                # return redirect("http://127.0.0.1:5000/home")
-            else:
-                return jsonify(method="POST", status="password wrong")
-                # flash('Error: Password is wrong, try again.')
-                # return redirect(url_for('login'))
+    # try request.form.get('name')
+    data = request.get_json(force=True)
+    data['name'] = "kevin"
+    return jsonify(data)
+
+    '''
+    uni = request.form['username']
+    password = request.form['password']
+    if db.check_if_uni_exists(uni) is True:
+        if db.get_password(uni)[0][0] == password:
+            global global_uni
+            global_uni = uni
+            return jsonify(username=uni, passcode=password, method="POST", status="success")
+            # return redirect("http://127.0.0.1:5000/home")
         else:
-            return jsonify(method="POST", status="account not exist")
-            # flash('Error: Account does not exist, please sign up')
-            # return redirect(url_for('signup'))
+            return jsonify(method="POST", status="password wrong")
+            # flash('Error: Password is wrong, try again.')
+            # return redirect(url_for('login'))
     else:
-        return jsonify(method="GET", status="success")
-        # return render_template('login.html')
+        return jsonify(method="POST", status="account not exist")
+        # flash('Error: Account does not exist, please sign up')
+        # return redirect(url_for('signup'))'''
+
 
 
 '''
@@ -285,4 +288,7 @@ def back_home():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='127.0.0.1')
+    app.run(debug=True)
+
+'''if __name__ == '__main__':
+    app.run(debug=True, host='127.0.0.1')'''
