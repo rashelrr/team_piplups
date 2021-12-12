@@ -33,6 +33,10 @@ Purpose:    Allows user to log in
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     response = requests.get("")
+
+
+
+    
     uni = request.form['username']
     password = request.form['password']
     if db.check_if_uni_exists(uni) is True:
