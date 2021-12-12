@@ -14,7 +14,9 @@ app.config['SESSION_TYPE'] = 'memcached'
 app.config['SECRET_KEY'] = 'super secret key'
 
 
-'''Homepage for API'''
+'''
+Homepage for API
+'''
 
 
 @app.route('/', methods=['GET'])
@@ -69,19 +71,8 @@ def signup():
         db.add_uni_passcode(uni, password)
         return jsonify(status="success")
 
-    if request.method == 'GET':
-        return render_template('signup.html')
-    else:
-        if db.check_if_uni_exists(uni) is True:
-            print("uni exists already")
-            flash('Account already exists, please login!')
-            return redirect(url_for('login'))
-        db.add_uni_passcode(uni, password)
-        print("added uni and passcode as an account to db")
-        flash('Signup is successful, please login!')
-        return redirect(url_for('login'))
 
-
+################# BELOW: TO FIX ####################################
 '''
 Endpoint:  /addreview?restaurant=___&stars=___&review=___&uni=___
 Adds review to database

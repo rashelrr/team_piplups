@@ -64,5 +64,26 @@ def login():
         return render_template('login.html')
 
 
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        uni = request.form['username']
+        password = request.form['password']
+
+        url = 'https://lioneats.herokuapp.com/signup'
+        data = {"username": uni, 'password': password}
+        response = requests.post(url=url, json=data)
+
+        r_json = response.json()
+        if r_json['status'] == "success":
+            flash('Signed up successfully, please log in')
+            return redirect(url_for('login'))
+        else:
+            flash('Account already exists, please log in')
+            return redirect(url_for('login'))
+    else:
+        return render_template('signup.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1')
