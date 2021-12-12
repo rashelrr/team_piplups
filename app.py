@@ -19,8 +19,16 @@ def index():
     db.clear()
     db.init_db()
     db.insert_dummy_data()
-    db.add_uni_passcode("rashelr", "minnie")
+    # db.add_uni_passcode("abc1234", "testpwd")
     return "Welcome to the LionEats API!"
+
+
+''' Clears databases'''
+
+
+@app.route('/clear', methods=['GET'])
+def index():
+    db.clear()
 
 
 '''
