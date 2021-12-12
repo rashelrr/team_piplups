@@ -16,6 +16,7 @@ Homepage for API
 
 @app.route('/', methods=['GET'])
 def index():
+    db.init_db()
     return "Welcome to the LionEats API!"
 
 
