@@ -1,32 +1,67 @@
 import unittest
 import requests
-import db
-import os
-import time
 
 
 class test_test_app(unittest.TestCase):
 
-    @classmethod
-    def setUpClass(cls):
-        os.system("nohup python3 app.py &")
-        time.sleep(5)
-
     def setUp(self):
         print('setUp')
-        db.init_db()
-        db.insert_dummy_data()
+        url = "https://lioneats.herokuapp.com/clear"
+        response = requests.get(url)
 
     def tearDown(self):
         print('tearDown')
-        db.clear()
-
-    # Tests / endpoint, checks status code is 200
-    def test_index_check_status_code(self):
-        url = "http://127.0.0.1:5000/"
+        url = "https://lioneats.herokuapp.com/clear"
         response = requests.get(url)
+
+    def test_login_invalid_account_not_exist(self):
+        url = "https://lioneats.herokuapp.com/login"
+        data = {"username": "xyz1234", 'password': "testpwd"}
+        response = requests.post(url=url, json=data)
+        response_body = response.json()
+
+        assert response.status_code == 200
+        assert response_body['status'] == "account not exist"
+
+    def test_login_happy(self):
+        # first add an account
+        url = "https://lioneats.herokuapp.com/signup"
+        data = {"username": "hda0101", 'password': "testpwd"}
+        response = requests.post(url=url, json=data)
+
         assert response.status_code == 200
 
+        # log in
+        url = "https://lioneats.herokuapp.com/login"
+        data = {"username": "hda0101", 'password': "testpwd"}
+        response = requests.post(url=url, json=data)
+        response_body = response.json()
+
+        assert response.status_code == 200
+        assert response_body['status'] == "success"
+
+
+
+    def test_login_invalid_wrong_pwd(self):
+        # first add an account
+        url = "https://lioneats.herokuapp.com/signup"
+        data = {"username": "abc1234", 'password': "testpwd"}
+        response = requests.post(url=url, json=data)
+
+        assert response.status_code == 200
+
+        # now try logging in with incorrect password
+        url = "https://lioneats.herokuapp.com/login"
+        data = {"username": "abc1234", 'password': "idek"}
+        response = requests.post(url=url, json=data)
+        response_body = response.json()
+
+        assert response.status_code == 200
+        assert response_body['status'] == "wrong password"
+
+    ######################## TO FIX ########################################
+
+    '''
     # checks edit review endpoint given valid parameters
     def test_edit_review_happy(self):
         url = ("http://127.0.0.1:5000/editreview?"
@@ -52,7 +87,7 @@ class test_test_app(unittest.TestCase):
         reason = "To edit a review, please enter all required fields."
         assert response_body["reason"] == reason
 
-    '''# Checks readreviews endpoint if given a valid restaurant name
+    # Checks readreviews endpoint if given a valid restaurant name
     def test_read_reviews_happy_given_restaurant(self):
         url = "http://127.0.0.1:5000/readreviews?restaurant=fumo"
         response = requests.get(url)
