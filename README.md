@@ -84,9 +84,8 @@ To run the client: Download the repo and enter into the terminal 'python3 app.py
   - Restaurant review page http://127.0.0.1:5000/rest_info?star=---&name=---
     - Displays all reviews (star rating, review, uni) that are above the specified number
     - User must enter all parameters
-  - Edit review page http://127.0.0.1:5000/edit_review_search
-    - Displays all reviews (star rating, review, uni) for a specific restaurant given UNI
-    - User can search for a restaurant review they wrote, given its UNI and restaurant name
+  - Edit review page http://127.0.0.1:5000/edit_review_search?name=---
+    - Displays a review (star rating, review, uni) for a specific restaurant given UNI
     - User must enter all parameters (UNI, restaurant name)
 
 **URL Parameters:**
