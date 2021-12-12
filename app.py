@@ -16,11 +16,18 @@ Homepage for API
 
 @app.route('/', methods=['GET'])
 def index():
-    # db.clear()
-    db.init_db()
-    db.insert_dummy_data()
-    # db.add_uni_passcode("rashelr", "minnie")
     return "Welcome to the LionEats API!"
+
+
+'''
+Clear database
+'''
+
+
+@app.route('/clear', methods=['GET'])
+def clear():
+    db.clear()
+    db.init_db()
 
 
 '''
