@@ -31,7 +31,6 @@ class test_test_app(unittest.TestCase):
         assert response.status_code == 200
         assert response_body['status'] == "success"
 
-
     def test_login_invalid_wrong_pwd(self):
         # first add an account
         url = "https://lioneats.herokuapp.com/signup"
