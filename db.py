@@ -316,8 +316,8 @@ def get_only_review_uni_res(res_name, uni):
     try:
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
-        cur.execute("SELECT review FROM REVIEWS where restaurant_name=? AND UNI=?",
-                    (res_name.lower(), uni))
+        cur.execute("SELECT review FROM REVIEWS where restaurant_name=? \
+                    AND UNI=?", (res_name.lower(), uni))
         rows = cur.fetchall()
         print('Database Online, get review column given a uni and restaurant')
         return rows[0][0]
@@ -342,8 +342,8 @@ def get_star_uni_res(uni, res):
     try:
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
-        cur.execute("SELECT star FROM REVIEWS where UNI=? and restaurant_name=?",
-                    (uni, res.lower()))
+        cur.execute("SELECT star FROM REVIEWS where UNI=? and \
+                    restaurant_name=?", (uni, res.lower()))
         ans = cur.fetchall()
         return ans[0][0]
     except Error as e:
