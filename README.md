@@ -41,39 +41,45 @@ To run the client: Download the repo and enter into the terminal 'python3 app.py
 
 **Endpoints:** 
 - GET
-  - Home page http://127.0.0.1:5000/ 
+  - Home http://127.0.0.1:5000/ 
     - Clears and creates table for storing reviews submitted by users
-    - Expects users to choose an action: login, signup, select a restaurant to see reviews, view all restaurants, view all restaurants above a certain rating, or add a review
-  - Home page http://127.0.0.1:5000/home
-    - Expects users to Expects users to choose an action: select a restaurant to see reviews, view all restaurants, view all restaurants above a certain rating, add a review, or edit a review
-  - http://127.0.0.1:5000/readreviews?restaurant=---&stars=-
-    - Retrieves reviews matching the query, aka reviews for a restaurant and/or
-      x stars and above
-    - User must enter one or both parameters
+    - Users can choose an action: login, signup, select a restaurant to see reviews, view all restaurants, view all restaurants above a certain rating, or add a review
+  - Home http://127.0.0.1:5000/home
+    - Takes away signup and login options from / endpoint and adds edit review option
+    - Users can choose an action: select a restaurant to see reviews, view all restaurants, view all restaurants above a certain rating, add a review, or edit a review
 - GET / POST
-  - Signup page http://127.0.0.1:5000/signup
+  - Signup http://127.0.0.1:5000/signup
     - Creates an account for users if they do not already have an account
-    - Expects the user to enter a valid username and password and submit via the signup button
-  - Login page http://127.0.0.1:5000/login
+  - Login http://127.0.0.1:5000/login
     - Logs the user in with the a username and password credential
-    - Expects the user to enter a valid username and corresponding password
-  - Restaurant display page http://127.0.0.1:5000/rest_display_all?
+    - User must enter a username that exists in the database and the corresponding password
+  - Restaurant display http://127.0.0.1:5000/rest_display_all?
     - Displays all restaurants and average star rating across all reviews
-    - Expects users to enter the name of a restaurant to see reviews for that restaurant
-  - Restaurant display page https://127.0.0.1/rest_display_star_filter?star=---
+    - User can enter the name of a restaurant to see reviews for that restaurant
+  - Restaurant display https://127.0.0.1/rest_display_star_filter?star=---
     - Displays all restaurants and average star rating across all reviews for restaurants whose average rating is above the number specified by the user
-    - Expects users to enter the name of a restaurant to see reviews for that restaurant
-  - http://127.0.0.1:5000/addreview?restaurant=---&stars=---&review=---&uni=---
-    - Adds review to database if user hasn't already reviewed that restaurant
-    - User must enter all parameters   
-  - http://127.0.0.1:5000/editreview?restaurant=&stars=&review=&uni=
-    - When a user has already reviewed a restaurant but wants to edit that
-      review.
+    - User can enter the name of a restaurant to see reviews for that restaurant
     - User must enter all parameters
+  - Edit review http://127.0.0.1:5000/editreview
+    - When a user has already reviewed a restaurant but wants to edit that review
+    - Displays all reviews (restaurant name, star rating, review, and uni) a user has left
+    - User can enter the name of a restaurant they want the edit the review for
+    - User must enter all parameters
+  - Add review http://127.0.0.1:5000/preaddreview
+    - Displays form for users to fill out
+    - User must enter all fields given
+    - add_review()
+      - Helper method
+      - Adds review to the database if user hasn't already reviewed the restaurant
+      - Sends popup if review is sucessfully added
 - GET
   - Restaurant review page http://127.0.0.1:5000/rest_info?name=---
     - Displays all reviews (star rating, review, uni) for a specified restaurant
-    - Expects users select radio button to filter reviews at or above 
+    - User can select radio button to filter reviews at or above the specified number
+    - User must enter all parameters
+  - Restaurant review page http://127.0.0.1:5000/rest_info?star=---&name=---
+    - Displays all reviews (star rating, review, uni) that are above the specified number
+    - User must enter all parameters
 
 
 **URL Parameters:**
