@@ -12,7 +12,6 @@ log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 app.config['SESSION_TYPE'] = 'memcached'
 app.config['SECRET_KEY'] = 'super secret key'
-
 global_uni = ''
 global_res = ''
 
@@ -23,7 +22,7 @@ global_res = ''
 @app.route('/', methods=['GET'])
 def index():
     global global_uni
-    return render_template('homepage.html', uni=global_uni)
+    return render_template('homepage.html', uni='')
 
 
 '''
@@ -32,6 +31,12 @@ UI:         User clicks "login" button on homepage
 Purpose:    Allows user to log in
             (if not registered, will lead to signup page)
 '''
+
+
+@app.route('/home', methods=['GET'])
+def home():
+    global global_uni
+    return render_template('homepage_logged_in.html', uni=global_uni)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -46,6 +51,8 @@ def login():
 
         r_json = response.json()
         if r_json['status'] == "success":
+            global global_uni
+            global_uni = uni
             return redirect(url_for('home'))
         elif r_json['status'] == "wrong password":
             flash('Wrong password, try again.')
