@@ -54,19 +54,16 @@ Purpose:    Allows user to log in
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-
-    uni = request.form['username']
-    password = request.form['password']
-
-    r = requests.post("https://lioneats.herokuapp.com/login")
-
-    response = r.text
-    print(response)
-    return redirect(url_for('login'))
-
-    '''
-
     if request.method == 'POST':
+        uni = request.form['username']
+        password = request.form['password']
+
+        r = requests.post("https://lioneats.herokuapp.com/login")
+
+        response = r.text
+        print(response)
+        return redirect(url_for('login'))
+        '''
         uni = request.form['username']
         password = request.form['password']
         if db.check_if_uni_exists(uni) is True:
@@ -79,9 +76,9 @@ def login():
                 return redirect(url_for('login'))
         else:
             flash('Error: Account does not exist, please sign up')
-            return redirect(url_for('signup'))
+            return redirect(url_for('signup'))'''
     else:
-        return render_template('login.html')'''
+        return render_template('login.html')
 
 
 '''
