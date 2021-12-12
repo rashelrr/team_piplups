@@ -21,8 +21,6 @@ global_uni = ''
 global_res = ''
 
 
-<<<<<<< HEAD
-=======
 @app.route('/', methods=['GET'])
 def index():
     db.clear()
@@ -45,7 +43,6 @@ def home():
     return render_template('homepage_logged_in.html', uni=global_uni)
 
 
->>>>>>> parent of b63fe4b (added service app.py and client)
 '''
 Endpoint:  /login
 UI:         User clicks "login" button on homepage
