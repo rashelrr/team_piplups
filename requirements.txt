@@ -48,7 +48,6 @@ Jade-Application-Kit==3.5.6
 jeepney==0.7.1
 Jinja2==3.0.1
 kiwisolver==1.3.2
-louis==3.19.0
 lxml==4.6.4
 Markdown==3.3.5
 MarkupSafe==2.0.1
