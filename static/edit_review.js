@@ -4,7 +4,7 @@ function handleEditReview() {
 
     var allstars = document.getElementsByName('stars');
     var stars = '';
-    for (button in allstars) {
+    for (var button in allstars) {
         if (button.checked) {
             stars = button.value;
         }
