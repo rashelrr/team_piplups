@@ -1,4 +1,3 @@
-apparmor
 appdirs==1.4.4
 application-utility
 apsw==3.36.0.post1
