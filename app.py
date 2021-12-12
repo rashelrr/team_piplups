@@ -25,7 +25,7 @@ global_res = ''
 def index():
     db.clear()
     db.init_db()
-    db.add_uni_passcode("rashelr", "minnie")
+    #db.add_uni_passcode("rashelr", "minnie")
 
 
 '''
