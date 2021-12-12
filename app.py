@@ -81,32 +81,23 @@ Endpoint:  /addreview?restaurant=___&stars=___&review=___&uni=___
 Adds review to database
 '''
 
-
 @app.route('/addreview', methods=['GET', 'POST'])
 def add_review():
     if request.method == 'GET':
-        res_name = request.args.get('restaurant')
-        rating = request.args.get('stars')
-        review = request.args.get('review')
+        name = request.args.get('restaurant')
+        star = request.args.get('stars')
+        comment = request.args.get('review')
+        uni = request.args.get('user')
 
-        result = db.get_review_uni_res(res_name, global_uni)
+        result = db.get_review_uni_res(name, uni)
         if len(result) == 0:
-            row = (res_name, rating, review, global_uni)
+            row = (name, star, comment, uni)
             db.add_review(row)
             flash("Successfully added review.")
-            return redirect(url_for('pre_add_review'))
+            return jsonify(res_name=name, rating=star, review=comment, method="POST", status="success")
         else:
-            flash("You've already reviewed this restaurant. You can only " +
-                  "submit one review per restaurant. You can edit your " +
-                  "previous review from the homepage by clicking the 'Edit " +
-                  " Review' button.")
-            return redirect(url_for('pre_add_review'))
-
-
-@app.route('/preaddreview', methods=['GET', 'POST'])
-def pre_add_review():
-    return render_template("add_review.html", uni=global_uni)
-
+            return jsonify(method="POST", status="fail")
+            
 
 '''
 Endpoint:  /editreview?restaurant=___&stars=___&review=___&uni=___

@@ -64,6 +64,35 @@ def login():
         return render_template('login.html')
 
 
+@app.route('/addreview', methods=['GET', 'POST'])
+def add_review():
+    if request.method == 'GET':
+        res_name = request.args.get('restaurant')
+        rating = request.args.get('stars')
+        review = request.args.get('review')
+
+        url = 'https://lioneats.herokuapp.com/addreview'
+        data = {"restaurant": res_name, 'stars': rating, 'review': review, 'user': global_uni}
+        response = requests.post(url=url, json=data)
+
+        r_json = response.json()
+
+        if r_json['status'] == "success":
+            flash("Successfully added review.")
+            return redirect(url_for('pre_add_review'))
+        else:
+            flash("You've already reviewed this restaurant. You can only " +
+                  "submit one review per restaurant. You can edit your " +
+                  "previous review from the homepage by clicking the 'Edit " +
+                  " Review' button.")
+            return redirect(url_for('pre_add_review'))
+
+
+@app.route('/preaddreview', methods=['GET', 'POST'])
+def pre_add_review():
+    return render_template("add_review.html", uni=global_uni)
+
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
