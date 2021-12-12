@@ -73,7 +73,6 @@ progress==1.6
 protobuf==3.17.3
 psutil==5.8.0
 pulsectl==21.10.5
-pwquality==1.4.4
 py7zr==0.16.2
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
