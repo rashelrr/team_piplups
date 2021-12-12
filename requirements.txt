@@ -118,7 +118,6 @@ toml==0.10.2
 tomli==1.2.1
 tornado==6.1
 ueberzug==18.1.9
-ufw==0.36
 unrardll==0.1.4
 uritemplate==3.0.1
 urllib3==1.26.7
