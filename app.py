@@ -21,6 +21,13 @@ global_uni = ''
 global_res = ''
 
 
+@app.route('/', methods=['GET'])
+def index():
+    db.clear()
+    db.init_db()
+    db.add_uni_passcode("rashelr", "minnie")
+
+
 '''
 Endpoint:  /home
 UI:         User clicks "log in" after putting in the right credentials
