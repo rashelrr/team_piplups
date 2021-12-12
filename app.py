@@ -116,8 +116,8 @@ def add_review():
         else:
             flash("You've already reviewed this restaurant")
             return redirect(url_for('pre_add_review'))
-            return jsonify(valid=False,
-                           reason="You've already reviewed this restaurant.")
+            #return jsonify(valid=False,
+                           #reason="You've already reviewed this restaurant.")
 
 
 @app.route('/preaddreview', methods=['GET', 'POST'])

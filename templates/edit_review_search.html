@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <style>
     body {
         font-size: 15pt;
-        font-family: arial;
+        font-family: arial, sans-serif;
     }
 
     #data, #data_head, #data_data {
@@ -15,11 +15,15 @@
     }
 </style>
 
+<head>
+    <title>LionEats</title>
+</head>
 <body>
     <!--Page title-->
     <h1>Review of {{context['Name'][0]}} from {{uni}}</h1>
 
     <table style="width:100%" id="data">
+        <caption></caption>
         <tr>
             {% for k in keys %}
                 <th id="data_head">{{k}}</th>
