@@ -21,6 +21,31 @@ global_uni = ''
 global_res = ''
 
 
+<<<<<<< HEAD
+=======
+@app.route('/', methods=['GET'])
+def index():
+    db.clear()
+    db.init_db()
+    db.insert_dummy_data()
+    global global_uni
+    return render_template('homepage.html', uni=global_uni)
+
+
+'''
+Endpoint:  /home
+UI:         User clicks "log in" after putting in the right credentials
+Purpose:    Leads the logged-in user to their home page
+'''
+
+
+@app.route('/home', methods=['GET'])
+def home():
+    global global_uni
+    return render_template('homepage_logged_in.html', uni=global_uni)
+
+
+>>>>>>> parent of b63fe4b (added service app.py and client)
 '''
 Endpoint:  /login
 UI:         User clicks "login" button on homepage
