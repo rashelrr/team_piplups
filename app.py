@@ -27,7 +27,8 @@ def index():
     db.init_db()
     db.insert_dummy_data()
     global global_uni
-    return render_template('homepage.html', uni=global_uni)
+    
+    #return render_template('homepage.html', uni=global_uni)
 
 
 '''
