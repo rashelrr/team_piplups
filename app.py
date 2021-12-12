@@ -21,7 +21,7 @@ global_uni = ''
 global_res = ''
 
 
-@app.route('/', methods=['GET'])
+@app.route('/', methods=['POST']) #'GET'])
 def index():
     # try request.form.get('name')
     data = request.get_json(force=True)
