@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, jsonify, request, redirect,\
+from flask import Flask, render_template, jsonify, json, request, redirect,\
     url_for, flash
 import db
 import logging
@@ -32,7 +32,16 @@ Purpose:    Allows user to log in
 
 @app.route('/login', methods=['GET'])
 def login():
-    # Retrieve the name from url parameter
+    t_username = request.json['username']
+
+    create_row_data = {'id': str(t_username)}
+
+    response = requests.post(
+        "http://localhost:5000/login", data=json.dumps(create_row_data),
+        headers={'Content-Type': 'application/json'}
+    )
+    return response.content
+    '''# Retrieve the name from url parameter
     username = request.args.get("username", None)
 
     # For debugging
@@ -51,7 +60,7 @@ def login():
         response["MESSAGE"] = f"Welcome {username} to our awesome platform!!"
 
     # Return the response in json format
-    return jsonify(response)
+    return jsonify(response)'''
 
     '''username = request.args.get("username", None)
     print("username: ", username)

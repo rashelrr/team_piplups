@@ -58,11 +58,10 @@ def login():
     if request.method == 'POST':
         uni = request.form['username']
         password = request.form['password']
+        create_row_data = {'username': uni}
+        r = requests.post(url="https://lioneats.herokuapp.com/login", json=create_row_data)
 
-        r = requests.post("https://lioneats.herokuapp.com/login")
-
-        response = r.text
-        print(response)
+        print(r.status_code, r.reason, r.text)
         return redirect(url_for('login'))
         '''
         uni = request.form['username']
