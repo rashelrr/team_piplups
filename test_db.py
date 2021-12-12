@@ -3,7 +3,7 @@ import db
 import sqlite3
 
 
-class test_test_DB(unittest.TestCase):
+class test_test_db(unittest.TestCase):
     comment = "good food and great service"
     ss = "Shake Shack"
 
