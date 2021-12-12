@@ -398,16 +398,16 @@ Updates a single review in database
 '''
 
 
-def edit_review(UNI, res_name, new_rating, new_review):
+def edit_review(uni, res_name, new_rating, new_review):
     conn = None
     try:
         conn = sqlite3.connect('Lion_Eats')
         cur = conn.cursor()
-        lower_UNI = UNI.lower()
+        lower_uni = uni.lower()
         lower_res_name = res_name.lower()
         cur.execute("update REVIEWS set star = ?, review = ? where UNI = ? and\
             restaurant_name = ?",
-                    (new_rating, new_review, lower_UNI, lower_res_name))
+                    (new_rating, new_review, lower_uni, lower_res_name))
         conn.commit()
         print('Database Online, edited review')
     except Error as e:

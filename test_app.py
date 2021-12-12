@@ -5,7 +5,7 @@ import os
 import time
 
 
-class Test_TestApp(unittest.TestCase):
+class test_testApp(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

@@ -3,7 +3,10 @@ import db
 import sqlite3
 
 
-class Test_TestDB(unittest.TestCase):
+class test_testDB(unittest.TestCase):
+    comment = "good food and great service"
+    ss = "Shake Shack"
+
     def setUp(self) -> None:
         self.conn = sqlite3.connect("Lion_Eats")
 
@@ -72,7 +75,7 @@ class Test_TestDB(unittest.TestCase):
         # normal add review
         db.clear()
         db.init_db()
-        db.add_review(("Junzi", 3, "good food and great service",
+        db.add_review(("Junzi", 3, comment,
                        "yy3131"))
         self.conn = sqlite3.connect("Lion_Eats")
         cur = self.conn.cursor()
@@ -132,17 +135,17 @@ class Test_TestDB(unittest.TestCase):
     def test_get_restaurants_above_ratings(self):
         db.clear()
         db.init_db()
-        db.add_review(("Shake Shack", 3, "good food and great service",
+        db.add_review((ss, 3, comment,
                        "yy3131"))
-        db.add_review(("Shake Shack", 5, "good food and great service",
+        db.add_review((ss, 5, comment,
                        "dl3410"))
-        db.add_review(("Ferris", 3, "good food and great service",
+        db.add_review(("Ferris", 3, comment,
                        "yy3131"))
 
         rows = db.get_restaurants_above_ratings("5")
         self.assertFalse(rows['Name'])
 
-        db.add_review(("Shake Shack", 5, "amazing!",
+        db.add_review((ss, 5, "amazing!",
                       "mg4145"))
         rows = db.get_restaurants_above_ratings("4")
         self.assertTrue(rows['Name'])
@@ -152,7 +155,7 @@ class Test_TestDB(unittest.TestCase):
         db.init_db()
         self.conn = sqlite3.connect("Lion_Eats")
 
-        db.add_review(("Junzi", 3, "good food and great service", "yy3131"))
+        db.add_review(("Junzi", 3, comment, "yy3131"))
 
         # normal get
         rows = db.get_all_reviews_for_restaurant("junzi")
@@ -171,7 +174,7 @@ class Test_TestDB(unittest.TestCase):
         db.init_db()
         self.conn = sqlite3.connect("Lion_Eats")
 
-        db.add_review(("junzi", 5, "good food and great service",
+        db.add_review(("junzi", 5, comment,
                       "yy3131"))
         # normal get
         rows = db.get_all_reviews_given_rating(5)
@@ -181,7 +184,7 @@ class Test_TestDB(unittest.TestCase):
         db.clear()
         db.init_db()
         self.conn = sqlite3.connect("Lion_Eats")
-        db.add_review(("junzi", 3, "good food and great service",
+        db.add_review(("junzi", 3, comment,
                       "yy3131"))
 
         # normal get
@@ -204,18 +207,18 @@ class Test_TestDB(unittest.TestCase):
     def test_get_only_review_uni_res(self):
         db.clear()
         db.init_db()
-        db.add_review(("Koronets", 3, "good food and great service", "dl3410"))
+        db.add_review(("Koronets", 3, comment, "dl3410"))
         result = db.get_only_review_uni_res("Koronets", "dl3410")
-        self.assertEqual(result, "good food and great service")
+        self.assertEqual(result, comment)
 
         # case does not matter
         result = db.get_only_review_uni_res("koronets", "dl3410")
-        self.assertEqual(result, "good food and great service")
+        self.assertEqual(result, comment)
 
     def test_get_star_uni_res(self):
         db.clear()
         db.init_db()
-        db.add_review(("Koronets", 3, "good food and great service", "dl3410"))
+        db.add_review(("Koronets", 3, comment, "dl3410"))
         result = db.get_star_uni_res("dl3410", "Koronets")
         self.assertEqual(result, 3)
 
@@ -227,7 +230,7 @@ class Test_TestDB(unittest.TestCase):
         db.clear()
         db.init_db()
         self.conn = sqlite3.connect("Lion_Eats")
-        db.add_review(("Koronets", 3, "good food and great service", "dl3410"))
+        db.add_review(("Koronets", 3, comment, "dl3410"))
 
         # uni that doesn't exist
         rows = db.get_review_uni("eeee")
@@ -242,7 +245,7 @@ class Test_TestDB(unittest.TestCase):
         db.init_db()
         self.conn = sqlite3.connect("Lion_Eats")
 
-        db.add_review(("Koronets", 3, "good food and great service", "dl3410"))
+        db.add_review(("Koronets", 3, comment, "dl3410"))
 
         # normal get
         rows = db.get_review_uni_res("Koronets", "dl3410")

@@ -48,48 +48,9 @@
             <input type="submit" value="Filter">
         </form>
 
-        <!--
-        <form method="GET" action="/rest_display_star_filter">
-            Star rating:<br>
-            <input type="radio" id="1" name="star" value=1> <label for="1">1</label><br>
-            <input type="radio" id="2" name="star" value=2> <label for="2">2</label><br>
-            <input type="radio" id="3" name="star" value=3> <label for="3">3</label><br>
-            <input type="radio" id="4" name="star" value=4> <label for="4">4</label><br>
-            <input type="radio" id="5" name="star" value=5> <label for="5">5</label><br>
-            <input type="submit" value="Filter">
-        </form>
-    -->
-
         <form method="GET" method="POST" action="/rest_display_all">
             <input type="submit" value="See all restaurants">
         </form>
-    
-        <!--
-        <form id="readreviews" action="/rest_info" method="GET">
-            Restaurant name: <input type="text" id="restaurant" name="name"><br>
-            Star rating:<br>
-            <input type="radio" id="1" name="star" value="1">
-            <label for="1">1</label><br>
-
-            <input type="radio" id="2" name="star" value="2">
-            <label for="2">2</label><br>
-
-            <input type="radio" id="3" name="star" value="3">
-            <label for="3">3</label><br>
-
-            <input type="radio" id="4" name="star" value="4">
-            <label for="4">4</label><br>
-
-            <input type="radio" id="5" name="star" value="5">
-            <label for="5">5</label><br>
-
-        </form> 
-
-        <button onclick="rest_display_star_filter();">Submit</button>
-        or 
-        <button onclick="rest_display_all();">Display All Restaurants</button>
-
-        -->
 
         <script src="{{ url_for('static', filename = 'homepage.js') }}"></script>              
     <h4>Add A Review</h4>

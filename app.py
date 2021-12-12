@@ -116,8 +116,6 @@ def add_review():
         else:
             flash("You've already reviewed this restaurant")
             return redirect(url_for('pre_add_review'))
-            #return jsonify(valid=False,
-                           #reason="You've already reviewed this restaurant.")
 
 
 @app.route('/preaddreview', methods=['GET', 'POST'])
@@ -132,6 +130,7 @@ UI:         User is already at page pre-populated
             Allows user to search for a review and update that
 '''
 
+er_html = 'edit_review.html'
 
 @app.route('/editreview', methods=['GET', 'POST'])
 def edit_review():
@@ -141,7 +140,7 @@ def edit_review():
     result = db.get_review_uni(global_uni)
     for k, v in result.items():
         rows = len(v)
-    return render_template('edit_review.html', context=result,
+    return render_template('er_html', context=result,
                            keys=list(result.keys()), rows=rows,
                            uni=global_uni)
 
@@ -164,7 +163,7 @@ def edit_review_search():
         result = db.get_review_uni(global_uni)
         for k, v in result.items():
             rows = len(v)
-        return render_template('edit_review.html', context=result,
+        return render_template('er_html', context=result,
                            keys=list(result.keys()), rows=rows,
                            uni=global_uni)
     global_res = name
@@ -201,7 +200,7 @@ def update_star_and_review():
     result = db.get_review_uni(global_uni)
     for k, v in result.items():
         rows = len(v)
-    return render_template('edit_review.html', context=result,
+    return render_template('er_html', context=result,
                            keys=list(result.keys()), rows=rows,
                            uni=global_uni)
 
