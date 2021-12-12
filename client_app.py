@@ -54,6 +54,7 @@ Purpose:    Allows user to log in
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+
     if request.method == 'POST':
         uni = request.form['username']
         password = request.form['password']

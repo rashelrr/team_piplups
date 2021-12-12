@@ -30,13 +30,41 @@ Purpose:    Allows user to log in
 '''
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET'])
 def login():
-    response = requests.get("")
+    # Retrieve the name from url parameter
+    username = request.args.get("username", None)
+
+    # For debugging
+    print(f"Got username: {username}")
+
+    response = {}
+
+    # Check if user sent a name at all
+    if not username:
+        response["ERROR"] = "no name found, please send a name."
+    # Check if the user entered a number not a name
+    elif str(username).isdigit():
+        response["ERROR"] = "name can't be numeric."
+    # Now the user entered a valid name
+    else:
+        response["MESSAGE"] = f"Welcome {username} to our awesome platform!!"
+
+    # Return the response in json format
+    return jsonify(response)
+
+    '''username = request.args.get("username", None)
+    print("username: ", username)
+
+    response = {}
+    response["MESSAGE"] = "welcome " + str(username)
+    return jsonify(response)'''
+
+    # response = requests.get("http://127.0.0.1:5000/")
+    # print(response)
 
 
-
-    
+    '''
     uni = request.form['username']
     password = request.form['password']
     if db.check_if_uni_exists(uni) is True:
@@ -56,6 +84,7 @@ def login():
     #else:
         #return jsonify(method="GET", status="success")
         # return render_template('login.html')
+    '''
 
 
 '''
