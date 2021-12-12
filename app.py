@@ -58,6 +58,7 @@ def login():
             # wrong password
             return jsonify(status="wrong password")
     else:
+        return jsonify(db.check_if_uni_exists(uni))
         return jsonify(status="account not exist")
 
 
