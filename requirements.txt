@@ -111,7 +111,6 @@ rsa==4.7.2
 setproctitle==1.2.2
 sgmllib3k==1.0.0
 shiboken2==5.15.2
-sip==4.19.25
 six==1.16.0
 soupsieve==2.2.1
 team==1.0
