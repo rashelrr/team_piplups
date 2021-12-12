@@ -7,21 +7,12 @@ class test_test_app(unittest.TestCase):
     def setUp(self):
         print('setUp')
         url = "https://lioneats.herokuapp.com/clear"
-        response = requests.get(url)
+        requests.get(url)
 
     def tearDown(self):
         print('tearDown')
         url = "https://lioneats.herokuapp.com/clear"
-        response = requests.get(url)
-
-    def test_login_invalid_account_not_exist(self):
-        url = "https://lioneats.herokuapp.com/login"
-        data = {"username": "xyz1234", 'password': "testpwd"}
-        response = requests.post(url=url, json=data)
-        response_body = response.json()
-
-        assert response.status_code == 200
-        assert response_body['status'] == "account not exist"
+        requests.get(url)
 
     def test_login_happy(self):
         # first add an account
@@ -41,7 +32,6 @@ class test_test_app(unittest.TestCase):
         assert response_body['status'] == "success"
 
 
-
     def test_login_invalid_wrong_pwd(self):
         # first add an account
         url = "https://lioneats.herokuapp.com/signup"
@@ -58,6 +48,15 @@ class test_test_app(unittest.TestCase):
 
         assert response.status_code == 200
         assert response_body['status'] == "wrong password"
+
+    def test_login_invalid_account_not_exist(self):
+        url = "https://lioneats.herokuapp.com/login"
+        data = {"username": "xyz1234", 'password': "testpwd"}
+        response = requests.post(url=url, json=data)
+        response_body = response.json()
+
+        assert response.status_code == 200
+        assert response_body['status'] == "account not exist"
 
     ######################## TO FIX ########################################
 
