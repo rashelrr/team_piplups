@@ -23,12 +23,17 @@ global_res = ''
 
 @app.route('/', methods=['GET'])
 def index():
+    # try request.form.get('name')
+    data = request.get_json(force=True)
+    data['name'] = "kevin"
+    return jsonify(data)
+    '''
     db.clear()
     db.init_db()
     db.insert_dummy_data()
     global global_uni
     return render_template('homepage.html', uni=global_uni)
-
+    '''
 
 '''
 Endpoint:  /home
