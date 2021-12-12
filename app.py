@@ -140,7 +140,7 @@ def edit_review():
     result = db.get_review_uni(global_uni)
     for k, v in result.items():
         rows = len(v)
-    return render_template('er_html', context=result,
+    return render_template(er_html, context=result,
                            keys=list(result.keys()), rows=rows,
                            uni=global_uni)
 
@@ -163,7 +163,7 @@ def edit_review_search():
         result = db.get_review_uni(global_uni)
         for k, v in result.items():
             rows = len(v)
-        return render_template('er_html', context=result,
+        return render_template(er_html, context=result,
                            keys=list(result.keys()), rows=rows,
                            uni=global_uni)
     global_res = name
@@ -200,7 +200,7 @@ def update_star_and_review():
     result = db.get_review_uni(global_uni)
     for k, v in result.items():
         rows = len(v)
-    return render_template('er_html', context=result,
+    return render_template(er_html, context=result,
                            keys=list(result.keys()), rows=rows,
                            uni=global_uni)
 
