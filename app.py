@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect,\
+from flask import Flask, render_template, jsonify, request, redirect,\
     url_for, flash
 import db
 import logging
@@ -21,29 +21,6 @@ global_uni = ''
 global_res = ''
 
 
-@app.route('/', methods=['GET'])
-def index():
-    db.clear()
-    db.init_db()
-    db.insert_dummy_data()
-    global global_uni
-    
-    #return render_template('homepage.html', uni=global_uni)
-
-
-'''
-Endpoint:  /home
-UI:         User clicks "log in" after putting in the right credentials
-Purpose:    Leads the logged-in user to their home page
-'''
-
-
-@app.route('/home', methods=['GET'])
-def home():
-    global global_uni
-    return render_template('homepage_logged_in.html', uni=global_uni)
-
-
 '''
 Endpoint:  /login
 UI:         User clicks "login" button on homepage
@@ -61,15 +38,19 @@ def login():
             if db.get_password(uni)[0][0] == password:
                 global global_uni
                 global_uni = uni
-                return redirect("http://127.0.0.1:5000/home")
+                return jsonify(username=uni, passcode=password, method="POST", status="success")
+                # return redirect("http://127.0.0.1:5000/home")
             else:
-                flash('Error: Password is wrong, try again.')
-                return redirect(url_for('login'))
+                return jsonify(method="POST", status="password wrong")
+                # flash('Error: Password is wrong, try again.')
+                # return redirect(url_for('login'))
         else:
-            flash('Error: Account does not exist, please sign up')
-            return redirect(url_for('signup'))
+            return jsonify(method="POST", status="account not exist")
+            # flash('Error: Account does not exist, please sign up')
+            # return redirect(url_for('signup'))
     else:
-        return render_template('login.html')
+        return jsonify(method="GET", status="success")
+        # return render_template('login.html')
 
 
 '''

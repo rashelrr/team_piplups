@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template, request, redirect,\
     url_for, flash
 import db
+import requests
 import logging
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
@@ -53,6 +54,13 @@ Purpose:    Allows user to log in
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+
+    response = requests.get("https://lioneats.herokuapp.com/login")
+    print(response)
+    return redirect(url_for('login'))
+
+    '''
+
     if request.method == 'POST':
         uni = request.form['username']
         password = request.form['password']
@@ -68,7 +76,7 @@ def login():
             flash('Error: Account does not exist, please sign up')
             return redirect(url_for('signup'))
     else:
-        return render_template('login.html')
+        return render_template('login.html')'''
 
 
 '''
