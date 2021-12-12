@@ -218,7 +218,7 @@ Purpose:    Display restaurants and average rating of restaurants that
 
 @app.route('/rest_display_star_filter', methods=['GET', 'POST'])
 def rest_display_star_filter():
-    star = request.form['star']
+    star = request.args.get('star')
     result = db.get_restaurants_above_ratings(star)
     for key, value in result.items():
         rows = len(value)

@@ -35,13 +35,14 @@
             <input type="submit" value="View">
         </form>
 
-        <form action="/rest_display_star_filter" method="POST" method="GET">
+        <form action="/rest_display_star_filter" method="GET">
             <p><input type="radio" name="star" value=1>1</p>
             <p><input type="radio" name="star" value=2>2</p>
             <p><input type="radio" name="star" value=3>3</p>
             <p><input type="radio" name="star" value=4>4</p>
             <p><input type="radio" name="star" value=5>5</p>
             <input type="submit" value="Filter">
+            <input type="hidden" name="name" value={{context['Name'][0]}}>
         </form>
 
         <form method="GET" method="POST" action="/rest_display_all">
