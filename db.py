@@ -264,7 +264,7 @@ def get_restaurants_above_ratings(rating):
         for r in rows:
             if r[1] >= int(rating):
                 name.append(r[0])
-                star.append(r[1])
+                star.append(round(r[1], 1))
         conn.commit()
         print('Database Online, get restaurants with avg rating at/above '
               'given rating')
