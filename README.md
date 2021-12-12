@@ -62,7 +62,6 @@ To run the client: Download the repo and enter into the terminal 'python3 app.py
     - User must enter all parameters
   - Edit review http://127.0.0.1:5000/editreview
     - When a user has already reviewed a restaurant but wants to edit that review
-    - Displays all reviews (restaurant name, star rating, review, and uni) a user has left
     - User can enter the name of a restaurant they want the edit the review for
     - User must enter all parameters
   - Add review http://127.0.0.1:5000/preaddreview
@@ -73,8 +72,8 @@ To run the client: Download the repo and enter into the terminal 'python3 app.py
       - Adds review to the database if user hasn't already reviewed the restaurant
       - Sends popup if review is sucessfully added
   - Update Review http://127.0.0.1:5000/update_star_and_review
-    - Adds updated review (star rating, review) for a specified restaurant, given UNI, to the database
-    - When the user clicks "submit" button on edit review page
+    - When the user clicks "submit" button on edit review page (and added updated review (star rating, review) for a specified restaurant, given UNI, to the database)
+    - Displays all reviews (restaurant name, star rating, review, and uni) a user has left
     - User must enter all parameters
 - GET
   - Restaurant review page http://127.0.0.1:5000/rest_info?name=---
