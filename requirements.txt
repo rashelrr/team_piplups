@@ -113,7 +113,6 @@ sgmllib3k==1.0.0
 shiboken2==5.15.2
 six==1.16.0
 soupsieve==2.2.1
-team==1.0
 texttable==1.6.4
 toml==0.10.2
 tomli==1.2.1
