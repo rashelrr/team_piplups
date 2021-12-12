@@ -13,12 +13,8 @@ log.setLevel(logging.ERROR)
 app.config['SESSION_TYPE'] = 'memcached'
 app.config['SECRET_KEY'] = 'super secret key'
 
-'''
-Homepage
-'''
 
-global_uni = ''
-global_res = ''
+'''Homepage for API'''
 
 
 @app.route('/', methods=['GET'])
@@ -26,28 +22,13 @@ def index():
     db.clear()
     db.init_db()
     db.insert_dummy_data()
-    # db.add_uni_passcode("rashelr", "minnie")
+    db.add_uni_passcode("rashelr", "minnie")
     return "Welcome to the LionEats API!"
 
 
 '''
-Endpoint:  /home
-UI:         User clicks "log in" after putting in the right credentials
-Purpose:    Leads the logged-in user to their home page
-'''
-
-
-@app.route('/home', methods=['GET'])
-def home():
-    global global_uni
-    return render_template('homepage_logged_in.html', uni=global_uni)
-
-
-'''
 Endpoint:  /login
-UI:         User clicks "login" button on homepage
-Purpose:    Allows user to log in
-            (if not registered, will lead to signup page)
+Purpose:    Determines if user can log in
 '''
 
 
@@ -59,10 +40,8 @@ def login():
 
     if db.check_if_uni_exists(uni) is True:
         if db.get_password(uni)[0][0] == password:
-            global global_uni
-            global_uni = uni
             # successfully logged in
-            return jsonify(status="success")
+            return jsonify(status="success", guni=uni)
         else:
             # wrong password
             return jsonify(status="wrong password")
@@ -72,18 +51,27 @@ def login():
 
 '''
 Endpoint:  /signup
-UI:         User clicks "sign up" on homepage
 Purpose:    Allows the user to sign up for a new account
 '''
 
 
-@app.route('/signup', methods=['GET', 'POST'])
+@app.route('/signup', methods=['POST'])
 def signup():
+    user = request.get_json(force=True)
+    uni = user['username']
+    password = user['password']
+
+    if db.check_if_uni_exists(uni) is True:
+        # failed sign up
+        return jsonify(status="account exists")
+    else:
+        # successful sign up
+        db.add_uni_passcode(uni, password)
+        return jsonify(status="success")
+
     if request.method == 'GET':
         return render_template('signup.html')
     else:
-        uni = request.form['username']
-        password = request.form['password']
         if db.check_if_uni_exists(uni) is True:
             print("uni exists already")
             flash('Account already exists, please login!')
@@ -96,7 +84,6 @@ def signup():
 
 '''
 Endpoint:  /addreview?restaurant=___&stars=___&review=___&uni=___
-UI:        User fills out a form and presses 'Submit Review' button
 Adds review to database
 '''
 
