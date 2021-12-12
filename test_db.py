@@ -75,7 +75,7 @@ class test_test_db(unittest.TestCase):
         # normal add review
         db.clear()
         db.init_db()
-        db.add_review(("Junzi", 3, comment,
+        db.add_review(("Junzi", 3, self.comment,
                        "yy3131"))
         self.conn = sqlite3.connect("Lion_Eats")
         cur = self.conn.cursor()
@@ -135,17 +135,17 @@ class test_test_db(unittest.TestCase):
     def test_get_restaurants_above_ratings(self):
         db.clear()
         db.init_db()
-        db.add_review((ss, 3, comment,
+        db.add_review((self.ss, 3, self.comment,
                        "yy3131"))
-        db.add_review((ss, 5, comment,
+        db.add_review((self.ss, 5, self.comment,
                        "dl3410"))
-        db.add_review(("Ferris", 3, comment,
+        db.add_review(("Ferris", 3, self.comment,
                        "yy3131"))
 
         rows = db.get_restaurants_above_ratings("5")
         self.assertFalse(rows['Name'])
 
-        db.add_review((ss, 5, "amazing!",
+        db.add_review((self.ss, 5, "amazing!",
                       "mg4145"))
         rows = db.get_restaurants_above_ratings("4")
         self.assertTrue(rows['Name'])
@@ -155,7 +155,7 @@ class test_test_db(unittest.TestCase):
         db.init_db()
         self.conn = sqlite3.connect("Lion_Eats")
 
-        db.add_review(("Junzi", 3, comment, "yy3131"))
+        db.add_review(("Junzi", 3, self.comment, "yy3131"))
 
         # normal get
         rows = db.get_all_reviews_for_restaurant("junzi")
@@ -174,7 +174,7 @@ class test_test_db(unittest.TestCase):
         db.init_db()
         self.conn = sqlite3.connect("Lion_Eats")
 
-        db.add_review(("junzi", 5, comment,
+        db.add_review(("junzi", 5, self.comment,
                       "yy3131"))
         # normal get
         rows = db.get_all_reviews_given_rating(5)
@@ -184,7 +184,7 @@ class test_test_db(unittest.TestCase):
         db.clear()
         db.init_db()
         self.conn = sqlite3.connect("Lion_Eats")
-        db.add_review(("junzi", 3, comment,
+        db.add_review(("junzi", 3, self.comment,
                       "yy3131"))
 
         # normal get
@@ -207,18 +207,18 @@ class test_test_db(unittest.TestCase):
     def test_get_only_review_uni_res(self):
         db.clear()
         db.init_db()
-        db.add_review(("Koronets", 3, comment, "dl3410"))
+        db.add_review(("Koronets", 3, self.comment, "dl3410"))
         result = db.get_only_review_uni_res("Koronets", "dl3410")
-        self.assertEqual(result, comment)
+        self.assertEqual(result, self.comment)
 
         # case does not matter
         result = db.get_only_review_uni_res("koronets", "dl3410")
-        self.assertEqual(result, comment)
+        self.assertEqual(result, self.comment)
 
     def test_get_star_uni_res(self):
         db.clear()
         db.init_db()
-        db.add_review(("Koronets", 3, comment, "dl3410"))
+        db.add_review(("Koronets", 3, self.comment, "dl3410"))
         result = db.get_star_uni_res("dl3410", "Koronets")
         self.assertEqual(result, 3)
 
@@ -230,7 +230,7 @@ class test_test_db(unittest.TestCase):
         db.clear()
         db.init_db()
         self.conn = sqlite3.connect("Lion_Eats")
-        db.add_review(("Koronets", 3, comment, "dl3410"))
+        db.add_review(("Koronets", 3, self.comment, "dl3410"))
 
         # uni that doesn't exist
         rows = db.get_review_uni("eeee")
@@ -245,7 +245,7 @@ class test_test_db(unittest.TestCase):
         db.init_db()
         self.conn = sqlite3.connect("Lion_Eats")
 
-        db.add_review(("Koronets", 3, comment, "dl3410"))
+        db.add_review(("Koronets", 3, self.comment, "dl3410"))
 
         # normal get
         rows = db.get_review_uni_res("Koronets", "dl3410")

@@ -21,6 +21,7 @@ Homepage
 global_uni = ''
 global_res = ''
 
+
 @app.route('/', methods=['GET'])
 def index():
     db.clear()
@@ -137,6 +138,7 @@ UI:         User is already at page pre-populated
 
 er_html = 'edit_review.html'
 
+
 @app.route('/editreview', methods=['GET', 'POST'])
 def edit_review():
     global global_uni
@@ -162,15 +164,14 @@ def edit_review_search():
     global global_uni
     global global_res
     name = request.args.get('name')
-    if db.get_review_uni_res(name,
-                            global_uni) == []:
+    if db.get_review_uni_res(name, global_uni) == []:
         flash("Uni and Restaurant pair does not exist, try again")
         result = db.get_review_uni(global_uni)
         for k, v in result.items():
             rows = len(v)
         return render_template(er_html, context=result,
-                           keys=list(result.keys()), rows=rows,
-                           uni=global_uni)
+                               keys=list(result.keys()), rows=rows,
+                               uni=global_uni)
     global_res = name
     rows = db.get_review_uni_res(global_res, global_uni)
     name = []
@@ -229,7 +230,7 @@ def rest_display_all():
 '''
 Endpoint:  /rest_display_star_filter
 UI:         User checks radio button and clicks "filter" button
-Purpose:    Display restaurants and average rating of restaurants that 
+Purpose:    Display restaurants and average rating of restaurants that
             are over the checked number
 '''
 
@@ -249,7 +250,7 @@ Endpoint:  /rest_info
 UI:         User enters the name of a restaurant and clicks the "view"
             button, or user checks radio button and clicks "filter"
             button, or user clicks "see all reviews" button
-Purpose:    Display reviews for a restaurant; either all reviews or 
+Purpose:    Display reviews for a restaurant; either all reviews or
             only reviews over are over checked number
 '''
 
