@@ -25,7 +25,8 @@ global_res = ''
 def index():
     db.clear()
     db.init_db()
-    db.add_uni_passcode("rashelr", "minnie")
+    db.insert_dummy_data()
+    # db.add_uni_passcode("rashelr", "minnie")
     return "Welcome to the LionEats API!"
 
 
@@ -61,7 +62,7 @@ def login():
             global global_uni
             global_uni = uni
             # successfully logged in
-            return jsonify(status="success", username=uni, passcode=password)
+            return jsonify(status="success")
         else:
             # wrong password
             return jsonify(status="wrong password")
