@@ -72,6 +72,10 @@ To run the client: Download the repo and enter into the terminal 'python3 app.py
       - Helper method
       - Adds review to the database if user hasn't already reviewed the restaurant
       - Sends popup if review is sucessfully added
+  - Update Review http://127.0.0.1:5000/update_star_and_review
+    - Adds updated review (star rating, review) for a specified restaurant, given UNI, to the database
+    - When the user clicks "submit" button on edit review page
+    - User must enter all parameters
 - GET
   - Restaurant review page http://127.0.0.1:5000/rest_info?name=---
     - Displays all reviews (star rating, review, uni) for a specified restaurant
@@ -80,7 +84,10 @@ To run the client: Download the repo and enter into the terminal 'python3 app.py
   - Restaurant review page http://127.0.0.1:5000/rest_info?star=---&name=---
     - Displays all reviews (star rating, review, uni) that are above the specified number
     - User must enter all parameters
-
+  - Edit review page http://127.0.0.1:5000/edit_review_search
+    - Displays all reviews (star rating, review, uni) for a specific restaurant given UNI
+    - User can search for a restaurant review they wrote, given its UNI and restaurant name
+    - User must enter all parameters (UNI, restaurant name)
 
 **URL Parameters:**
 - restaurant=[string] (case-insensitive)
