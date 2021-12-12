@@ -41,13 +41,28 @@ To run the client: Download the repo and enter into the terminal 'python3 app.py
 
 **Endpoints:** 
 - GET
-  - http://127.0.0.1:5000/
+  - Home page http://127.0.0.1:5000/ 
     - Clears and creates table for storing reviews submitted by users
+    - Expects users to choose an action: login, signup, select a restaurant to see reviews, view all restaurants, view all restaurants above a certain rating, or add a review
+  - Home page http://127.0.0.1:5000/home
+    - Expects users to Expects users to choose an action: select a restaurant to see reviews, view all restaurants, view all restaurants above a certain rating, add a review, or edit a review
   - http://127.0.0.1:5000/readreviews?restaurant=---&stars=-
     - Retrieves reviews matching the query, aka reviews for a restaurant and/or
       x stars and above
     - User must enter one or both parameters
 - GET / POST
+  - Signup page http://127.0.0.1:5000/signup
+    - Creates an account for users if they do not already have an account
+    - Expects the user to enter a valid username and password and submit via the signup button
+  - Login page http://127.0.0.1:5000/login
+    - Logs the user in with the a username and password credential
+    - Expects the user to enter a valid username and corresponding password
+  - Restaurant display page http://127.0.0.1:5000/rest_display_all?
+    - Displays all restaurants and average star rating across all reviews
+    - Expects users to enter the name of a restaurant to see reviews for that restaurant
+  - Restaurant display page https://127.0.0.1/rest_display_star_filter?star=---
+    - Displays all restaurants and average star rating across all reviews for restaurants whose average rating is above the number specified by the user
+    - Expects users to enter the name of a restaurant to see reviews for that restaurant
   - http://127.0.0.1:5000/addreview?restaurant=---&stars=---&review=---&uni=---
     - Adds review to database if user hasn't already reviewed that restaurant
     - User must enter all parameters   
@@ -55,6 +70,10 @@ To run the client: Download the repo and enter into the terminal 'python3 app.py
     - When a user has already reviewed a restaurant but wants to edit that
       review.
     - User must enter all parameters
+- GET
+  - Restaurant review page http://127.0.0.1:5000/rest_info?name=---
+    - Displays all reviews (star rating, review, uni) for a specified restaurant
+    - Expects users select radio button to filter reviews at or above 
 
 
 **URL Parameters:**
