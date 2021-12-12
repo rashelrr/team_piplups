@@ -38,7 +38,7 @@ def login():
     if db.check_if_uni_exists(uni) is True:
         if db.get_password(uni)[0][0] == password:
             # successfully logged in
-            return jsonify(status="success", guni=uni)
+            return jsonify(status="success")
         else:
             # wrong password
             return jsonify(status="wrong password")
