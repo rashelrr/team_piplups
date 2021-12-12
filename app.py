@@ -1,7 +1,6 @@
 import os
-from flask import Flask, render_template, jsonify, request, redirect,\
+from flask import Flask, render_template, request, redirect,\
     url_for, flash
-from werkzeug.utils import xhtml
 import db
 import logging
 
