@@ -8,7 +8,6 @@ app = Flask(__name__)
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
-#arbirary comment
 
 '''
 Homepage for API
