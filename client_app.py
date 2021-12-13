@@ -22,6 +22,7 @@ er_html = 'edit_review.html'
 @app.route('/', methods=['GET'])
 def index():
     global global_uni
+    global_uni = ''
     return render_template('homepage.html', uni='')
 
 
@@ -239,7 +240,11 @@ def rest_info():
 
 @app.route('/back_home')
 def back_home():
-    return redirect('/')
+    global_uni
+    if global_uni == '':
+        return redirect('/')
+    else:
+        return redirect('/home')
 
 
 if __name__ == '__main__':

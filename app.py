@@ -218,18 +218,5 @@ def rest_info():
     return jsonify(status=result, rows=rows)
 
 
-'''
-Endpoint:  /back_home
-UI:         User clicks the "go back home" button
-Purpose:    Redirects the user back to the home page
-'''
-
-
-@app.route('/back_home')
-def back_home():
-    # return redirect('/home')
-    return "Clicked Back Home!"
-
-
 if __name__ == '__main__':
     app.run(debug=True)
