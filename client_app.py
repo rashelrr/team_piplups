@@ -158,10 +158,11 @@ Purpose:    searches for a restaurant review made by the current user
 def edit_review_search():
     global global_res
     name = request.args.get('name')
-    url = 'https://lioneats.herokuapp.com/edit_review_search?name='+name
+    print(name)
+    url = 'https://lioneats.herokuapp.com/edit_review_search'
     data = {"uni": global_uni, "res": name, "global_res": global_res}
     if request.method == 'GET':
-        response = requests.get(url=url, params=data)
+        response = requests.post(url=url, json=data)
         print(response)
         r_json = response.json()
         if r_json["status"] == "fail":

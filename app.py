@@ -128,19 +128,17 @@ Purpose:    searches for a restaurant review made by the current user
 '''
 
 
-@app.route('/edit_review_search', methods=['GET'])
+@app.route('/edit_review_search', methods=['POST'])
 def edit_review_search():
     data = request.get_json(force=True)
     UNI = data["uni"]
     name = data["res"]
-    res = data["global_res"]
     if db.get_review_uni_res(name, UNI) == []:
-        flash("Uni and Restaurant pair does not exist, try again")
         result = db.get_review_uni(UNI)
         for k, v in result.items():
             rows = len(v)
         return jsonify(status="fail", num_rows=rows, res=result)
-    rows = db.get_review_uni_res(res, UNI)
+    rows = db.get_review_uni_res(name, UNI)
     name = []
     star = []
     review = []
@@ -154,7 +152,7 @@ def edit_review_search():
     for key, value in result.items():
         rows = len(value)
     return jsonify(status="success", num_rows=rows, res=result,
-                   global_restaurant=res)
+                   global_restaurant=name)
 
 
 '''
