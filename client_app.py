@@ -1,6 +1,6 @@
 import os
 from flask import Flask, render_template, request, redirect,\
-    url_for, flash, jsonify
+    url_for, flash
 import logging
 import requests
 
@@ -24,10 +24,6 @@ er_html = 'edit_review.html'
 def index():
     global global_uni
     global_uni = ''
-
-    # reload heroku
-    url = "https://lioneats.herokuapp.com/"
-    requests.get(url)
 
     return render_template('homepage.html', uni='')
 
@@ -240,7 +236,6 @@ def rest_info():
     data = {'name': name, 'star': star}
     response = requests.get(url=url, json=data)
     r_json = response.json()
-    # print(r_json)
     result = r_json['status']
     rows = r_json['rows']
     return render_template("rest_info.html", context=result,
@@ -249,7 +244,6 @@ def rest_info():
 
 @app.route('/back_home')
 def back_home():
-    global_uni
     if global_uni == '':
         return redirect('/')
     else:
