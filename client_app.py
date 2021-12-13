@@ -106,7 +106,6 @@ def add_review():
         r_json = response.json()
         if 'json' in response.headers.get('Content-Type'):
             r_json = response.json()
-            print(r_json)
         else:
             print('Response is not in JSON format')
             r_json = 'spam'
@@ -161,25 +160,28 @@ Purpose:    searches for a restaurant review made by the current user
 
 @app.route('/edit_review_search', methods=['GET', 'POST'])
 def edit_review_search():
-    global global_res
-    name = request.args.get('name')
-    print(name)
-    url = 'https://lioneats.herokuapp.com/edit_review_search'
-    data = {"uni": global_uni, "res": name, "global_res": global_res}
     if request.method == 'GET':
+        global global_res
+        name = request.args.get('name')
+        print(name)
+
+        url = 'https://lioneats.herokuapp.com/edit_review_search'
+        data = {"uni": global_uni, "res": name, "global_res": global_res}
         response = requests.post(url=url, json=data)
-        print(response)
+
         r_json = response.json()
         if r_json["status"] == "fail":
+            flash("You haven't reviewed this restaurant. Please try again.")
             return render_template(er_html, context=r_json["res"],
                                    keys=list(r_json["res"].keys()),
                                    rows=r_json["num_rows"],
                                    uni=global_uni)
-        global_res = r_json["global_restaurant"]
-        return render_template("edit_review_search.html", context=r_json["res"],
-                               keys=list(r_json["res"].keys()),
-                               rows=r_json["num_rows"],
-                               uni=global_uni)
+        else:
+            global_res = r_json["global_restaurant"]
+            return render_template("edit_review_search.html", context=r_json["res"],
+                                    keys=list(r_json["res"].keys()),
+                                    rows=r_json["num_rows"],
+                                    uni=global_uni)
 
 
 '''
