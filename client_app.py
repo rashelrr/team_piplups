@@ -124,6 +124,7 @@ def rest_display():
     data = {'star': star}
     response = requests.post(url=url, json=data)
     r_json = response.json()
+    # program never gets past this so don't mind the stuff below
     if r_json['status'] == "success":
         flash('Shit worked')
         return redirect(url_for('/'))
