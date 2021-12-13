@@ -98,7 +98,8 @@ def add_review():
             flash("Successfully added review.")
             return jsonify(res_name=name, rating=star, review=comment, method="POST", status="success")
         else:
-            return jsonify(res_name=name, rating=star, review=comment, method="POST", status="error")
+            return jsonify(method="POST", status="fail")
+
 
 '''
 Endpoint:  /editreview?restaurant=___&stars=___&review=___&uni=___
@@ -112,15 +113,14 @@ er_html = 'edit_review.html'
 
 @app.route('/editreview', methods=['GET', 'POST'])
 def edit_review():
-    global global_uni
-    if global_uni == '':
-        return redirect(url_for('login'))
-    result = db.get_review_uni(global_uni)
+    user = request.get_json(force=True)
+    UNI = user["uni"]
+    result = db.get_review_uni(UNI)
     for k, v in result.items():
         rows = len(v)
     return render_template(er_html, context=result,
                            keys=list(result.keys()), rows=rows,
-                           uni=global_uni)
+                           uni=UNI)
 
 
 '''
