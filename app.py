@@ -110,7 +110,7 @@ def pre_add_review():
 
 '''
 Endpoint:  /editreview?restaurant=___&stars=___&review=___&uni=___
-UI:         User is already at page pre-populated
+Purpose:         User is already at page pre-populated
             with their original review's data.
             Allows user to search for a review and update that
 '''
@@ -133,7 +133,6 @@ def edit_review():
 
 '''
 Endpoint:  /edit_review_search
-UI:         User clicks submit button at edit_review page
 Purpose:    searches for a restaurant review made by the current user
 '''
 
@@ -172,7 +171,6 @@ def edit_review_search():
 
 '''
 Endpoint:  /update_star_and_review
-UI:         User clicks submit button on edit_review_search page
 Purpose:    allows the user to update the new star and review
 '''
 
