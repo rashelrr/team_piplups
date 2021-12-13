@@ -15,12 +15,15 @@ Service is hosted here: https://lioneats.herokuapp.com/
 ## How to Run Client:
 Download the repo and enter into the terminal 'python3 client_app.py'.
 Now enter "http://127.0.0.1:5000/" into the browser and navigate through the client!
+- While testing, if you attempt to login and you run into a loop in which the client 
+  keeps bringing you back and forth between the login and singup page, run this in
+  the browser: https://lioneats.herokuapp.com/clear
 
 ## CI for Service: Travis CI
   - Click the green check mark at the top of the repo. Click 'Details' next to Travis
     CI. Click 'The build'. Travis CI will open in a new tab.
   - Under 'Job log' shows the CI report. Here you can see Travis runs our unit tests, 
-    coverage tool, style checker, and Postman system tests for the service.
+    coverage tool, and style checker.
 
 ## Style Checker: Flake8
   - Report (bugs.txt) is in our repo 
@@ -29,7 +32,7 @@ Now enter "http://127.0.0.1:5000/" into the browser and navigate through the cli
   - Travis displays the coverage percentage for test_app.py and test_db.py under 'Job log'
   - The folder htmlcov/ in our repo also has test_app.py and test_db.py that you can open 
     on your computer to view the coverage percentages (download repo, run 'coverage html' 
-    in terminal and then open up those files in htmlcov folder).
+    in terminal and then open up those files from htmlcov folder).
 
 ## Bug Finder: SonarCloud
   - Click the green check mark at the top of the repo. Click 'Details' next to SonarCloud
@@ -44,31 +47,33 @@ Now enter "http://127.0.0.1:5000/" into the browser and navigate through the cli
 
 **Endpoints:** 
 - GET
+  - Homepage https://lioneats.herokuapp.com/ 
+    - Creates tables for storing reviews submitted by users and user accounts
+      if the tables didn't already exist 
+    - Does not return anything except for a welcome message to the user
   - Clear https://lioneats.herokuapp.com/clear 
-    - Clears and creates tables for storing reviews submitted by users and user accounts 
-...
-
+    - Deletes then creates tables for storing reviews submitted by users and user accounts
+    - Does not return anything
 - POST
   - Login https://lioneats.herokuapp.com/login
-    - Allows users to login to LionEats client app.
-...
+    - Allows users to login to LionEats client app
+    - Assumes user logs in with a string username and password
+    - Endpoint returns success/failure messages as json through 'response'
+    - Failure messages returned if username/password does not exist as an account
+    > Example Json Response: {"status":"wrong password"}
+  - Signup https://lioneats.herokuapp.com/signup
+    - Allows users to sign up to LionEats client app
+    - Assumes user signs up with a string username and password
+    - Endpoint returns success/failure messages as json through 'response'
+    - Failure messages returned if username is already linked to an account
+    > Example Json Response: {"status":"account exists"}
 
 
-----below needs to be updated for heroku----
+---- @team: below needs to be updated for heroku----
+Example assumption: All API entries assume the client’s user already has an account on Facebook and is currently logged into Facebook
+Example expectation: The /do_something endpoint expects a date in YYYY-MM-DD format, a length of time in HH:MM 24-hour format, and an activity_name string of length minimum 8 characters and maximum 64 characters
+Ideally, your documentation should also include a usage example for each API entry with both a request and possible responses (including error codes)
 
-- GET
-  - Home http://127.0.0.1:5000/ 
-    - Clears and creates table for storing reviews submitted by users
-    - Users can choose an action: login, signup, select a restaurant to see reviews, view all restaurants, view all restaurants above a certain rating, or add a review
-  - Home http://127.0.0.1:5000/home
-    - Takes away signup and login options from / endpoint and adds edit review option
-    - Users can choose an action: select a restaurant to see reviews, view all restaurants, view all restaurants above a certain rating, add a review, or edit a review
-- GET / POST
-  - Signup http://127.0.0.1:5000/signup
-    - Creates an account for users if they do not already have an account
-  - Login http://127.0.0.1:5000/login
-    - Logs the user in with the a username and password credential
-    - User must enter a username that exists in the database and the corresponding password
   - Restaurant display http://127.0.0.1:5000/rest_display_all?
     - Displays all restaurants and average star rating across all reviews
     - User can enter the name of a restaurant to see reviews for that restaurant
