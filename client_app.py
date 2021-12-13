@@ -215,10 +215,24 @@ def rest_display():
     data = {'star': star}
     response = requests.post(url=url, json=data)
     r_json = response.json()
-    # program never gets past this so don't mind the stuff below
-    if r_json['status'] == "success":
-        print('Shit worked')
-        return redirect('/login')
+    result = r_json['result']
+    rows = r_json['rows']
+    return render_template("rest_display.html", context=result,
+                           keys=list(result.keys()), rows=rows)
+
+
+@app.route('/rest_info', methods=['GET'])
+def rest_info():
+    name = request.args.get('name')
+    star = request.args.get('star')
+    url = "https://lioneats.herokuapp.com/rest_info"
+    data = {'name': name, 'star': star}
+    response = requests.post(url=url, json=data)
+    r_json = response.json()
+    result = r_json['result']
+    rows = r_json['rows']
+    return render_template("rest_info.html", context=result,
+                           keys=list(result.keys()), rows=rows)
 
 
 if __name__ == '__main__':
