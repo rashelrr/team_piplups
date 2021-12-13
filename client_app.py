@@ -1,7 +1,7 @@
 import json
 import os
 from flask import Flask, render_template, request, redirect,\
-    url_for, flash
+    url_for, flash, jsonify
 import logging
 import requests
 
@@ -73,13 +73,13 @@ def add_review():
         return redirect(url_for('login'))
 
     if request.method == 'GET':
-        res_name = request.form['restaurant']
-        rating = request.form['stars']
-        review = request.form['review']
+        res_name = request.args.get('restaurant')
+        rating = request.args.get('stars')
+        review = request.args.get('review')
 
         url = 'https://lioneats.herokuapp.com/addreview'
-        data = {'restaurant': res_name, 'stars': rating, 'review': review, 'user': global_uni}
-        response = requests.post(url=url, json=data)
+        info = {'restaurant': res_name, 'stars': rating, 'review': review, 'user': global_uni}
+        response = requests.post(url=url, data=info)
         
         print(response)
         
