@@ -1,4 +1,3 @@
-import json
 import os
 from flask import Flask, render_template, request, redirect,\
     url_for, flash, jsonify
@@ -66,6 +65,33 @@ def login():
         return render_template('login.html')
 
 
+'''
+/signup
+Allows users to sign up
+'''
+
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        uni = request.form['username']
+        password = request.form['password']
+
+        url = 'https://lioneats.herokuapp.com/signup'
+        data = {"username": uni, 'password': password}
+        response = requests.post(url=url, json=data)
+
+        r_json = response.json()
+        if r_json['status'] == "success":
+            flash('Signed up successfully, please log in')
+            return render_template('login.html') # redirect(url_for('login'))
+        else:
+            flash('Account already exists, please log in')
+            return render_template('login.html') # redirect(url_for('login'))
+    else:
+        return render_template('signup.html')
+
+
 @app.route('/addreview', methods=['GET', 'POST'])
 def add_review():
     if request.method == 'GET':
@@ -101,27 +127,6 @@ def pre_add_review():
     if global_uni == '':
         return redirect(url_for('login'))
     return render_template("add_review.html", uni=global_uni)
-
-
-@app.route('/signup', methods=['GET', 'POST'])
-def signup():
-    if request.method == 'POST':
-        uni = request.form['username']
-        password = request.form['password']
-
-        url = 'https://lioneats.herokuapp.com/signup'
-        data = {"username": uni, 'password': password}
-        response = requests.post(url=url, json=data)
-
-        r_json = response.json()
-        if r_json['status'] == "success":
-            flash('Signed up successfully, please log in')
-            return redirect(url_for('login'))
-        else:
-            flash('Account already exists, please log in')
-            return redirect(url_for('login'))
-    else:
-        return render_template('signup.html')
 
 
 '''
