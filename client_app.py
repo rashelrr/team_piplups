@@ -105,7 +105,7 @@ def pre_add_review():
         print('Response is not in JSON format')
         r_json = 'spam'
         
-    if r_json['status'] == "500":
+    if r_json['status'] == 500:
         return render_template("add_review.html", uni=global_uni)
     else:
         flash("Please Log in")

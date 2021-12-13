@@ -105,9 +105,9 @@ def pre_add_review():
     uni = request.args.get('username')
     
     if uni == "":
-        return jsonify(status="login")
+        return jsonify(status=200)
     
-    return jsonify(status="success")
+    return jsonify(status=500)
 
 '''
 Endpoint:  /editreview?restaurant=___&stars=___&review=___&uni=___
