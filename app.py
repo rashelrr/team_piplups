@@ -98,8 +98,16 @@ def add_review():
             flash("Successfully added review.")
             return jsonify(res_name=name, rating=star, review=comment, method="POST", status="success")
         else:
-            return jsonify(method="POST", status="fail")
-            
+            return jsonify(res_name=name, rating=star, review=comment, method="POST", status="fail")
+
+@app.route('/preaddreview', methods=['GET', 'POST'])
+def pre_add_review():
+    uni = request.args.get('username')
+    
+    if uni == "":
+        return jsonify(status="login")
+    
+    return jsonify(status="success")
 
 '''
 Endpoint:  /editreview?restaurant=___&stars=___&review=___&uni=___

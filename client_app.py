@@ -90,7 +90,15 @@ def add_review():
 
 @app.route('/preaddreview', methods=['GET', 'POST'])
 def pre_add_review():
-    return render_template("add_review.html", uni=global_uni)
+    url = 'https://lioneats.herokuapp.com/preaddreview'
+    data = {'username': global_uni}
+    response = requests.post(url=url, json=data)
+    r_json = response.json()
+    if r_json['status'] == "success":
+        return render_template("add_review.html", uni=global_uni)
+    else:
+        flash("Please Log in")
+        return redirect(url_for('login'))
 
 
 @app.route('/signup', methods=['GET', 'POST'])
