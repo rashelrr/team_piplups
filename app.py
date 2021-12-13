@@ -195,17 +195,6 @@ def rest_display():
 
 
 '''
-@app.route('/rest_display', methods=['GET', 'POST'])
-def rest_display():
-    user = request.get_json(force=True)
-    star = user['star']
-    result = db.get_restaurants_above_ratings(star)
-    for key, value in result.items():
-        rows = len(value)
-    return jsonify(status=result, rows=rows)'''
-
-
-'''
 Endpoint:  /rest_info
 UI:         User enters the name of a restaurant and clicks the "view"
             button, or user checks radio button and clicks "filter"
