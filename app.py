@@ -87,7 +87,6 @@ Adds review to database
 
 @app.route('/addreview', methods=['POST'])
 def add_review():
-<<<<<<< HEAD
     name = request.args.get('restaurant')
     star = request.args.get('stars')
     comment = request.args.get('review')
@@ -101,24 +100,6 @@ def add_review():
     else:
         return jsonify(status="failure")
 
-=======
-    if request.method == 'GET':
-        name = request.form['restaurant']
-        star = request.form['stars']
-        comment = request.form['review']
-        uni = request.form['user']
-        
-        result = db.get_review_uni_res(name, uni)
-        if len(result) == 0:
-            row = (name, star, comment, uni)
-            db.add_review(row)
-            flash("Successfully added review.")
-            data = {'res_name':name, 'rating':star, 'review':comment, 'method':"POST", 'status':"success"}
-            return jsonify(data)
-        else:
-            data = {'res_name':name, 'rating':star, 'review':comment, 'method':"POST", 'status':"error"}
-            return jsonify(data)
->>>>>>> 9a55c124908b9fe4298f6684b77ef0b6da0123a3
 
 '''
 Endpoint:  /editreview?restaurant=___&stars=___&review=___&uni=___
