@@ -114,7 +114,7 @@ def edit_review():
     result = db.get_review_uni(UNI)
     for k, v in result.items():
         rows = len(v)
-    return jsonify(res=result, num_rows=rows)
+    return jsonify(status="success", res=result, num_rows=rows)
 
 
 '''
