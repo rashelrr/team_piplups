@@ -114,5 +114,20 @@ def signup():
         return render_template('signup.html')
 
 
+@app.route('/rest_display', methods=['GET', 'POST'])
+def rest_display():
+    if request.method == 'GET':
+        star = request.args.get('star')
+    else:
+        star = 1
+    url = "https://lioneats.herokuapp.com/rest_display"
+    data = {'star': star}
+    response = requests.post(url=url, json=data)
+    r_json = response.json()
+    if r_json['status'] == "success":
+        flash('Shit worked')
+        return redirect(url_for('/'))
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1')
