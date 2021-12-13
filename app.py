@@ -1,3 +1,4 @@
+import json
 from flask import Flask, render_template, jsonify, request, redirect,\
     url_for, flash
 import requests
@@ -88,10 +89,11 @@ Adds review to database
 
 @app.route('/addreview', methods=['POST'])
 def add_review():
-    name = request.args.get('restaurant')
-    star = request.args.get('stars')
-    comment = request.args.get('review')
-    uni = request.args.get('user')
+    entry = request.get_json(force=True)
+    name = entry['restaurant']
+    star = entry['stars']
+    comment = entry['review']
+    uni = entry['user']
 
     result = db.get_review_uni_res(name, uni)
     if len(result) == 0:
@@ -100,7 +102,6 @@ def add_review():
         return jsonify(status="success")
     else:
         return jsonify(status="failure")
-
 
 '''
 Endpoint:  /editreview?restaurant=___&stars=___&review=___&uni=___

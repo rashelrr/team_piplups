@@ -68,11 +68,7 @@ def login():
 
 @app.route('/addreview', methods=['GET', 'POST'])
 def add_review():
-    if global_uni == "":
-        flash("Please log in first.")
-        return redirect(url_for('login'))
-
-    if request.method == 'POST':
+    if request.method == 'GET':
         res_name = request.args.get('restaurant')
         rating = request.args.get('stars')
         review = request.args.get('review')
@@ -82,14 +78,13 @@ def add_review():
         response = requests.post(url=url, json=data)
 
         r_json = response.json()
-        print(r_json)
-        '''if 'json' in response.headers.get('Content-Type'):
+        if 'json' in response.headers.get('Content-Type'):
             r_json = response.json()
             print(r_json)
         else:
             print('Response is not in JSON format')
             r_json = 'spam'
-        '''
+
         if r_json['status'] == "success":
             flash("Successfully added review.")
             return redirect(url_for('pre_add_review'))
