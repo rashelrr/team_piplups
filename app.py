@@ -98,8 +98,7 @@ def add_review():
             flash("Successfully added review.")
             return jsonify(res_name=name, rating=star, review=comment, method="POST", status="success")
         else:
-            return jsonify(method="POST", status="fail")
-
+            return jsonify(res_name=name, rating=star, review=comment, method="POST", status="error")
 
 '''
 Endpoint:  /editreview?restaurant=___&stars=___&review=___&uni=___
@@ -113,14 +112,15 @@ er_html = 'edit_review.html'
 
 @app.route('/editreview', methods=['GET', 'POST'])
 def edit_review():
-    user = request.get_json(force=True)
-    UNI = user["uni"]
-    result = db.get_review_uni(UNI)
+    global global_uni
+    if global_uni == '':
+        return redirect(url_for('login'))
+    result = db.get_review_uni(global_uni)
     for k, v in result.items():
         rows = len(v)
     return render_template(er_html, context=result,
                            keys=list(result.keys()), rows=rows,
-                           uni=UNI)
+                           uni=global_uni)
 
 
 '''
@@ -181,8 +181,9 @@ def update_star_and_review():
 
 
 '''
-Endpoint:  /rest_display_all
-UI:         User clicks "show all restaurants" button
+Endpoint:  /rest_display
+UI:         User clicks "show all restaurants" button or user checks 
+            radio button and clicks "filter" button
 Purpose:    Display all restaurants and average rating
 '''
 
@@ -191,54 +192,10 @@ Purpose:    Display all restaurants and average rating
 def rest_display():
     user = request.get_json(force=True)
     star = user['star']
-    result = db.get_restaurants_above_ratings(1)
-    for key, value in result.items():
-        rows = len(value)
-    return jsonify(status="success")
-    
-    star = request.args.get('star')
-    if star:
-        result = db.get_restaurants_above_ratings(star)
-    else:
-        result = db.get_restaurants_above_ratings(1)
-    for key, value in result.items():
-        rows = len(value)
-    return render_template("rest_display.html", context=result,
-                           keys=list(result.keys()), rows=rows)
-
-@app.route('/rest_display_all', methods=['GET', 'POST'])
-def rest_display_all():
-    result = db.get_restaurants_above_ratings(1)
-    for key, value in result.items():
-        rows = len(value)
-    return render_template("rest_display.html", context=result,
-                           keys=list(result.keys()), rows=rows)
-
-
-'''
-Endpoint:  /rest_display_star_filter
-UI:         User checks radio button and clicks "filter" button
-Purpose:    Display restaurants and average rating of restaurants that
-            are over the checked number
-'''
-
-
-@app.route('/rest_display_star_filter', methods=['GET', 'POST'])
-def rest_display_star_filter():
-    if request.method == 'POST':
-        star = request.args.get('stars')
-
-        result = db.get_restaurants_above_ratings(star)
-        for key, value in result.items():
-            rows = len(value)
-        return jsonify(res_name=name, rating=star, review=comment, method="POST", status="success")
-    
-    star = request.args.get('star')
     result = db.get_restaurants_above_ratings(star)
     for key, value in result.items():
         rows = len(value)
-    return render_template("rest_display.html", context=result,
-                           keys=list(result.keys()), rows=rows)
+    return jsonify(status=result, rows=rows)
 
 
 '''
@@ -253,16 +210,16 @@ Purpose:    Display reviews for a restaurant; either all reviews or
 
 @app.route('/rest_info', methods=['GET'])
 def rest_info():
-    name = request.args.get('name')
-    star = request.args.get('star')
+    user = request.get_json(force=True)
+    star = user['star']
+    name = user['name']
     if star:
         result = db.get_all_reviews_for_rest_given_rating(name, star)
     else:
         result = db.get_all_reviews_for_restaurant(name)
     for key, value in result.items():
         rows = len(value)
-    return render_template("rest_info.html", context=result,
-                           keys=list(result.keys())[1:], rows=rows)
+    return jsonify(status=result, rows=rows)
 
 
 '''
