@@ -60,13 +60,13 @@ Now enter "http://127.0.0.1:5000/" into the browser and navigate through the cli
     - Assumes user logs in with a string username and password
     - Endpoint returns success/failure messages as json through 'response'
     - Failure messages returned if username/password does not exist as an account
-    > Example Json Response: {"status":"wrong password"}
+    > Example Json Response: {"status":"wrong password", "status_code":"404"}
   - Signup https://lioneats.herokuapp.com/signup
     - Allows users to sign up to LionEats client app
     - Assumes user signs up with a string username and password
     - Endpoint returns success/failure messages as json through 'response'
     - Failure messages returned if username is already linked to an account
-    > Example Json Response: {"status":"account exists"}
+    > Example Json Response: {"status":"account exists", "status_code":"404"}
 
 
 ---- @team: below needs to be updated for heroku----
