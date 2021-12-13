@@ -68,11 +68,11 @@ def login():
 
 @app.route('/addreview', methods=['GET', 'POST'])
 def add_review():
-    if global_uni == "":
+    '''if global_uni == '':
         flash("Please log in first.")
-        return redirect(url_for('login'))
+        return redirect(url_for('login'))'''
 
-    if request.method == 'POST':
+    if request.method == 'GET':
         res_name = request.args.get('restaurant')
         rating = request.args.get('stars')
         review = request.args.get('review')
@@ -81,14 +81,17 @@ def add_review():
         data = {'restaurant': res_name, 'stars': rating, 'review': review, 'user': global_uni}
         response = requests.post(url=url, json=data)
 
-        r_json = response.json()
-        '''if 'json' in response.headers.get('Content-Type'):
+        return response.text
+
+        '''r_json = response.text
+        print(">>>>", response.text)
+        if 'json' in response.headers.get('Content-Type'):
             r_json = response.json()
             print(r_json)
         else:
             print('Response is not in JSON format')
             r_json = 'spam'
-        '''
+
         if r_json['status'] == "success":
             flash("Successfully added review.")
             return redirect(url_for('pre_add_review'))
@@ -97,13 +100,13 @@ def add_review():
                   "submit one review per restaurant. You can edit your " +
                   "previous review from the homepage by clicking the 'Edit " +
                   " Review' button.")
-            return redirect(url_for('pre_add_review'))
+            return redirect(url_for('pre_add_review'))'''
 
 
 @app.route('/preaddreview', methods=['GET', 'POST'])
 def pre_add_review():
-    if global_uni == '':
-        return redirect(url_for('login'))
+    '''if global_uni == '':
+        return redirect(url_for('login'))'''
     return render_template("add_review.html", uni=global_uni)
 
 
