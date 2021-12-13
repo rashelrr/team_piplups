@@ -14,6 +14,7 @@ class test_test_app(unittest.TestCase):
         url = "https://lioneats.herokuapp.com/clear"
         requests.get(url)
 
+    ''' Test login endpoint for happy case '''
     def test_login_happy(self):
         # first add an account
         url = "https://lioneats.herokuapp.com/signup"
@@ -31,6 +32,7 @@ class test_test_app(unittest.TestCase):
         assert response.status_code == 200
         assert response_body['status'] == "success"
 
+    ''' Test login endpoint for wrong password given'''
     def test_login_invalid_wrong_pwd(self):
         # first add an account
         url = "https://lioneats.herokuapp.com/signup"
@@ -48,6 +50,7 @@ class test_test_app(unittest.TestCase):
         assert response.status_code == 200
         assert response_body['status'] == "wrong password"
 
+    ''' Test login endpoint for an account that does not exist '''
     def test_login_invalid_account_not_exist(self):
         url = "https://lioneats.herokuapp.com/login"
         data = {"username": "xyz1234", 'password': "testpwd"}
@@ -56,6 +59,35 @@ class test_test_app(unittest.TestCase):
 
         assert response.status_code == 200
         assert response_body['status'] == "account not exist"
+
+    ''' Test signup endpoint for happy case '''
+    def test_signup_happy(self):
+        url = "https://lioneats.herokuapp.com/signup"
+        data = {"username": "abc1234", 'password': "pwdtest"}
+        response = requests.post(url=url, json=data)
+        response_body = response.json()
+
+        assert response.status_code == 200
+        assert response_body['status'] == "success"
+
+    ''' Test signup endpoint for account that already exists '''
+    def test_signup_invalid_account_exists(self):
+        # add account
+        url = "https://lioneats.herokuapp.com/signup"
+        data = {"username": "jdi8367", 'password': "greenapples"}
+        response = requests.post(url=url, json=data)
+        response_body = response.json()
+
+        assert response.status_code == 200
+
+        # attempt signup with previous account
+        url = "https://lioneats.herokuapp.com/signup"
+        data = {"username": "jdi8367", 'password': "greenapples"}
+        response = requests.post(url=url, json=data)
+        response_body = response.json()
+
+        assert response.status_code == 200
+        assert response_body['status'] == "account exists"
 
     ''' ############ BELOW: TO FIX ############ '''
 

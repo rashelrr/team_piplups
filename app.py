@@ -79,9 +79,6 @@ def signup():
         return jsonify(status="success")
 
 
-''' ############ BELOW: TO FIX ############ '''
-
-
 '''
 Adds review to database
 '''

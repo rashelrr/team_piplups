@@ -247,7 +247,6 @@ def rest_info():
 
 @app.route('/back_home')
 def back_home():
-    global_uni
     if global_uni == '':
         return redirect('/')
     else:
