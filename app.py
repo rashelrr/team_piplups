@@ -28,11 +28,11 @@ def index():
 Clear database
 '''
 
-'''
+
 @app.route('/clear', methods=['GET'])
 def clear():
     db.clear()
-    db.init_db()'''
+    db.init_db()
 
 
 '''
