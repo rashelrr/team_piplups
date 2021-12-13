@@ -229,6 +229,7 @@ def rest_info():
     data = {'name': name, 'star': star}
     response = requests.post(url=url, json=data)
     r_json = response.json()
+    # print(r_json)
     result = r_json['status']
     rows = r_json['rows']
     return render_template("rest_info.html", context=result,
