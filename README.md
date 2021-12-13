@@ -54,10 +54,7 @@ Now enter "http://127.0.0.1:5000/" into the browser and navigate through the cli
 ...
 
 
-
-## Client Documentation:
-
-**Endpoints**
+----below needs to be updated for heroku----
 
 - GET
   - Home http://127.0.0.1:5000/ 
