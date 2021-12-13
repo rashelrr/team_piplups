@@ -82,6 +82,10 @@ def add_review():
             print('Response is not in JSON format')
             r_json = 'spam'
 
+        if global_uni == "":
+            flash("Please log in first.")
+            return redirect(url_for('login'))
+            
         if r_json['status'] == "success":
             flash("Successfully added review.")
             return redirect(url_for('pre_add_review'))
@@ -95,21 +99,7 @@ def add_review():
 
 @app.route('/preaddreview', methods=['GET', 'POST'])
 def pre_add_review():
-    url = 'https://lioneats.herokuapp.com/preaddreview'
-    data = {'username': global_uni}
-    response = requests.post(url=url, json=data)
-
-    if 'json' in response.headers.get('Content-Type'):
-        r_json = response.json()
-    else:
-        print('Response is not in JSON format')
-        r_json = 'spam'
-        
-    if r_json['status'] == "success":
-        return render_template("add_review.html", uni=global_uni)
-    else:
-        flash("Please Log in")
-        return redirect(url_for('login'))
+    return render_template("add_review.html", uni=global_uni)
 
 
 @app.route('/signup', methods=['GET', 'POST'])
