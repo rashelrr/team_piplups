@@ -48,12 +48,12 @@ def login():
     if db.check_if_uni_exists(uni) is True:
         if db.get_password(uni)[0][0] == password:
             # successfully logged in
-            return jsonify(status="success")
+            return jsonify(status="success", status_code="200")
         else:
             # wrong password
-            return jsonify(status="wrong password")
+            return jsonify(status="wrong password", status_code="404")
     else:
-        return jsonify(status="account not exist")
+        return jsonify(status="account not exist", status_code="404")
 
 
 '''
@@ -70,11 +70,11 @@ def signup():
 
     if db.check_if_uni_exists(uni) is True:
         # failed sign up
-        return jsonify(status="account exists")
+        return jsonify(status="account exists", status_code="404")
     else:
         # successful sign up
         db.add_uni_passcode(uni, password)
-        return jsonify(status="success")
+        return jsonify(status="success", status_code="200")
 
 
 '''
