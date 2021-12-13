@@ -15,7 +15,7 @@ app.config['SESSION_TYPE'] = 'memcached'
 app.config['SECRET_KEY'] = 'super secret key'
 global_uni = ''
 global_res = ''
-
+er_html = 'edit_review.html'
 
 '''Homepage'''
 
@@ -135,8 +135,6 @@ UI:         User is already at page pre-populated
             Allows user to search for a review and update that
 '''
 
-er_html = 'edit_review.html'
-
 
 @app.route('/editreview', methods=['GET', 'POST'])
 def edit_review():
@@ -147,8 +145,10 @@ def edit_review():
     data = {"uni": global_uni}
     response = requests.post(url=url, json=data)
     r_json = response.json()
+    print(r_json)
     return render_template(er_html, context=r_json["res"],
-                           keys=list(r_json["res"].keys()), rows=r_json["num_rows"],
+                           keys=list(r_json["res"].keys()),
+                           rows=r_json["num_rows"],
                            uni=global_uni)
 
 
@@ -159,36 +159,25 @@ Purpose:    searches for a restaurant review made by the current user
 '''
 
 
-@app.route('/edit_review_search', methods=['GET'])
+@app.route('/edit_review_search', methods=['POST'])
 def edit_review_search():
-    global global_uni
     global global_res
     name = request.args.get('name')
     url = 'https://lioneats.herokuapp.com/edit_review_search'
-    if db.get_review_uni_res(name, global_uni) == []:
-        flash("Uni and Restaurant pair does not exist, try again")
-        result = db.get_review_uni(global_uni)
-        for k, v in result.items():
-            rows = len(v)
-        return render_template(er_html, context=result,
-                               keys=list(result.keys()), rows=rows,
+    data = {"uni": global_uni, "res": name, "global_res": global_res}
+    response = requests.post(url=url, json=data)
+    r_json = response.json()
+    print(r_json)
+    if r_json["status"] == "fail":
+        return render_template(er_html,
+                               context=r_json["res"],
+                               keys=list(r_json["res"].keys()),
+                               rows=r_json["num_rows"],
                                uni=global_uni)
-    global_res = name
-    rows = db.get_review_uni_res(global_res, global_uni)
-    name = []
-    star = []
-    review = []
-    uni = []
-    for r in rows:
-        name.append(r[0])
-        star.append(r[1])
-        review.append(r[2])
-        uni.append(r[3])
-    result = dict(Name=name, Star_Rating=star, Review=review, UNI=uni)
-    for key, value in result.items():
-        rows = len(value)
-    return render_template("edit_review_search.html", context=result,
-                           keys=list(result.keys())[1:], rows=rows,
+    global_res = r_json["global_restaurant"]
+    return render_template("edit_review_search.html", context=r_json["res"],
+                           keys=list(r_json["res"].keys()),
+                           rows=r_json["num_rows"],
                            uni=global_uni)
 
 
@@ -204,12 +193,13 @@ def update_star_and_review():
     star = request.form['star']
     review = request.form['review']
     url = 'https://lioneats.herokuapp.com/update_star_and_review'
-    db.edit_review(global_uni, global_res, star, review)
-    result = db.get_review_uni(global_uni)
-    for k, v in result.items():
-        rows = len(v)
-    return render_template(er_html, context=result,
-                           keys=list(result.keys()), rows=rows,
+    data = {"star": star, "review": review, "uni": global_uni,
+            "res": global_res}
+    response = requests.post(url=url, json=data)
+    r_json = response.json()
+    return render_template(er_html, context=r_json["res"],
+                           keys=list(r_json["res"].keys()),
+                           rows=r_json["num_rows"],
                            uni=global_uni)
 
 

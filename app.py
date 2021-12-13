@@ -1,5 +1,6 @@
 from flask import Flask, render_template, jsonify, request, redirect,\
     url_for, flash
+import requests
 import db
 import logging
 
@@ -107,7 +108,7 @@ UI:         User is already at page pre-populated
             Allows user to search for a review and update that
 '''
 
-er_html = 'edit_review.html'
+
 @app.route('/editreview', methods=['POST'])
 def edit_review():
     user = request.get_json(force=True)
@@ -116,9 +117,6 @@ def edit_review():
     for k, v in result.items():
         rows = len(v)
     return jsonify(res=result, num_rows=rows)
-    return render_template(er_html, context=result,
-                           keys=list(result.keys()), rows=rows,
-                           uni=UNI)
 
 
 '''
@@ -128,21 +126,19 @@ Purpose:    searches for a restaurant review made by the current user
 '''
 
 
-@app.route('/edit_review_search', methods=['GET'])
+@app.route('/edit_review_search', methods=['POST'])
 def edit_review_search():
-    global global_uni
-    global global_res
-    name = request.args.get('name')
-    if db.get_review_uni_res(name, global_uni) == []:
+    data = request.get_json(force=True)
+    UNI = data["uni"]
+    name = data["res"]
+    res = data["global_res"]
+    if db.get_review_uni_res(name, UNI) == []:
         flash("Uni and Restaurant pair does not exist, try again")
-        result = db.get_review_uni(global_uni)
+        result = db.get_review_uni(UNI)
         for k, v in result.items():
             rows = len(v)
-        return render_template(er_html, context=result,
-                               keys=list(result.keys()), rows=rows,
-                               uni=global_uni)
-    global_res = name
-    rows = db.get_review_uni_res(global_res, global_uni)
+        return jsonify(status="fail", num_rows=rows, res=result)
+    rows = db.get_review_uni_res(res, UNI)
     name = []
     star = []
     review = []
@@ -155,9 +151,8 @@ def edit_review_search():
     result = dict(Name=name, Star_Rating=star, Review=review, UNI=uni)
     for key, value in result.items():
         rows = len(value)
-    return render_template("edit_review_search.html", context=result,
-                           keys=list(result.keys())[1:], rows=rows,
-                           uni=global_uni)
+    return jsonify(status="success", num_rows=rows, res=result,
+                   global_restaurant=res)
 
 
 '''
@@ -169,15 +164,17 @@ Purpose:    allows the user to update the new star and review
 
 @app.route('/update_star_and_review', methods=['GET', 'POST'])
 def update_star_and_review():
-    star = request.form['star']
-    review = request.form['review']
+    data = requests.get_json(force=True)
+    star = data["star"]
+    review = data["review"]
+    global_uni = data["uni"]
+    global_res = data["res"]
     db.edit_review(global_uni, global_res, star, review)
     result = db.get_review_uni(global_uni)
     for k, v in result.items():
         rows = len(v)
-    return render_template(er_html, context=result,
-                           keys=list(result.keys()), rows=rows,
-                           uni=global_uni)
+    return jsonify(res=result, num_rows=rows)
+
 
 '''
 Endpoint:  /rest_display
