@@ -127,7 +127,7 @@ def rest_display():
     # program never gets past this so don't mind the stuff below
     if r_json['status'] == "success":
         flash('Shit worked')
-        return redirect(url_for('/'))
+        return redirect('/login')
 
 
 if __name__ == '__main__':
