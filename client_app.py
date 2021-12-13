@@ -1,6 +1,6 @@
 import os
 from flask import Flask, render_template, request, redirect,\
-    url_for, flash, jsonify
+    url_for, flash
 import logging
 import requests
 
@@ -25,10 +25,6 @@ def index():
     global global_uni
     global_uni = ''
 
-    # reload heroku
-    url = "https://lioneats.herokuapp.com/"
-    requests.get(url)
-
     return render_template('homepage.html', uni='')
 
 
@@ -36,7 +32,6 @@ def index():
 def home():
     global global_uni
     return render_template('homepage_logged_in.html', uni=global_uni)
-
 
 
 '''
@@ -136,7 +131,7 @@ def pre_add_review():
 
 
 '''
-Endpoint:  /editreview?restaurant=___&stars=___&review=___&uni=___
+Endpoint:  /editreview
 UI:         User is already at page pre-populated
             with their original review's data.
             Allows user to search for a review and update that
@@ -238,7 +233,6 @@ def rest_info():
     data = {'name': name, 'star': star}
     response = requests.get(url=url, json=data)
     r_json = response.json()
-    # print(r_json)
     result = r_json['status']
     rows = r_json['rows']
     return render_template("rest_info.html", context=result,

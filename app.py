@@ -18,9 +18,7 @@ Homepage for API
 
 @app.route('/', methods=['GET'])
 def index():
-    db.clear()
-    db.init_db()
-    db.insert_dummy_data()
+    db.init_db()  # create databases if not already created
     return "Welcome to the LionEats API!"
 
 
