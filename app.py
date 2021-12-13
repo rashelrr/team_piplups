@@ -110,19 +110,17 @@ UI:         User is already at page pre-populated
 '''
 
 er_html = 'edit_review.html'
-
-
-@app.route('/editreview', methods=['GET', 'POST'])
+@app.route('/editreview', methods=['POST'])
 def edit_review():
-    global global_uni
-    if global_uni == '':
-        return redirect(url_for('login'))
-    result = db.get_review_uni(global_uni)
+    user = request.get_json(force=True)
+    UNI = user["uni"]
+    result = db.get_review_uni(UNI)
     for k, v in result.items():
         rows = len(v)
+    return jsonify(res=result, num_rows=rows)
     return render_template(er_html, context=result,
                            keys=list(result.keys()), rows=rows,
-                           uni=global_uni)
+                           uni=UNI)
 
 
 '''
@@ -182,7 +180,6 @@ def update_star_and_review():
     return render_template(er_html, context=result,
                            keys=list(result.keys()), rows=rows,
                            uni=global_uni)
-
 
 '''
 Endpoint:  /rest_display
