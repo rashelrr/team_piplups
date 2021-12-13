@@ -86,10 +86,10 @@ Adds review to database
 @app.route('/addreview', methods=['GET', 'POST'])
 def add_review():
     if request.method == 'GET':
-        name = request.args.get('restaurant')
-        star = request.args.get('stars')
-        comment = request.args.get('review')
-        uni = request.args.get('user')
+        name = request.form['restaurant']
+        star = request.form['stars']
+        comment = request.form['review']
+        uni = request.form'user']
         
         result = db.get_review_uni_res(name, uni)
         if len(result) == 0:

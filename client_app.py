@@ -73,15 +73,16 @@ def add_review():
         return redirect(url_for('login'))
 
     if request.method == 'GET':
-        res_name = request.args.get('restaurant')
-        rating = request.args.get('stars')
-        review = request.args.get('review')
+        res_name = request.form['restaurant']
+        rating = request.form['stars']
+        review = request.form['review']
 
         url = 'https://lioneats.herokuapp.com/addreview'
-        data = {"restaurant": res_name, 'stars': rating, 'review': review, 'user': global_uni}
+        data = {'restaurant': res_name, 'stars': rating, 'review': review, 'user': global_uni}
         response = requests.post(url=url, json=data)
+        
         print(response)
-        # r_json = response.json()
+        
         if 'json' in response.headers.get('Content-Type'):
             r_json = response.json()
             print(r_json)
