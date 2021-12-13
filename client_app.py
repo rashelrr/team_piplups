@@ -106,11 +106,6 @@ def add_review():
         response = requests.post(url=url, json=data)
 
         r_json = response.json()
-        if 'json' in response.headers.get('Content-Type'):
-            r_json = response.json()
-        else:
-            print('Response is not in JSON format')
-            r_json = 'spam'
 
         if r_json['status'] == "success":
             flash("Successfully added review.")
@@ -193,17 +188,15 @@ Purpose:    allows the user to update the new star and review
 '''
 
 
-@app.route('/update_star_and_review', methods=['POST'])
+@app.route('/update_star_and_review', methods=['GET', 'POST'])
 def update_star_and_review():
-    if request.method == 'POST':
-        star = request.form['star']
-        review = request.form['review']
+    if request.method == 'GET':
+        star = request.args.get('star')
+        review = request.args.get('review')
         url = 'https://lioneats.herokuapp.com/update_star_and_review'
         data = {"star": star, "review": review, "uni": global_uni,
                 "res": global_res[0]}
-        print(data)
         response = requests.post(url=url, json=data)
-        print(response)
         r_json = response.json()
         return render_template(er_html, context=r_json["res"],
                                keys=list(r_json["res"].keys()),
@@ -221,7 +214,6 @@ def rest_display():
     data = {'star': star}
     response = requests.post(url=url, json=data)
     r_json = response.json()
-    # print(r_json)
     result = r_json['status']
     rows = r_json['rows']
     return render_template("rest_display.html", context=result,

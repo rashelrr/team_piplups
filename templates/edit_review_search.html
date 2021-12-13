@@ -41,15 +41,15 @@
 
     <h3>NOTE: if you do not choose, we will not update that column!</h3>
     <h3>New Star Rating</h3>
-    <form action="/update_star_and_review" method="POST" method="GET">
-        <p><input type="radio" name="star" value=1>1</p>
+    <form action="/update_star_and_review" method="GET">
+        <p><input type="radio" name="star" value=1 required>1</p>
         <p><input type="radio" name="star" value=2>2</p>
         <p><input type="radio" name="star" value=3>3</p>
         <p><input type="radio" name="star" value=4>4</p>
         <p><input type="radio" name="star" value=5>5</p>
 
         <h3>New Review</h3>
-        <input type="text" id="review" name="review">
+        <input type="text" id="review" name="review" required>
         <input type="submit" value="Submit">
     </form>
 
