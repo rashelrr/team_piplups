@@ -91,20 +91,20 @@ class test_test_app(unittest.TestCase):
         assert response.status_code == 200
         assert response_body['status'] == "account exists"
 
-    ''' ############ BELOW: TO FIX ############ '''
-
-    '''
     # checks edit review endpoint given valid parameters
-    def test_edit_review_happy(self):
-        url = ("http://127.0.0.1:5000/editreview?"
-               + "restaurant=fumo&stars=5&review=AMAZING!&uni=rdr2139")
+    def test_edit_review_valid(self):
+        url = ("http://127.0.0.1:5000/editreview")
         response = requests.get(url)
 
         assert response.status_code == 200
         response_body = response.json()
 
-        assert response_body["valid"] is True
-        assert response_body["reason"] == "Successfully edited review."
+        assert response_body["status"] == "success"
+
+    ''' ############ BELOW: TO FIX ############ '''
+
+    '''
+
 
     # checks edit review endpoint given invalid parameters
     # aka updated review has empty parameters

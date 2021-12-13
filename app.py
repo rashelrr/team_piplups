@@ -98,8 +98,9 @@ def add_review():
     else:
         return jsonify(status="failure")
 
+
 '''
-Endpoint:  /editreview?restaurant=___&stars=___&review=___&uni=___
+Endpoint:  /editreview
 UI:         User is already at page pre-populated
             with their original review's data.
             Allows user to search for a review and update that
@@ -113,7 +114,7 @@ def edit_review():
     result = db.get_review_uni(UNI)
     for k, v in result.items():
         rows = len(v)
-    return jsonify(res=result, num_rows=rows)
+    return jsonify(status="success", res=result, num_rows=rows)
 
 
 '''
@@ -157,9 +158,9 @@ Purpose:    allows the user to update the new star and review
 '''
 
 
-@app.route('/update_star_and_review', methods=['GET', 'POST'])
+@app.route('/update_star_and_review', methods=['POST'])
 def update_star_and_review():
-    data = requests.get_json(force=True)
+    data = request.get_json(force=True)
     star = data["star"]
     review = data["review"]
     global_uni = data["uni"]

@@ -86,10 +86,10 @@ def signup():
         r_json = response.json()
         if r_json['status'] == "success":
             flash('Signed up successfully, please log in')
-            return render_template('login.html') # redirect(url_for('login'))
+            return render_template('login.html')
         else:
             flash('Account already exists, please log in')
-            return render_template('login.html') # redirect(url_for('login'))
+            return render_template('login.html')
     else:
         return render_template('signup.html')
 
@@ -132,9 +132,9 @@ def pre_add_review():
 
 '''
 Endpoint:  /editreview
-UI:         User is already at page pre-populated
+Purpose:    User is already at page pre-populated
             with their original review's data.
-            Allows user to search for a review and update that
+            Allows user to search for a review and edit that
 '''
 
 
@@ -165,7 +165,6 @@ def edit_review_search():
     if request.method == 'GET':
         global global_res
         name = request.args.get('name')
-        print(name)
 
         url = 'https://lioneats.herokuapp.com/edit_review_search'
         data = {"uni": global_uni, "res": name, "global_res": global_res}
@@ -180,10 +179,11 @@ def edit_review_search():
                                    uni=global_uni)
         else:
             global_res = r_json["global_restaurant"]
-            return render_template("edit_review_search.html", context=r_json["res"],
-                                    keys=list(r_json["res"].keys()),
-                                    rows=r_json["num_rows"],
-                                    uni=global_uni)
+            return render_template("edit_review_search.html",
+                                   context=r_json["res"],
+                                   keys=list(r_json["res"].keys()),
+                                   rows=r_json["num_rows"],
+                                   uni=global_uni)
 
 
 '''
@@ -193,19 +193,22 @@ Purpose:    allows the user to update the new star and review
 '''
 
 
-@app.route('/update_star_and_review', methods=['GET', 'POST'])
+@app.route('/update_star_and_review', methods=['POST'])
 def update_star_and_review():
-    star = request.form['star']
-    review = request.form['review']
-    url = 'https://lioneats.herokuapp.com/update_star_and_review'
-    data = {"star": star, "review": review, "uni": global_uni,
-            "res": global_res}
-    response = requests.post(url=url, json=data)
-    r_json = response.json()
-    return render_template(er_html, context=r_json["res"],
-                           keys=list(r_json["res"].keys()),
-                           rows=r_json["num_rows"],
-                           uni=global_uni)
+    if request.method == 'POST':
+        star = request.form['star']
+        review = request.form['review']
+        url = 'https://lioneats.herokuapp.com/update_star_and_review'
+        data = {"star": star, "review": review, "uni": global_uni,
+                "res": global_res[0]}
+        print(data)
+        response = requests.post(url=url, json=data)
+        print(response)
+        r_json = response.json()
+        return render_template(er_html, context=r_json["res"],
+                               keys=list(r_json["res"].keys()),
+                               rows=r_json["num_rows"],
+                               uni=global_uni)
 
 
 @app.route('/rest_display', methods=['GET', 'POST'])
