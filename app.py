@@ -184,7 +184,7 @@ Purpose:    Display all restaurants and average rating
 '''
 
 
-@app.route('/rest_display', methods=['GET', 'POST'])
+@app.route('/rest_display', methods=['POST'])
 def rest_display():
     user = request.get_json(force=True)
     star = user['star']
@@ -192,6 +192,17 @@ def rest_display():
     for key, value in result.items():
         rows = len(value)
     return jsonify(status=result, rows=rows)
+
+
+'''
+@app.route('/rest_display', methods=['GET', 'POST'])
+def rest_display():
+    user = request.get_json(force=True)
+    star = user['star']
+    result = db.get_restaurants_above_ratings(star)
+    for key, value in result.items():
+        rows = len(value)
+    return jsonify(status=result, rows=rows)'''
 
 
 '''
