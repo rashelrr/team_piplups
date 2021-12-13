@@ -89,7 +89,7 @@ def add_review():
             print('Response is not in JSON format')
             r_json = 'spam'
             
-        if r_json[3] == "success":
+        if r_json['status'] == "success":
             flash("Successfully added review.")
             return redirect(url_for('pre_add_review'))
         else:
