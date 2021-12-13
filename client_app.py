@@ -82,7 +82,6 @@ def add_review():
         response = requests.post(url=url, json=data)
 
         r_json = response.json()
-        print(r_json)
         '''if 'json' in response.headers.get('Content-Type'):
             r_json = response.json()
             print(r_json)

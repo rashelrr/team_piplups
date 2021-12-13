@@ -85,7 +85,7 @@ Adds review to database
 '''
 
 
-@app.route('/addreview', methods=['POST'])
+@app.route('/addreview', methods=['GET', 'POST'])
 def add_review():
     name = request.form['restaurant']
     star = request.form['stars']
