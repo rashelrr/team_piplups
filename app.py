@@ -96,9 +96,9 @@ def add_review():
             row = (name, star, comment, uni)
             db.add_review(row)
             flash("Successfully added review.")
-            return jsonify(res_name=name, rating=star, review=comment, method="POST", status="success")
+            return jsonify(res_name=name, rating=star, review=comment, method="POST", status=500)
         else:
-            return jsonify(res_name=name, rating=star, review=comment, method="POST", status="fail")
+            return jsonify(res_name=name, rating=star, review=comment, method="POST", status=404)
 
 @app.route('/preaddreview', methods=['GET', 'POST'])
 def pre_add_review():
