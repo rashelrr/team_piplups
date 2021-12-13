@@ -1,3 +1,4 @@
+import json
 from flask import Flask, render_template, jsonify, request, redirect,\
     url_for, flash
 import db
@@ -100,7 +101,6 @@ def add_review():
         return jsonify(status="success")
     else:
         return jsonify(status="failure")
-
 
 '''
 Endpoint:  /editreview?restaurant=___&stars=___&review=___&uni=___
