@@ -216,7 +216,7 @@ def rest_display():
     data = {'star': star}
     response = requests.post(url=url, json=data)
     r_json = response.json()
-    print(r_json)
+    # print(r_json)
     result = r_json['status']
     rows = r_json['rows']
     return render_template("rest_display.html", context=result,
@@ -235,6 +235,11 @@ def rest_info():
     rows = r_json['rows']
     return render_template("rest_info.html", context=result,
                            keys=list(result.keys()), rows=rows)
+
+
+@app.route('/back_home')
+def back_home():
+    return redirect('/')
 
 
 if __name__ == '__main__':
