@@ -1,7 +1,4 @@
-import json
-from flask import Flask, render_template, jsonify, request, redirect,\
-    url_for, flash
-import requests
+from flask import Flask, jsonify, request
 import db
 import logging
 
