@@ -207,6 +207,8 @@ def update_star_and_review():
     return render_template(er_html, context=result,
                            keys=list(result.keys()), rows=rows,
                            uni=global_uni)
+
+
 @app.route('/rest_display', methods=['GET', 'POST'])
 def rest_display():
     if request.method == 'GET':
@@ -219,7 +221,7 @@ def rest_display():
     r_json = response.json()
     # program never gets past this so don't mind the stuff below
     if r_json['status'] == "success":
-        flash('Shit worked')
+        print('Shit worked')
         return redirect('/login')
 
 
