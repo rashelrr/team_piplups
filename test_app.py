@@ -72,6 +72,26 @@ class test_test_app(unittest.TestCase):
         assert response.status_code == 200
         assert response_body['status'] == "success"
 
+    ''' Test add review endpoint '''
+    def test_addreview(self):
+        # add review not already there yet
+        url = "https://lioneats.herokuapp.com/addreview"
+        data = {'restaurant': "fumo", 'stars': 5, 'review': "good", 'user': "dl3410"}
+        response = requests.post(url=url, json=data)
+        response_body = response.json()
+
+        assert response.status_code == 200
+        assert response_body['status'] == "success"
+
+        #add review already there
+        url = "https://lioneats.herokuapp.com/addreview"
+        data = {'restaurant': "fumo", 'stars': 5, 'review': "good", 'user': "dl3410"}
+        response = requests.post(url=url, json=data)
+        response_body = response.json()
+
+        assert response.status_code == 200
+        assert response_body['status'] == "failure"
+
     ''' Test signup endpoint for account that already exists '''
     def test_signup_invalid_account_exists(self):
         # add account
@@ -90,6 +110,28 @@ class test_test_app(unittest.TestCase):
 
         assert response.status_code == 200
         assert response_body['status'] == "account exists"
+
+    ''' Test addreview endpoint'''
+    def test_addreview(self):
+        # valid add review request
+        url = "https://lioneats.herokuapp.com/addreview"
+        data = {'restaurant': "Fumo", 'stars': 5, 'review': "Good",
+                'user': "dl3410"}
+        response = requests.post(url=url, json=data)
+        response_body = response.json()
+
+        assert response.status_code == 200
+        assert response_body['status'] == "success"
+
+        # try adding a duplicate review
+        url = "https://lioneats.herokuapp.com/addreview"
+        data = {'restaurant': "Fumo", 'stars': 5, 'review': "Good",
+                'user': "dl3410"}
+        response = requests.post(url=url, json=data)
+        response_body = response.json()
+
+        assert response.status_code == 200
+        assert response_body['status'] == "failure"
 
     # checks edit review endpoint given the user logged in
     def test_edit_review_logged_in(self):

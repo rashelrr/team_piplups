@@ -75,7 +75,8 @@ def signup():
 
 
 '''
-Adds review to database
+Endpoint:   /addreview
+Purpose:     Adds review to database
 '''
 
 

@@ -94,6 +94,12 @@ def signup():
         return render_template('signup.html')
 
 
+'''
+/addreview
+Allows users to add reviews
+'''
+
+
 @app.route('/addreview', methods=['GET', 'POST'])
 def add_review():
     if request.method == 'GET':
@@ -118,6 +124,10 @@ def add_review():
                   " Review' button.")
             return redirect(url_for('pre_add_review'))
 
+'''
+/preaddreview
+checks if user logged in
+'''
 
 @app.route('/preaddreview', methods=['GET', 'POST'])
 def pre_add_review():
