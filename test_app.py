@@ -91,15 +91,48 @@ class test_test_app(unittest.TestCase):
         assert response.status_code == 200
         assert response_body['status'] == "account exists"
 
-    # checks edit review endpoint given valid parameters
-    def test_edit_review(self):
-        url = ("http://127.0.0.1:5000/editreview")
-        response = requests.get(url)
-
-        assert response.status_code == 200
+    # checks edit review endpoint given the user logged in
+    def test_edit_review_logged_in(self):
+        url = "https://lioneats.herokuapp.com/editreview"
+        data = {"uni": "yy3131"}
+        response = requests.post(url=url, json=data)
         response_body = response.json()
 
         assert response_body["status"] == "success"
+
+    # checks edit review search endpoint given a valid restaurant
+    def test_edit_review_search_valid(self):
+        url = "https://lioneats.herokuapp.com/addreview"
+        data = {'restaurant': 'fumo', 'stars': 4, 'review': 'good food',
+                'user': 'yy3131'}
+        response = requests.post(url=url, json=data)
+        self.assertEqual(200, response.status_code)
+        url = "https://lioneats.herokuapp.com/edit_review_search"
+        data = {"uni": "yy3131", "res": "fumo"}
+        response = requests.post(url=url, json=data)
+        response_body = response.json()
+        assert response_body["status"] == "success"
+
+    # checks edit review search endpoint given an invalid restaurant
+    def test_edit_review_search_invalid(self):
+        url = "https://lioneats.herokuapp.com/edit_review_search"
+        data = {"uni": "yy3131", "res": "random"}
+        response = requests.post(url=url, json=data)
+        self.assertEqual(response.json()["status"], "fail")
+
+    # checks update star and review endpoint given both required inputs
+    def test_update_star_and_review(self):
+        url = "https://lioneats.herokuapp.com/addreview"
+        data = {'restaurant': 'fumo', 'stars': 4, 'review': 'good food',
+                'user': 'yy3131'}
+        response = requests.post(url=url, json=data)
+        self.assertEqual(200, response.status_code)
+
+        url = "https://lioneats.herokuapp.com/update_star_and_review"
+        data = {"star": 4, "review": "my go to place", "uni": "yy3131",
+                "res": "fumo"}
+        response = requests.post(url=url, json=data)
+        self.assertEqual(response.status_code, 200)
 
     ''' ############ BELOW: TO FIX ############ '''
 

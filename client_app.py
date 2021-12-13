@@ -102,7 +102,8 @@ def add_review():
         review = request.args.get('review')
 
         url = 'https://lioneats.herokuapp.com/addreview'
-        data = {'restaurant': res_name, 'stars': rating, 'review': review, 'user': global_uni}
+        data = {'restaurant': res_name, 'stars': rating, 'review': review,
+                'user': global_uni}
         response = requests.post(url=url, json=data)
 
         r_json = response.json()
@@ -162,7 +163,7 @@ def edit_review_search():
         name = request.args.get('name')
 
         url = 'https://lioneats.herokuapp.com/edit_review_search'
-        data = {"uni": global_uni, "res": name, "global_res": global_res}
+        data = {"uni": global_uni, "res": name}
         response = requests.post(url=url, json=data)
 
         r_json = response.json()

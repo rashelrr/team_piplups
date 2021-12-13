@@ -134,7 +134,8 @@ def edit_review_search():
         result = db.get_review_uni(UNI)
         for k, v in result.items():
             rows = len(v)
-        return jsonify(status="fail", num_rows=rows, res=result, status_code="500")
+        return jsonify(status="fail", num_rows=rows, res=result,
+                       status_code="500")
     rows = db.get_review_uni_res(name, UNI)
     name = []
     star = []
