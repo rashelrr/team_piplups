@@ -13,7 +13,7 @@ and around NYC.
 Service is hosted here: https://lioneats.herokuapp.com/
 
 ## How to Run Client:
-To run the client: Download the repo and enter into the terminal 'python3 client_app.py'.
+Download the repo and enter into the terminal 'python3 client_app.py'.
 Now enter "http://127.0.0.1:5000/" into the browser and navigate through the client!
 
 ## CI for Service: Travis CI
