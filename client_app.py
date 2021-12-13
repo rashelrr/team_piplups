@@ -1,3 +1,4 @@
+import json
 import os
 from flask import Flask, render_template, request, redirect,\
     url_for, flash
@@ -66,6 +67,10 @@ def login():
 
 @app.route('/addreview', methods=['GET', 'POST'])
 def add_review():
+    if global_uni == "":
+        flash("Please log in first.")
+        return redirect(url_for('login'))
+
     if request.method == 'GET':
         res_name = request.args.get('restaurant')
         rating = request.args.get('stars')
@@ -74,19 +79,16 @@ def add_review():
         url = 'https://lioneats.herokuapp.com/addreview'
         data = {"restaurant": res_name, 'stars': rating, 'review': review, 'user': global_uni}
         response = requests.post(url=url, json=data)
-
+       
         # r_json = response.json()
         if 'json' in response.headers.get('Content-Type'):
             r_json = response.json()
+            print(r_json)
         else:
             print('Response is not in JSON format')
             r_json = 'spam'
-
-        if global_uni == "":
-            flash("Please log in first.")
-            return redirect(url_for('login'))
             
-        if r_json['status'] == "success":
+        if r_json[3] == "success":
             flash("Successfully added review.")
             return redirect(url_for('pre_add_review'))
         else:
@@ -99,6 +101,8 @@ def add_review():
 
 @app.route('/preaddreview', methods=['GET', 'POST'])
 def pre_add_review():
+    if global_uni == '':
+        return redirect(url_for('login'))
     return render_template("add_review.html", uni=global_uni)
 
 
