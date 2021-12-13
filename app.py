@@ -89,7 +89,7 @@ def add_review():
         name = request.form['restaurant']
         star = request.form['stars']
         comment = request.form['review']
-        uni = request.form'user']
+        uni = request.form['user']
         
         result = db.get_review_uni_res(name, uni)
         if len(result) == 0:
