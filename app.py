@@ -90,7 +90,7 @@ def add_review():
         star = request.args.get('stars')
         comment = request.args.get('review')
         uni = request.args.get('user')
-
+        
         result = db.get_review_uni_res(name, uni)
         if len(result) == 0:
             row = (name, star, comment, uni)
@@ -99,7 +99,7 @@ def add_review():
             return jsonify(res_name=name, rating=star, review=comment, method="POST", status="success")
         else:
             return jsonify(method="POST", status="fail")
-            
+
 
 '''
 Endpoint:  /editreview?restaurant=___&stars=___&review=___&uni=___
@@ -113,15 +113,14 @@ er_html = 'edit_review.html'
 
 @app.route('/editreview', methods=['GET', 'POST'])
 def edit_review():
-    global global_uni
-    if global_uni == '':
-        return redirect(url_for('login'))
-    result = db.get_review_uni(global_uni)
+    user = request.get_json(force=True)
+    UNI = user["uni"]
+    result = db.get_review_uni(UNI)
     for k, v in result.items():
         rows = len(v)
     return render_template(er_html, context=result,
                            keys=list(result.keys()), rows=rows,
-                           uni=global_uni)
+                           uni=UNI)
 
 
 '''
@@ -188,7 +187,7 @@ Purpose:    Display all restaurants and average rating
 '''
 
 
-@all.route('/rest_display', methods=['GET', 'POST'])
+@app.route('/rest_display', methods=['GET', 'POST'])
 def rest_display():
     user = request.get_json(force=True)
     star = user['star']
@@ -231,7 +230,7 @@ def rest_display_star_filter():
 
         result = db.get_restaurants_above_ratings(star)
         for key, value in result.items():
-        rows = len(value)
+            rows = len(value)
         return jsonify(res_name=name, rating=star, review=comment, method="POST", status="success")
     
     star = request.args.get('star')
