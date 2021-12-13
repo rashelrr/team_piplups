@@ -145,7 +145,11 @@ def edit_review():
         return redirect(url_for('login'))
     url = 'https://lioneats.herokuapp.com/editreview'
     data = {"uni": global_uni}
-    requests.post(url=url, json=data)
+    response = requests.post(url=url, json=data)
+    r_json = response.json()
+    return render_template(er_html, context=r_json["res"],
+                           keys=list(r_json["res"].keys()), rows=r_json["num_rows"],
+                           uni=global_uni)
 
 
 '''

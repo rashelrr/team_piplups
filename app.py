@@ -102,29 +102,28 @@ def add_review():
 
 '''
 Endpoint:  /editreview?restaurant=___&stars=___&review=___&uni=___
-Purpose:         User is already at page pre-populated
+UI:         User is already at page pre-populated
             with their original review's data.
             Allows user to search for a review and update that
 '''
 
 er_html = 'edit_review.html'
-
-
-@app.route('/editreview', methods=['GET', 'POST'])
+@app.route('/editreview', methods=['POST'])
 def edit_review():
-    global global_uni
-    if global_uni == '':
-        return redirect(url_for('login'))
-    result = db.get_review_uni(global_uni)
+    user = request.get_json(force=True)
+    UNI = user["uni"]
+    result = db.get_review_uni(UNI)
     for k, v in result.items():
         rows = len(v)
+    return jsonify(res=result, num_rows=rows)
     return render_template(er_html, context=result,
                            keys=list(result.keys()), rows=rows,
-                           uni=global_uni)
+                           uni=UNI)
 
 
 '''
 Endpoint:  /edit_review_search
+UI:         User clicks submit button at edit_review page
 Purpose:    searches for a restaurant review made by the current user
 '''
 
@@ -163,6 +162,7 @@ def edit_review_search():
 
 '''
 Endpoint:  /update_star_and_review
+UI:         User clicks submit button on edit_review_search page
 Purpose:    allows the user to update the new star and review
 '''
 
@@ -178,7 +178,6 @@ def update_star_and_review():
     return render_template(er_html, context=result,
                            keys=list(result.keys()), rows=rows,
                            uni=global_uni)
-
 
 '''
 Endpoint:  /rest_display
