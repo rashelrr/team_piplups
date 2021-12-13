@@ -16,6 +16,7 @@ global_uni = ''
 global_res = ''
 er_html = 'edit_review.html'
 
+
 '''Homepage'''
 
 
@@ -23,6 +24,11 @@ er_html = 'edit_review.html'
 def index():
     global global_uni
     global_uni = ''
+
+    # reload heroku
+    url = "https://lioneats.herokuapp.com/"
+    requests.get(url)
+
     return render_template('homepage.html', uni='')
 
 
