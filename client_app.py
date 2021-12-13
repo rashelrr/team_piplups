@@ -229,7 +229,7 @@ def rest_info():
     star = request.args.get('star')
     url = "https://lioneats.herokuapp.com/rest_info"
     data = {'name': name, 'star': star}
-    response = requests.post(url=url, json=data)
+    response = requests.get(url=url, json=data)
     r_json = response.json()
     # print(r_json)
     result = r_json['status']
