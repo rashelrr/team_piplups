@@ -16,7 +16,9 @@ Homepage for API
 
 @app.route('/', methods=['GET'])
 def index():
+    db.clear()
     db.init_db()
+    db.insert_dummy_data()
     return "Welcome to the LionEats API!"
 
 
@@ -24,11 +26,11 @@ def index():
 Clear database
 '''
 
-
+'''
 @app.route('/clear', methods=['GET'])
 def clear():
     db.clear()
-    db.init_db()
+    db.init_db()'''
 
 
 '''
@@ -79,12 +81,13 @@ def signup():
 
 
 '''
-Endpoint:  /addreview?restaurant=___&stars=___&review=___&uni=___
 Adds review to database
 '''
 
-@app.route('/addreview', methods=['GET', 'POST'])
+
+@app.route('/addreview', methods=['POST'])
 def add_review():
+<<<<<<< HEAD
     if request.method == 'GET':
         name = request.form['restaurant']
         star = request.form['stars']
@@ -101,6 +104,21 @@ def add_review():
         else:
             data = {'res_name':name, 'rating':star, 'review':comment, 'method':"POST", 'status':"error"}
             return jsonify(data)
+=======
+    name = request.args.get('restaurant')
+    star = request.args.get('stars')
+    comment = request.args.get('review')
+    uni = request.args.get('user')
+
+    result = db.get_review_uni_res(name, uni)
+    if len(result) == 0:
+        row = (name, star, comment, uni)
+        db.add_review(row)
+        return jsonify(status="success")
+    else:
+        return jsonify(status="failure")
+
+>>>>>>> ee95ad3f02608df549cb2b076ace596c10240a42
 
 '''
 Endpoint:  /editreview?restaurant=___&stars=___&review=___&uni=___
