@@ -1,3 +1,4 @@
+import json
 from flask import Flask, render_template, jsonify, request, redirect,\
     url_for, flash
 import db
@@ -97,10 +98,10 @@ def add_review():
         row = (name, star, comment, uni)
         db.add_review(row)
         flash("Successfully added review.")
-        data = {'res_name':name, 'rating':star, 'review':comment, 'method':"POST", 'status':"success"}
+        data = json.stringify({'res_name':name, 'rating':star, 'review':comment, 'method':"POST", 'status':"success"})
         return jsonify(data)
     else:
-        data = {'res_name':name, 'rating':star, 'review':comment, 'method':"POST", 'status':"error"}
+        data = json.stringify({'res_name':name, 'rating':star, 'review':comment, 'method':"POST", 'status':"error"})
         return jsonify(data)
 
 '''
