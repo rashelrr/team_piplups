@@ -82,9 +82,13 @@ Ideally, your documentation should also include a usage example for each API ent
     - User can enter the name of a restaurant to see reviews for that restaurant
     - User must enter all parameters
   - Edit review http://127.0.0.1:5000/editreview
-    - When a user has already reviewed a restaurant but wants to edit that review
-    - User can enter the name of a restaurant they want the edit the review for
-    - User must enter all parameters
+    - When a user is logged in and clicks on the Edit review button
+    - Displays all the review made by this user and has a search engine for the user to edit a review for a specific restaurant 
+  - Edit Review Search http://127.0.0.1:5000/edit_review_search 
+    - When a user clicks on the submit button after putting in a restaurant name 
+    - will display error message if restaurant is not found 
+  - Update star and Review http://127.0.0.1:5000/update_star_and_review
+    - When the user puts in both the new star and new review and hit submit, he/she will be redirected to the edit review page 
   - Add review http://127.0.0.1:5000/preaddreview
     - Displays form for users to fill out
     - User must enter all fields given

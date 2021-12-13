@@ -92,7 +92,7 @@ class test_test_app(unittest.TestCase):
         assert response_body['status'] == "account exists"
 
     # checks edit review endpoint given valid parameters
-    def test_edit_review_valid(self):
+    def test_edit_review(self):
         url = ("http://127.0.0.1:5000/editreview")
         response = requests.get(url)
 
