@@ -76,9 +76,14 @@ def add_review():
         data = {"restaurant": res_name, 'stars': rating, 'review': review, 'user': global_uni}
         response = requests.post(url=url, json=data)
 
-        r_json = response.json()
+        # r_json = response.json()
+        if 'json' in response.headers.get('Content-Type'):
+            r_json = response.json()
+        else:
+            print('Response is not in JSON format')
+            r_json = 'spam'
 
-        if r_json['status'] == "success":
+        if r_json['status'] == 500:
             flash("Successfully added review.")
             return redirect(url_for('pre_add_review'))
         else:
@@ -91,7 +96,21 @@ def add_review():
 
 @app.route('/preaddreview', methods=['GET', 'POST'])
 def pre_add_review():
-    return render_template("add_review.html", uni=global_uni)
+    url = 'https://lioneats.herokuapp.com/preaddreview'
+    data = {'username': global_uni}
+    response = requests.post(url=url, json=data)
+
+    if 'json' in response.headers.get('Content-Type'):
+        r_json = response.json()
+    else:
+        print('Response is not in JSON format')
+        r_json = 'spam'
+        
+    if r_json['status'] == 500:
+        return render_template("add_review.html", uni=global_uni)
+    else:
+        flash("Please Log in")
+        return redirect(url_for('login'))
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -194,6 +213,20 @@ def update_star_and_review():
     return render_template(er_html, context=result,
                            keys=list(result.keys()), rows=rows,
                            uni=global_uni)
+@app.route('/rest_display', methods=['GET', 'POST'])
+def rest_display():
+    if request.method == 'GET':
+        star = request.args.get('star')
+    else:
+        star = 1
+    url = "https://lioneats.herokuapp.com/rest_display"
+    data = {'star': star}
+    response = requests.post(url=url, json=data)
+    r_json = response.json()
+    # program never gets past this so don't mind the stuff below
+    if r_json['status'] == "success":
+        flash('Shit worked')
+        return redirect('/login')
 
 
 if __name__ == '__main__':

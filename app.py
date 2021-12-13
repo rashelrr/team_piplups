@@ -99,7 +99,16 @@ def add_review():
             return jsonify(res_name=name, rating=star, review=comment, method="POST", status="success")
         else:
             return jsonify(method="POST", status="fail")
-          
+
+
+@app.route('/preaddreview', methods=['GET', 'POST'])
+def pre_add_review():
+    uni = request.args.get('username')
+    
+    if uni == "":
+        return jsonify(status="error")
+    else:
+        return jsonify(status="success")
 
 '''
 Endpoint:  /editreview?restaurant=___&stars=___&review=___&uni=___
@@ -189,6 +198,25 @@ Purpose:    Display all restaurants and average rating
 '''
 
 
+@app.route('/rest_display', methods=['GET', 'POST'])
+def rest_display():
+    user = request.get_json(force=True)
+    star = user['star']
+    result = db.get_restaurants_above_ratings(1)
+    for key, value in result.items():
+        rows = len(value)
+    return jsonify(status="success")
+    
+    star = request.args.get('star')
+    if star:
+        result = db.get_restaurants_above_ratings(star)
+    else:
+        result = db.get_restaurants_above_ratings(1)
+    for key, value in result.items():
+        rows = len(value)
+    return render_template("rest_display.html", context=result,
+                           keys=list(result.keys()), rows=rows)
+
 @app.route('/rest_display_all', methods=['GET', 'POST'])
 def rest_display_all():
     result = db.get_restaurants_above_ratings(1)
@@ -208,6 +236,14 @@ Purpose:    Display restaurants and average rating of restaurants that
 
 @app.route('/rest_display_star_filter', methods=['GET', 'POST'])
 def rest_display_star_filter():
+    if request.method == 'POST':
+        star = request.args.get('stars')
+
+        result = db.get_restaurants_above_ratings(star)
+        for key, value in result.items():
+            rows = len(value)
+        return jsonify(res_name=name, rating=star, review=comment, method="POST", status="success")
+    
     star = request.args.get('star')
     result = db.get_restaurants_above_ratings(star)
     for key, value in result.items():
