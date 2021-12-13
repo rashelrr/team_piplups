@@ -96,7 +96,7 @@ def add_review():
             row = (name, star, comment, uni)
             db.add_review(row)
             flash("Successfully added review.")
-            data = {'res_name':name, 'rating':star, 'review':comment, 'method':"POST", 'status':"success"}
+            data = {'res_name':"a", 'rating':"b", 'review':"c", 'method':"POST", 'status':"success"}
             return jsonify(data)
         else:
             data = {'res_name':name, 'rating':star, 'review':comment, 'method':"POST", 'status':"error"}
