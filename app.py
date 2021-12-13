@@ -227,7 +227,8 @@ Purpose:    Redirects the user back to the home page
 
 @app.route('/back_home')
 def back_home():
-    return redirect('/home')
+    # return redirect('/home')
+    return "Clicked Back Home!"
 
 
 if __name__ == '__main__':
