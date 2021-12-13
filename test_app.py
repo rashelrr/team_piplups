@@ -6,11 +6,13 @@ class test_test_app(unittest.TestCase):
 
     def setUp(self):
         print('setUp')
+        # clear databases
         url = "https://lioneats.herokuapp.com/clear"
         requests.get(url)
 
     def tearDown(self):
         print('tearDown')
+        # clear databases
         url = "https://lioneats.herokuapp.com/clear"
         requests.get(url)
 
