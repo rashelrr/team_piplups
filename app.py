@@ -96,9 +96,11 @@ def add_review():
             row = (name, star, comment, uni)
             db.add_review(row)
             flash("Successfully added review.")
-            return jsonify(res_name=name, rating=star, review=comment, method="POST", status="success")
+            data = {'res_name':name, 'rating':star, 'review':comment, 'method':"POST", 'status':"success"}
+            return jsonify(data)
         else:
-            return jsonify(res_name=name, rating=star, review=comment, method="POST", status="error")
+            data = {'res_name':name, 'rating':star, 'review':comment, 'method':"POST", 'status':"error"}
+            return jsonify(data)
 
 '''
 Endpoint:  /editreview?restaurant=___&stars=___&review=___&uni=___
