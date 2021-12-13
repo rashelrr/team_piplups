@@ -146,7 +146,6 @@ def edit_review():
     data = {"uni": global_uni}
     response = requests.post(url=url, json=data)
     r_json = response.json()
-    print(r_json)
     return render_template(er_html, context=r_json["res"],
                            keys=list(r_json["res"].keys()),
                            rows=r_json["num_rows"],
@@ -160,26 +159,26 @@ Purpose:    searches for a restaurant review made by the current user
 '''
 
 
-@app.route('/edit_review_search', methods=['POST'])
+@app.route('/edit_review_search', methods=['GET', 'POST'])
 def edit_review_search():
     global global_res
     name = request.args.get('name')
-    url = 'https://lioneats.herokuapp.com/edit_review_search'
+    url = 'https://lioneats.herokuapp.com/edit_review_search?name='+name
     data = {"uni": global_uni, "res": name, "global_res": global_res}
-    response = requests.post(url=url, json=data)
-    r_json = response.json()
-    print(r_json)
-    if r_json["status"] == "fail":
-        return render_template(er_html,
-                               context=r_json["res"],
+    if request.method == 'GET':
+        response = requests.get(url=url, params=data)
+        print(response)
+        r_json = response.json()
+        if r_json["status"] == "fail":
+            return render_template(er_html, context=r_json["res"],
+                                   keys=list(r_json["res"].keys()),
+                                   rows=r_json["num_rows"],
+                                   uni=global_uni)
+        global_res = r_json["global_restaurant"]
+        return render_template("edit_review_search.html", context=r_json["res"],
                                keys=list(r_json["res"].keys()),
                                rows=r_json["num_rows"],
                                uni=global_uni)
-    global_res = r_json["global_restaurant"]
-    return render_template("edit_review_search.html", context=r_json["res"],
-                           keys=list(r_json["res"].keys()),
-                           rows=r_json["num_rows"],
-                           uni=global_uni)
 
 
 '''
