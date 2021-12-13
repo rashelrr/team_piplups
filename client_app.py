@@ -25,18 +25,19 @@ def index():
     return render_template('homepage.html', uni='')
 
 
+@app.route('/home', methods=['GET'])
+def home():
+    global global_uni
+    return render_template('homepage_logged_in.html', uni=global_uni)
+
+
+
 '''
 Endpoint:  /login
 UI:         User clicks "login" button on homepage
 Purpose:    Allows user to log in
             (if not registered, will lead to signup page)
 '''
-
-
-@app.route('/home', methods=['GET'])
-def home():
-    global global_uni
-    return render_template('homepage_logged_in.html', uni=global_uni)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -112,6 +113,87 @@ def signup():
             return redirect(url_for('login'))
     else:
         return render_template('signup.html')
+
+
+'''
+Endpoint:  /editreview?restaurant=___&stars=___&review=___&uni=___
+UI:         User is already at page pre-populated
+            with their original review's data.
+            Allows user to search for a review and update that
+'''
+
+er_html = 'edit_review.html'
+
+
+@app.route('/editreview', methods=['GET', 'POST'])
+def edit_review():
+    global global_uni
+    if global_uni == '':
+        return redirect(url_for('login'))
+    url = 'https://lioneats.herokuapp.com/editreview'
+    data = {"uni": global_uni}
+    requests.post(url=url, json=data)
+
+
+'''
+Endpoint:  /edit_review_search
+UI:         User clicks submit button at edit_review page
+Purpose:    searches for a restaurant review made by the current user
+'''
+
+
+@app.route('/edit_review_search', methods=['GET'])
+def edit_review_search():
+    global global_uni
+    global global_res
+    name = request.args.get('name')
+    url = 'https://lioneats.herokuapp.com/edit_review_search'
+    if db.get_review_uni_res(name, global_uni) == []:
+        flash("Uni and Restaurant pair does not exist, try again")
+        result = db.get_review_uni(global_uni)
+        for k, v in result.items():
+            rows = len(v)
+        return render_template(er_html, context=result,
+                               keys=list(result.keys()), rows=rows,
+                               uni=global_uni)
+    global_res = name
+    rows = db.get_review_uni_res(global_res, global_uni)
+    name = []
+    star = []
+    review = []
+    uni = []
+    for r in rows:
+        name.append(r[0])
+        star.append(r[1])
+        review.append(r[2])
+        uni.append(r[3])
+    result = dict(Name=name, Star_Rating=star, Review=review, UNI=uni)
+    for key, value in result.items():
+        rows = len(value)
+    return render_template("edit_review_search.html", context=result,
+                           keys=list(result.keys())[1:], rows=rows,
+                           uni=global_uni)
+
+
+'''
+Endpoint:  /update_star_and_review
+UI:         User clicks submit button on edit_review_search page
+Purpose:    allows the user to update the new star and review
+'''
+
+
+@app.route('/update_star_and_review', methods=['GET', 'POST'])
+def update_star_and_review():
+    star = request.form['star']
+    review = request.form['review']
+    url = 'https://lioneats.herokuapp.com/update_star_and_review'
+    db.edit_review(global_uni, global_res, star, review)
+    result = db.get_review_uni(global_uni)
+    for k, v in result.items():
+        rows = len(v)
+    return render_template(er_html, context=result,
+                           keys=list(result.keys()), rows=rows,
+                           uni=global_uni)
 
 
 if __name__ == '__main__':
