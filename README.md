@@ -72,6 +72,7 @@ Now enter "http://127.0.0.1:5000/" into the browser and navigate through the cli
     - Assumes given valid uni
     - Endpoint returns success/failure messages as json through 'response'
     - Faiure messages returned if there is already a review left at the restaurant by the username 
+    > Example Json Response: {"status":"failure", "status_code":"500"}
 
 
 ---- @team: below needs to be updated for heroku----
