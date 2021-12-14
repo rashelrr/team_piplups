@@ -59,18 +59,21 @@ Now enter "http://127.0.0.1:5000/" into the browser and navigate through the cli
     - Allows users to login to LionEats client app
     - Assumes user logs in with a string username and password
     - Endpoint returns success/failure messages as json through 'response'
+    - Returns status code of 200 for successful login, 500 if failure
     - Failure messages returned if username/password does not exist as an account
     > Example Json Response: {"status":"wrong password", "status_code":"500"}
   - Signup https://lioneats.herokuapp.com/signup
     - Allows users to sign up to LionEats client app
     - Assumes user signs up with a string username and password
     - Endpoint returns success/failure messages as json through 'response'
+    - Returns status code of 200 for successful signup, 500 if failure
     - Failure messages returned if username is already linked to an account
     > Example Json Response: {"status":"account exists", "status_code":"500"}
   - Add Review https://lioneats.herokuapp.com/addreview
     - Allows users to add reviews to the database
     - Assumes given valid uni
     - Endpoint returns success/failure messages as json through 'response'
+    - Returns status code of 200 for successful add, 500 if failure
     - Faiure messages returned if there is already a review left at the restaurant by the username 
     > Example Json Response: {"status":"failure", "status_code":"500"}
 
