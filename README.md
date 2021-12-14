@@ -71,31 +71,27 @@ Now enter "http://127.0.0.1:5000/" into the browser and navigate through the cli
     - Endpoint returns success/failure messages as json through 'response'
     - Returns status code of 200 for successful login, 500 if failure
     - Failure messages returned if username/password does not exist as an account
-    > Example Json Response: {"status":"wrong password", "status_code":"500"}
+    > Example Json Response: {"status_code":"500", "status":"failure", "reason":"wrong password"}
   - Signup https://lioneats.herokuapp.com/signup
     - Allows users to sign up to LionEats client app
     - Assumes user signs up with a string username and password
     - Endpoint returns success/failure messages as json through 'response'
     - Returns status code of 200 for successful signup, 500 if failure
     - Failure messages returned if username is already linked to an account
-    > Example Json Response: {"status":"account exists", "status_code":"500"}
+    > Example Json Response: {"status_code":"500", "status":"failure", "reason":"account exists"}
   - Add Review https://lioneats.herokuapp.com/addreview
     - Allows users to add reviews to the database
     - Assumes given valid uni
     - Endpoint returns success/failure messages as json through 'response'
     - Returns status code of 200 for successful add, 500 if failure
     - Faiure messages returned if there is already a review left at the restaurant by the username 
-    > Example Json Response: {"status":"failure", "status_code":"500"}
+    > Example Json Response: {"status_code":"500", "status":"failure", "reason":"already reviewed this restaurant"}
   - Update star and Review https://lioneats.herokuapp.com/update_star_and_review 
     - When the user puts in both the new star and new review and hit submit, he/she will be redirected to the edit review page 
     - returns status code 200 
     - the user has to update both fields because they are required
 
-
----- @team: below needs to be updated for heroku----
-Example assumption: All API entries assume the client’s user already has an account on Facebook and is currently logged into Facebook
-Example expectation: The /do_something endpoint expects a date in YYYY-MM-DD format, a length of time in HH:MM 24-hour format, and an activity_name string of length minimum 8 characters and maximum 64 characters
-Ideally, your documentation should also include a usage example for each API entry with both a request and possible responses (including error codes)
+---- Your documentation should also include a usage example for each API entry with both a request and possible responses (including error codes)
 
   - Restaurant display http://127.0.0.1:5000/rest_display_all?
     - Displays all restaurants and average star rating across all reviews
@@ -104,13 +100,6 @@ Ideally, your documentation should also include a usage example for each API ent
     - Displays all restaurants and average star rating across all reviews for restaurants whose average rating is above the number specified by the user
     - User can enter the name of a restaurant to see reviews for that restaurant
     - User must enter all parameters
-  - Add review http://127.0.0.1:5000/preaddreview
-    - Displays form for users to fill out
-    - User must enter all fields given
-    - add_review()
-      - Helper method
-      - Adds review to the database if user hasn't already reviewed the restaurant
-      - Sends popup if review is sucessfully added
 - GET
   - Restaurant review page http://127.0.0.1:5000/rest_info?name=---
     - Displays all reviews (star rating, review, uni) for a specified restaurant
