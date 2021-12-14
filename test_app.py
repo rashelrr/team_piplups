@@ -172,93 +172,175 @@ class test_test_app(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         assert response.json()['status_code'] == str(200)
 
-    ''' ############ BELOW: TO FIX ############ '''
-    '''
-    # Checks readreviews endpoint if given a valid restaurant name
-    def test_read_reviews_happy_given_restaurant(self):
-        url = "http://127.0.0.1:5000/readreviews?restaurant=fumo"
-        response = requests.get(url)
+    # Checks rest_display endpoint for all restaurants
+    def test_rest_display_all_happy(self):
+        url = "https://lioneats.herokuapp.com/addreview"
+        data = {'restaurant': 'fumo', 'stars': 4, 'review': 'good food',
+                'user': 'yy3131'}
+        response = requests.post(url=url, json=data)
+        assert response.json()['status_code'] == str(200)
+        assert response.json()['status'] == "success"
 
-        assert response.status_code == 200
-
-        response_body = response.json()
-        exp_reviews = [['fumo', 5, 'Great pasta', 'mg4145'],
-                       ['fumo', 3, 'mediocre sandwich', 'rdr2139'],
-                       ['fumo', 2, 'good pizza', 'yy3131']]
-        assert response_body["valid"] is True
-        assert response_body["reviews"] == exp_reviews
-
-    # Checks readreviews endpoint if given an invalid restaurant name
-    # aka restaurant does not exist in db
-    def test_read_reviews_invalid_restaurant(self):
-        url = "http://127.0.0.1:5000/readreviews?restaurant=dunkin"
-        response = requests.get(url)
-
-        assert response.status_code == 200
+        url = "https://lioneats.herokuapp.com/rest_display"
+        data = {"star": 1}
+        response = requests.post(url=url, json=data)
+        assert response.json()['status_code'] == str(200)
+        assert response.json()['status'] == "success"
 
         response_body = response.json()
-        assert response_body["valid"] is False
-        reason = "There are no reviews for that restaurant."
-        assert response_body["reason"] == reason
+        exp_review = dict(Name=['fumo'], Average_Rating=[4])
+        assert response_body["res"] == exp_review
 
-    # Checks readreviews endpoint if given a valid rating
-    def test_read_reviews_happy_given_rating(self):
-        url = "http://127.0.0.1:5000/readreviews?stars=4"
-        response = requests.get(url)
+    # Checks rest_display endpoint for restaurants above a certain rating
+    def test_rest_display_filter_happy(self):
+        url = "https://lioneats.herokuapp.com/addreview"
+        data = {'restaurant': 'fumo', 'stars': 4, 'review': 'good food',
+                'user': 'yy3131'}
+        response = requests.post(url=url, json=data)
+        assert response.json()['status_code'] == str(200)
+        assert response.json()['status'] == "success"
+        data = {'restaurant': 'koronet', 'stars': 1, 'review': 'bad food',
+                'user': 'yy3131'}
+        response = requests.post(url=url, json=data)
+        assert response.json()['status_code'] == str(200)
+        assert response.json()['status'] == "success"
 
-        assert response.status_code == 200
+        url = "https://lioneats.herokuapp.com/rest_display"
+        data = {"star": 4}
+        response = requests.post(url=url, json=data)
+        assert response.json()['status_code'] == str(200)
+        assert response.json()['status'] == "success"
+
         response_body = response.json()
+        exp_review = dict(Name=['fumo'], Average_Rating=[4])
+        assert response_body["res"] == exp_review
 
-        exp_reviews = [['fumo', 5, 'Great pasta', 'mg4145'],
-                       ['koronet', 4, 'huge slices', 'mg4145'],
-                       ['koronet', 5, 'best pizza ever', 'rdr2139'],
-                       ['koronet', 5, 'constant craving', 'yy3131'],
-                       ['nussbaum', 4, 'friendly staff', 'mg4145'],
-                       ['nussbaum', 5, 'good drinks', 'sa3892'],
-                       ['panda express', 4, 'good but expensive', 'dl3410'],
-                       ['panda express', 5, 'good service', 'mg4145'],
-                       ['panda express', 5, 'great noodles', 'sa3892']]
-        assert response_body["valid"] is True
-        assert response_body["reviews"] == exp_reviews
+    # Checks rest_display endpoint when there are no restaurants
+    def test_rest_display_none_happy(self):
+        url = "https://lioneats.herokuapp.com/rest_display"
+        data = {"star": 1}
+        response = requests.post(url=url, json=data)
+        assert response.json()['status_code'] == str(200)
+        assert response.json()['status'] == "success"
 
-    # Checks readreviews endpoint if given an invalid rating
-    # aka no reviews in db so no reviews match the query
-    def test_read_reviews_invalid_rating(self):
-        db.clear()
-        db.init_db()
-        url = "http://127.0.0.1:5000/readreviews?stars=3"
-        response = requests.get(url)
-
-        assert response.status_code == 200
         response_body = response.json()
+        exp_review = dict(Name=[], Average_Rating=[])
+        assert response_body["res"] == exp_review
 
-        assert response_body["valid"] is False
-        reason = "There are no reviews at/above that rating."
-        assert response_body["reason"] == reason
+    # Checks rest_display endpoint for an invalid star rating
+    def test_rest_display_filter_invalid(self):
+        url = "https://lioneats.herokuapp.com/addreview"
+        data = {'restaurant': 'fumo', 'stars': 4, 'review': 'good food',
+                'user': 'yy3131'}
+        response = requests.post(url=url, json=data)
+        assert response.json()['status_code'] == str(200)
+        assert response.json()['status'] == "success"
 
-    # Checks readreviews function if given a valid rest/rating
-    def test_read_reviews_happy_given_rest_and_rating(self):
-        url = "http://127.0.0.1:5000/readreviews?restaurant=fumo&stars=3"
-        response = requests.get(url)
+        url = "https://lioneats.herokuapp.com/rest_display"
+        data = {"star": 6}
+        response = requests.post(url=url, json=data)
+        assert response.json()['status_code'] == str(200)
+        assert response.json()['status'] == "success"
 
-        assert response.status_code == 200
         response_body = response.json()
+        exp_review = dict(Name=[], Average_Rating=[])
+        assert response_body["res"] == exp_review
 
-        exp_reviews = [['fumo', 5, 'Great pasta', 'mg4145'],
-                       ['fumo', 3, 'mediocre sandwich', 'rdr2139']]
-        assert response_body["valid"] is True
-        assert response_body["reviews"] == exp_reviews
+    # Checks rest_info endpoint for all reviews
+    def test_rest_info_happy(self):
+        url = "https://lioneats.herokuapp.com/addreview"
+        data = {'restaurant': 'fumo', 'stars': 4, 'review': 'good food',
+                'user': 'yy3131'}
+        response = requests.post(url=url, json=data)
+        assert response.json()['status_code'] == str(200)
+        assert response.json()['status'] == "success"
+        data = {'restaurant': 'fumo', 'stars': 1, 'review': 'bad food',
+                'user': 'sa3892'}
+        response = requests.post(url=url, json=data)
+        assert response.json()['status_code'] == str(200)
+        assert response.json()['status'] == "success"
 
-    # Checks readreviews function if given an invalid rest/rating
-    # aka query does not exist in database
-    def test_read_reviews_invalid_rest_and_rating(self):
-        url = "http://127.0.0.1:5000/readreviews?restaurant=mcdonalds&stars=3"
-        response = requests.get(url)
+        url = "https://lioneats.herokuapp.com/rest_info"
+        data = {'name': 'fumo', 'star': 1}
+        response = requests.get(url=url, json=data)
+        assert response.json()['status_code'] == str(200)
+        assert response.json()['status'] == "success"
 
-        assert response.status_code == 200
         response_body = response.json()
+        exp_review = dict(Name=['fumo', 'fumo'], Review=['bad food',
+                          'good food'], Star_Rating=[1, 4], UNI=['sa3892',
+                          'yy3131'])
+        assert response_body["res"] == exp_review
 
-        assert response_body["valid"] is False
-        reason = "There are no reviews matching your query."
-        assert response_body["reason"] == reason
-    '''
+    # Checks rest_info endpoint for reviews above a certain rating
+    def test_rest_info_filter_happy(self):
+        url = "https://lioneats.herokuapp.com/addreview"
+        data = {'restaurant': 'fumo', 'stars': 4, 'review': 'good food',
+                'user': 'yy3131'}
+        response = requests.post(url=url, json=data)
+        assert response.json()['status_code'] == str(200)
+        assert response.json()['status'] == "success"
+        data = {'restaurant': 'fumo', 'stars': 1, 'review': 'bad food',
+                'user': 'sa3892'}
+        response = requests.post(url=url, json=data)
+        assert response.json()['status_code'] == str(200)
+        assert response.json()['status'] == "success"
+
+        url = "https://lioneats.herokuapp.com/rest_info"
+        data = {'name': 'fumo', 'star': 4}
+        response = requests.get(url=url, json=data)
+        assert response.json()['status_code'] == str(200)
+        assert response.json()['status'] == "success"
+
+        response_body = response.json()
+        exp_review = dict(Name=['fumo'], Review=['good food'],
+                          Star_Rating=[4], UNI=['yy3131'])
+        assert response_body["res"] == exp_review
+
+        url = "https://lioneats.herokuapp.com/rest_info"
+        data = {'name': 'fumo', 'star': 5}
+        response = requests.get(url=url, json=data)
+        assert response.json()['status_code'] == str(200)
+        assert response.json()['status'] == "success"
+
+        response_body = response.json()
+        exp_review = dict(Name=[], Review=[], Star_Rating=[], UNI=[])
+        assert response_body["res"] == exp_review
+
+    # Checks rest_info endpoint for restaurant that doesn't exist
+    def test_rest_info_invalid(self):
+        url = "https://lioneats.herokuapp.com/addreview"
+        data = {'restaurant': 'fumo', 'stars': 4, 'review': 'good food',
+                'user': 'yy3131'}
+        response = requests.post(url=url, json=data)
+        assert response.json()['status_code'] == str(200)
+        assert response.json()['status'] == "success"
+
+        url = "https://lioneats.herokuapp.com/rest_info"
+        data = {'name': 'koronet', 'star': 1}
+        response = requests.get(url=url, json=data)
+        assert response.json()['status_code'] == str(200)
+        assert response.json()['status'] == "success"
+
+        response_body = response.json()
+        exp_review = dict(Name=[], Review=[], Star_Rating=[], UNI=[])
+        assert response_body["res"] == exp_review
+
+    # Checks rest_info endpoint for star rating that doesn't exist
+    def test_rest_info_filter_invalid(self):
+        url = "https://lioneats.herokuapp.com/addreview"
+        data = {'restaurant': 'fumo', 'stars': 4, 'review': 'good food',
+                'user': 'yy3131'}
+        response = requests.post(url=url, json=data)
+        assert response.json()['status_code'] == str(200)
+        assert response.json()['status'] == "success"
+
+        url = "https://lioneats.herokuapp.com/rest_info"
+        data = {'name': 'fumo', 'star': 6}
+        response = requests.get(url=url, json=data)
+        assert response.json()['status_code'] == str(200)
+        assert response.json()['status'] == "success"
+
+        response_body = response.json()
+        exp_review = dict(Name=[], Review=[], Star_Rating=[], UNI=[])
+        assert response_body["res"] == exp_review
