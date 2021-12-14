@@ -45,12 +45,14 @@ def login():
     if db.check_if_uni_exists(uni) is True:
         if db.get_password(uni)[0][0] == password:
             # successfully logged in
-            return jsonify(status="success", status_code="200")
+            return jsonify(status_code="200", status="success")
         else:
             # wrong password
-            return jsonify(status="wrong password", status_code="500")
+            return jsonify(status_code="500", status="failure",
+                           reason="wrong password")
     else:
-        return jsonify(status="account not exist", status_code="500")
+        return jsonify(status_code="500", status="failure",
+                       reason="account not exist")
 
 
 '''
@@ -67,11 +69,12 @@ def signup():
 
     if db.check_if_uni_exists(uni) is True:
         # failed sign up
-        return jsonify(status="account exists", status_code="500")
+        return jsonify(status_code="500", status="failure",
+                       reason="account exists")
     else:
         # successful sign up
         db.add_uni_passcode(uni, password)
-        return jsonify(status="success", status_code="200")
+        return jsonify(status_code="200", status="success")
 
 
 '''
@@ -92,9 +95,10 @@ def add_review():
     if len(result) == 0:
         row = (name, star, comment, uni)
         db.add_review(row)
-        return jsonify(status="success", status_code="200")
+        return jsonify(status_code="200", status="success")
     else:
-        return jsonify(status="failure", status_code="500")
+        return jsonify(status_code="500", status="failure",
+                       reason="already reviewed this restaurant")
 
 
 '''
@@ -112,8 +116,8 @@ def edit_review():
     result = db.get_review_uni(UNI)
     for k, v in result.items():
         rows = len(v)
-    return jsonify(status="success", res=result, num_rows=rows,
-                   status_code="200")
+    return jsonify(status_code="200", status="success", res=result,
+                   num_rows=rows)
 
 
 '''
@@ -132,8 +136,9 @@ def edit_review_search():
         result = db.get_review_uni(UNI)
         for k, v in result.items():
             rows = len(v)
-        return jsonify(status="fail", num_rows=rows, res=result,
-                       status_code="500")
+        return jsonify(status_code="500", status="failure", num_rows=rows,
+                       res=result, reason="never reviewed this restaurant")
+
     rows = db.get_review_uni_res(name, UNI)
     name = []
     star = []
@@ -147,8 +152,8 @@ def edit_review_search():
     result = dict(Name=name, Star_Rating=star, Review=review, UNI=uni)
     for key, value in result.items():
         rows = len(value)
-    return jsonify(status="success", num_rows=rows, res=result,
-                   global_restaurant=name, status_code="200")
+    return jsonify(status_code="200", status="success", num_rows=rows,
+                   res=result, global_restaurant=name)
 
 
 '''
@@ -169,7 +174,7 @@ def update_star_and_review():
     result = db.get_review_uni(global_uni)
     for k, v in result.items():
         rows = len(v)
-    return jsonify(res=result, num_rows=rows, status_code="200")
+    return jsonify(status_code="200", status="success", res=result, num_rows=rows)
 
 
 '''
@@ -187,7 +192,7 @@ def rest_display():
     result = db.get_restaurants_above_ratings(star)
     for key, value in result.items():
         rows = len(value)
-    return jsonify(status=result, rows=rows, status_code="200")
+    return jsonify(status_code="200", status="success", res=result, rows=rows)
 
 
 '''
@@ -211,7 +216,7 @@ def rest_info():
         result = db.get_all_reviews_for_restaurant(name)
     for key, value in result.items():
         rows = len(value)
-    return jsonify(status=result, rows=rows, status_code="200")
+    return jsonify(status_code="200", status="success", res=result, rows=rows)
 
 
 if __name__ == '__main__':
