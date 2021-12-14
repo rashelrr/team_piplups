@@ -1,1 +1,0 @@
-./app.py:176:69: W291 trailing whitespace

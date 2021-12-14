@@ -124,10 +124,12 @@ def add_review():
                   " Review' button.")
             return redirect(url_for('pre_add_review'))
 
+
 '''
 /preaddreview
 checks if user logged in
 '''
+
 
 @app.route('/preaddreview', methods=['GET', 'POST'])
 def pre_add_review():

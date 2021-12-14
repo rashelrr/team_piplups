@@ -174,7 +174,7 @@ def update_star_and_review():
 
 '''
 Endpoint:  /rest_display
-UI:         User clicks "show all restaurants" button or user checks 
+UI:         User clicks "show all restaurants" button or user checks
             radio button and clicks "filter" button
 Purpose:    Display all restaurants and average rating
 '''

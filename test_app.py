@@ -72,26 +72,6 @@ class test_test_app(unittest.TestCase):
         assert response.status_code == 200
         assert response_body['status'] == "success"
 
-    ''' Test add review endpoint '''
-    def test_addreview(self):
-        # add review not already there yet
-        url = "https://lioneats.herokuapp.com/addreview"
-        data = {'restaurant': "fumo", 'stars': 5, 'review': "good", 'user': "dl3410"}
-        response = requests.post(url=url, json=data)
-        response_body = response.json()
-
-        assert response.status_code == 200
-        assert response_body['status'] == "success"
-
-        #add review already there
-        url = "https://lioneats.herokuapp.com/addreview"
-        data = {'restaurant': "fumo", 'stars': 5, 'review': "good", 'user': "dl3410"}
-        response = requests.post(url=url, json=data)
-        response_body = response.json()
-
-        assert response.status_code == 200
-        assert response_body['status'] == "failure"
-
     ''' Test signup endpoint for account that already exists '''
     def test_signup_invalid_account_exists(self):
         # add account
