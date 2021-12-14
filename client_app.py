@@ -57,7 +57,7 @@ def login():
             global global_uni
             global_uni = uni
             return redirect(url_for('home'))
-        elif r_json['status'] == "wrong password":
+        elif r_json['reason'] == "wrong password":
             flash('Wrong password, try again.')
             return redirect(url_for('login'))
         else:
@@ -179,7 +179,7 @@ def edit_review_search():
         response = requests.post(url=url, json=data)
 
         r_json = response.json()
-        if r_json["status"] == "fail":
+        if r_json["status"] == "failure":
             flash("You haven't reviewed this restaurant. Please try again.")
             return render_template(er_html, context=r_json["res"],
                                    keys=list(r_json["res"].keys()),
@@ -227,7 +227,7 @@ def rest_display():
     data = {'star': star}
     response = requests.post(url=url, json=data)
     r_json = response.json()
-    result = r_json['status']
+    result = r_json['res']
     rows = r_json['rows']
     return render_template("rest_display.html", context=result,
                            keys=list(result.keys()), rows=rows)
@@ -241,7 +241,7 @@ def rest_info():
     data = {'name': name, 'star': star}
     response = requests.get(url=url, json=data)
     r_json = response.json()
-    result = r_json['status']
+    result = r_json['res']
     rows = r_json['rows']
     return render_template("rest_info.html", context=result,
                            keys=list(result.keys()), rows=rows)
