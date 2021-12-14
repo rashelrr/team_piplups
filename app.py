@@ -174,7 +174,8 @@ def update_star_and_review():
     result = db.get_review_uni(global_uni)
     for k, v in result.items():
         rows = len(v)
-    return jsonify(status_code="200", status="success", res=result, num_rows=rows)
+    return jsonify(status_code="200", status="success", res=result,
+                   num_rows=rows)
 
 
 '''
