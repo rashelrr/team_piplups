@@ -91,7 +91,7 @@ Now enter "http://127.0.0.1:5000/" into the browser and navigate through the cli
     - returns status code 200 
     - the user has to update both fields because they are required
 
----- Your documentation should also include a usage example for each API entry with both a request and possible responses (including error codes)
+@team: Your documentation should also include a usage example for each API entry with both a request and possible responses (including error codes)
 
   - Restaurant display http://127.0.0.1:5000/rest_display_all?
     - Displays all restaurants and average star rating across all reviews
@@ -100,7 +100,6 @@ Now enter "http://127.0.0.1:5000/" into the browser and navigate through the cli
     - Displays all restaurants and average star rating across all reviews for restaurants whose average rating is above the number specified by the user
     - User can enter the name of a restaurant to see reviews for that restaurant
     - User must enter all parameters
-- GET
   - Restaurant review page http://127.0.0.1:5000/rest_info?name=---
     - Displays all reviews (star rating, review, uni) for a specified restaurant
     - User can select radio button to filter reviews at or above the specified number
@@ -108,7 +107,3 @@ Now enter "http://127.0.0.1:5000/" into the browser and navigate through the cli
   - Restaurant review page http://127.0.0.1:5000/rest_info?star=---&name=---
     - Displays all reviews (star rating, review, uni) that are above the specified number
     - User must enter all parameters
-  - Edit review page http://127.0.0.1:5000/edit_review_search?name=---
-    - Displays a review (star rating, review, uni) for a specific restaurant given UNI
-    - User must enter all parameters (UNI, restaurant name)
-
