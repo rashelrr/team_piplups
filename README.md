@@ -92,7 +92,7 @@ Now enter "http://127.0.0.1:5000/" into the browser and navigate through the cli
     - the user has to update both fields because they are required
 
 @team: Your documentation should also include a usage example for each API entry with both a request and possible responses (including error codes)
-
+--- below: still needs to be updated ---- 
   - Restaurant display http://127.0.0.1:5000/rest_display_all?
     - Displays all restaurants and average star rating across all reviews
     - User can enter the name of a restaurant to see reviews for that restaurant
