@@ -67,6 +67,11 @@ Now enter "http://127.0.0.1:5000/" into the browser and navigate through the cli
     - Endpoint returns success/failure messages as json through 'response'
     - Failure messages returned if username is already linked to an account
     > Example Json Response: {"status":"account exists", "status_code":"500"}
+  - Add Review https://lioneats.herokuapp.com/addreview
+    - Allows users to add reviews to the database
+    - Assumes given valid uni
+    - Endpoint returns success/failure messages as json through 'response'
+    - Faiure messages returned if there is already a review left at the restaurant by the username 
 
 
 ---- @team: below needs to be updated for heroku----
