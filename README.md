@@ -54,6 +54,16 @@ Now enter "http://127.0.0.1:5000/" into the browser and navigate through the cli
   - Clear https://lioneats.herokuapp.com/clear 
     - Deletes then creates tables for storing reviews submitted by users and user accounts
     - Does not return anything
+  - Edit review https://lioneats.herokuapp.com/editreview
+    - When a user is logged in and clicks on the Edit review button
+    - Displays all the review made by this user and has a search engine for the user to edit a review for a specific restaurant
+    - returns status_code 200 and success 
+    - if the user is not logged in yet, this page will redirect to the login page 
+  - Edit Review Search https://lioneats.herokuapp.com/edit_review_search
+    - When a user clicks on the submit button after putting in a restaurant name 
+    - will display error message if restaurant is not found (status_code = 500)
+    - returns status code 200 if the review is successfully found 
+    - if the review exists, will show the page that the user can put in the new rating and review 
 - POST
   - Login https://lioneats.herokuapp.com/login
     - Allows users to login to LionEats client app
@@ -76,6 +86,10 @@ Now enter "http://127.0.0.1:5000/" into the browser and navigate through the cli
     - Returns status code of 200 for successful add, 500 if failure
     - Faiure messages returned if there is already a review left at the restaurant by the username 
     > Example Json Response: {"status":"failure", "status_code":"500"}
+  - Update star and Review https://lioneats.herokuapp.com/update_star_and_review 
+    - When the user puts in both the new star and new review and hit submit, he/she will be redirected to the edit review page 
+    - returns status code 200 
+    - the user has to update both fields because they are required
 
 
 ---- @team: below needs to be updated for heroku----
@@ -90,14 +104,6 @@ Ideally, your documentation should also include a usage example for each API ent
     - Displays all restaurants and average star rating across all reviews for restaurants whose average rating is above the number specified by the user
     - User can enter the name of a restaurant to see reviews for that restaurant
     - User must enter all parameters
-  - Edit review http://127.0.0.1:5000/editreview
-    - When a user is logged in and clicks on the Edit review button
-    - Displays all the review made by this user and has a search engine for the user to edit a review for a specific restaurant 
-  - Edit Review Search http://127.0.0.1:5000/edit_review_search 
-    - When a user clicks on the submit button after putting in a restaurant name 
-    - will display error message if restaurant is not found 
-  - Update star and Review http://127.0.0.1:5000/update_star_and_review
-    - When the user puts in both the new star and new review and hit submit, he/she will be redirected to the edit review page 
   - Add review http://127.0.0.1:5000/preaddreview
     - Displays form for users to fill out
     - User must enter all fields given
