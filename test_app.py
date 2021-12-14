@@ -31,7 +31,7 @@ class test_test_app(unittest.TestCase):
         response = requests.post(url=url, json=data)
         response_body = response.json()
 
-        assert response.status_code == 200
+        assert response_body['status_code'] == str(200)
         assert response_body['status'] == "success"
 
     ''' Test login endpoint for wrong password given'''
@@ -49,7 +49,7 @@ class test_test_app(unittest.TestCase):
         response = requests.post(url=url, json=data)
         response_body = response.json()
 
-        assert response.status_code == 200
+        assert response_body['status_code'] == str(500)
         assert response_body['status'] == "wrong password"
 
     ''' Test login endpoint for an account that does not exist '''
@@ -59,7 +59,7 @@ class test_test_app(unittest.TestCase):
         response = requests.post(url=url, json=data)
         response_body = response.json()
 
-        assert response.status_code == 200
+        assert response_body['status_code'] == str(500)
         assert response_body['status'] == "account not exist"
 
     ''' Test signup endpoint for happy case '''
@@ -69,7 +69,7 @@ class test_test_app(unittest.TestCase):
         response = requests.post(url=url, json=data)
         response_body = response.json()
 
-        assert response.status_code == 200
+        assert response_body['status_code'] == str(200)
         assert response_body['status'] == "success"
 
     ''' Test signup endpoint for account that already exists '''
@@ -88,11 +88,11 @@ class test_test_app(unittest.TestCase):
         response = requests.post(url=url, json=data)
         response_body = response.json()
 
-        assert response.status_code == 200
+        assert response_body['status_code'] == str(500)
         assert response_body['status'] == "account exists"
 
-    ''' Test addreview endpoint'''
-    def test_addreview(self):
+    ''' Test addreview endpoint for happy case'''
+    def test_addreview_happy(self):
         # valid add review request
         url = "https://lioneats.herokuapp.com/addreview"
         data = {'restaurant': "Fumo", 'stars': 5, 'review': "Good",
@@ -103,7 +103,10 @@ class test_test_app(unittest.TestCase):
         assert response.status_code == 200
         assert response_body['status'] == "success"
 
-        # try adding a duplicate review
+    ''' Test addreview endpoint for case when user tries
+    to add a review for a restaurant they've already reviewed'''
+    def test_addreview_invalid(self):
+        # valid add review request
         url = "https://lioneats.herokuapp.com/addreview"
         data = {'restaurant': "Fumo", 'stars': 5, 'review': "Good",
                 'user': "dl3410"}
@@ -111,7 +114,15 @@ class test_test_app(unittest.TestCase):
         response_body = response.json()
 
         assert response.status_code == 200
+
+        # try adding a duplicate review
+        url = "https://lioneats.herokuapp.com/addreview"
+        data = {'restaurant': "Fumo", 'stars': 5, 'review': "Good",
+                'user': "dl3410"}
+        response = requests.post(url=url, json=data)
+        response_body = response.json()
         assert response_body['status'] == "failure"
+        assert response_body['status_code'] == str(500)
 
     # checks edit review endpoint given the user logged in
     def test_edit_review_logged_in(self):
@@ -120,6 +131,7 @@ class test_test_app(unittest.TestCase):
         response = requests.post(url=url, json=data)
         response_body = response.json()
 
+        assert response_body['status_code'] == str(200)
         assert response_body["status"] == "success"
 
     # checks edit review search endpoint given a valid restaurant
@@ -133,6 +145,7 @@ class test_test_app(unittest.TestCase):
         data = {"uni": "yy3131", "res": "fumo"}
         response = requests.post(url=url, json=data)
         response_body = response.json()
+        assert response_body['status_code'] == str(200)
         assert response_body["status"] == "success"
 
     # checks edit review search endpoint given an invalid restaurant
@@ -141,6 +154,7 @@ class test_test_app(unittest.TestCase):
         data = {"uni": "yy3131", "res": "random"}
         response = requests.post(url=url, json=data)
         self.assertEqual(response.json()["status"], "fail")
+        assert response.json()['status_code'] == str(500)
 
     # checks update star and review endpoint given both required inputs
     def test_update_star_and_review(self):
@@ -149,31 +163,17 @@ class test_test_app(unittest.TestCase):
                 'user': 'yy3131'}
         response = requests.post(url=url, json=data)
         self.assertEqual(200, response.status_code)
+        assert response.json()['status_code'] == str(200)
 
         url = "https://lioneats.herokuapp.com/update_star_and_review"
         data = {"star": 4, "review": "my go to place", "uni": "yy3131",
                 "res": "fumo"}
         response = requests.post(url=url, json=data)
         self.assertEqual(response.status_code, 200)
+        assert response.json()['status_code'] == str(200)
 
     ''' ############ BELOW: TO FIX ############ '''
-
     '''
-
-
-    # checks edit review endpoint given invalid parameters
-    # aka updated review has empty parameters
-    def test_edit_review_invalid(self):
-        url = "http://127.0.0.1:5000/editreview"
-        response = requests.get(url)
-
-        assert response.status_code == 200
-        response_body = response.json()
-
-        assert response_body["valid"] is False
-        reason = "To edit a review, please enter all required fields."
-        assert response_body["reason"] == reason
-
     # Checks readreviews endpoint if given a valid restaurant name
     def test_read_reviews_happy_given_restaurant(self):
         url = "http://127.0.0.1:5000/readreviews?restaurant=fumo"
@@ -261,45 +261,4 @@ class test_test_app(unittest.TestCase):
         assert response_body["valid"] is False
         reason = "There are no reviews matching your query."
         assert response_body["reason"] == reason
-
-    # checks add review endpoint given valid parameters
-    def test_add_review_happy(self):
-        url = ("http://127.0.0.1:5000/addreview?"
-               + "restaurant=dunkin&stars=5&review=AMAZING!&uni=rdr2139")
-        response = requests.get(url)
-
-        assert response.status_code == 200
-        response_body = response.json()
-
-        assert response_body["valid"] is True
-        assert response_body["reason"] == "Successfully added review."
-
-    # checks add review endpoint given invalid parameters
-    # aka user already reviewed restaurant and thus cannot
-    # add review to db
-    def test_add_review_already_reviewed(self):
-        url = ("http://127.0.0.1:5000/addreview?"
-               + "restaurant=fumo&stars=5&review=AMAZING!&uni=rdr2139")
-
-        print(">>>", url)
-        response = requests.get(url)
-
-        assert response.status_code == 200
-        response_body = response.json()
-
-        assert response_body["valid"] is False
-        reason = "You've already reviewed this restaurant."
-        assert response_body["reason"] == reason
-
-    # checks add review endpoint given invalid parameters
-    # aka empty parameters
-    def test_add_review_invalid(self):
-        url = "http://127.0.0.1:5000/addreview"
-        response = requests.get(url)
-
-        assert response.status_code == 200
-        response_body = response.json()
-
-        assert response_body["valid"] is False
-        reason = "To add a review, please enter all required fields."
-        assert response_body["reason"] == reason'''
+    '''
