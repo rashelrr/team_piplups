@@ -50,7 +50,7 @@ class test_test_app(unittest.TestCase):
         response_body = response.json()
 
         assert response_body['status_code'] == str(500)
-        assert response_body['status'] == "wrong password"
+        assert response_body['reason'] == "wrong password"
 
     ''' Test login endpoint for an account that does not exist '''
     def test_login_invalid_account_not_exist(self):
@@ -60,7 +60,7 @@ class test_test_app(unittest.TestCase):
         response_body = response.json()
 
         assert response_body['status_code'] == str(500)
-        assert response_body['status'] == "account not exist"
+        assert response_body['reason'] == "account not exist"
 
     ''' Test signup endpoint for happy case '''
     def test_signup_happy(self):
@@ -89,7 +89,7 @@ class test_test_app(unittest.TestCase):
         response_body = response.json()
 
         assert response_body['status_code'] == str(500)
-        assert response_body['status'] == "account exists"
+        assert response_body['reason'] == "account exists"
 
     ''' Test addreview endpoint for happy case'''
     def test_addreview_happy(self):
@@ -153,7 +153,7 @@ class test_test_app(unittest.TestCase):
         url = "https://lioneats.herokuapp.com/edit_review_search"
         data = {"uni": "yy3131", "res": "random"}
         response = requests.post(url=url, json=data)
-        self.assertEqual(response.json()["status"], "fail")
+        self.assertEqual(response.json()["status"], "failure")
         assert response.json()['status_code'] == str(500)
 
     # checks update star and review endpoint given both required inputs
