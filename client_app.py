@@ -23,9 +23,7 @@ er_html = 'edit_review.html'
 @app.route('/', methods=['GET'])
 def index():
     global global_uni
-    global_uni = ''
-
-    return render_template('homepage.html', uni='')
+    return render_template('homepage.html', uni=global_uni)
 
 
 @app.route('/home', methods=['GET'])
