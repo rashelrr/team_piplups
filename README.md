@@ -64,19 +64,19 @@ Now enter "http://127.0.0.1:5000/" into the browser and navigate through the cli
     - will display error message if restaurant is not found (status_code = 500)
     - returns status code 200 if the review is successfully found 
     - if the review exists, will show the page that the user can put in the new rating and review 
-  - Restaurant Display Filter http://127.0.0.1:5000/rest_display?star=---
+  - Restaurant Display Filter https://lioneats.herokuapp.com/rest_display?star=---
     - Displays the restaurants in the database whose average rating is at or above the specified number and their average rating
     - The user is directed here when they selects a numbered radio button and hit filter on the homepage
     - The user must select a radio button before filtering
     - Allows the user to enter a restaurant name to see its reviews
     - Returns status code 200
-  - Restaurant Reviews http://127.0.0.1:5000/rest_info?name=---
+  - Restaurant Reviews https://lioneats.herokuapp.com/rest_info?name=---
     - Displays all reviews (star rating, review, uni) for a specified restaurant
     - User can select radio button to filter reviews at or above the specified number
     - The user is directed here when they enter a restaurant name into the search box and hit the view button from either the home page or either restaurant display page
     - User must enter a restaurant name before they can view the reviews
     - Returns status code 200
-  - Restaurant Review Filter http://127.0.0.1:5000/rest_info?star=---&name=---
+  - Restaurant Review Filter https://lioneats.herokuapp.com/rest_info?star=---&name=---
     - Displays all reviews (star rating, review, uni) for a specified restaurant at or above the specified number
     - User can select radio button to filter reviews again or select the see all reviews button to see all reviews again
     - The user is directed here when they select a radio button on the restaurant reviews page
@@ -108,7 +108,7 @@ Now enter "http://127.0.0.1:5000/" into the browser and navigate through the cli
     - When the user puts in both the new star and new review and hit submit, he/she will be redirected to the edit review page 
     - returns status code 200 
     - the user has to update both fields because they are required
-  - Restaurant Display All http://127.0.0.1:5000/rest_display
+  - Restaurant Display All https://lioneats.herokuapp.com/rest_display
     - Displays all the restaurants in the database and their average rating
     - The user is directed here when they click the see all restaurants button on the homepage
     - Allows the user to enter a restaurant name to see its reviews
