@@ -31,8 +31,9 @@ Now enter "http://127.0.0.1:5000/" into the browser and navigate through the cli
 ## Coverage Tool: Coverage.py
   - Travis displays the coverage percentage for test_app.py and test_db.py under 'Job log'
   - The folder htmlcov/ in our repo also has test_app.py and test_db.py that you can open 
-    on your computer to view the coverage percentages (download repo, run 'coverage html' 
-    in terminal and then open up those files from htmlcov folder).
+    on your computer to view the coverage percentages (download repo, run 'coverage run -m unittest discover' 
+    to test coverage and 'coverage run -m --branch unittest discover' to test branch coverage. run 'coverage html'
+    after each command and then open up those test files from htmlcov folder).
 
 ## Bug Finder: SonarCloud
   - Click the green check mark at the top of the repo. Click 'Details' next to SonarCloud
